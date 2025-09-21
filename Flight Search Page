@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-image: url("clouds.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+        }
+
+        #airplane {
+            position: absolute;
+            top: 50%;
+            left: -200px; 
+            width: 400px; 
+            animation: fly 6s forwards; 
+        }
+
+        @keyframes fly {
+            0%{ 
+                left: -200px; 
+                top: 50%; 
+            }
+            50%{ 
+                top: 40%;
+            }  
+            100%{ 
+                left: 110%; 
+                top: 50%; 
+                opacity: 0;
+            } 
+        }
+
+        #title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: dodgerblue;
+            margin-top: 40px;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+            animation-delay: 4s; 
+        }
+
+        #flightForm {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            width: 380px;  
+            border-radius: 15px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+            opacity: 0; 
+            animation: fadeIn 2s ease forwards;
+            animation-delay: 4.0s; 
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -40%); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%); 
+            }
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        input {
+            display: block;
+            margin-top: 5px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 14px;
+            width: 100%;
+            font-size: 18px;
+            border: none;
+            border-radius: 12px;
+            background: dodgerblue;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: royalblue;
+        }
+
+        #title { 
+    text-align: center; 
+    font-size: 80px; 
+    color: white; 
+    margin: 20px auto; 
+    width: fit-content; 
+    padding: 15px 40px; 
+    border-radius: 20px; 
+    text-shadow: 
+        10px 10px 0px dodgerblue, 
+        -10px -10px 0px dodgerblue;    
+    opacity: 0;
+    animation: fadeIn 2s ease forwards;
+    animation-delay: 4s; 
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.flight-card {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .flight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .airline-info {
+            font-size: 18px;
+            font-weight: bold;
+            color: dodgerblue;
+        }
+
+        .flight-number {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2E8B57;
+        }
+
+        .flight-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .time-info {
+            text-align: center;
+        }
+
+        .time {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .location {
+            font-size: 12px;
+            color: #666;
+        }
+
+
+        #flightResults {
+    position: absolute;
+    top: 125%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 600px;
+    display: none;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards;
+}
+    </style>
+</head>
+<body>
+    <img id="airplane" src="airplane.png" alt="Airplane">
+
+    <h1 id="title">Flight Search Page</h1>
+
+    <form id="flightForm">
+        <label for="origin">Origin</label> 
+        <input type="text" id="origin" placeholder="Enter origin"> 
+        <label for="destination">Destination</label> 
+        <input type="text" id="destination" placeholder="Enter destination"> 
+        <label for="departure">Departure Date</label> 
+        <input type="date" id="departure"> 
+        <label for="return">Return Date</label> 
+        <input type="date" id="return"> 
+        <label for="passengers">Passenger Count</label> 
+        <input type="number" id="passengers" min="1" value="1"> 
+        <button type="submit">Search Flights</button> 
+    </form> 
+
+    <div id="flightResults">
+        <div class="flight-card">
+            <div class="flight-header">
+                <div>
+                    <div class="airline-info">Philippine Airlines</div>
+                    <div class="flight-number">PR 67</div>
+                </div>
+                <div class="price">₱67,000</div>
+            </div>
+            <div class="flight-details">
+                <div class="time-info">
+                    <div class="time">6:07</div>
+                    <div class="location">Japan</div>
+                </div>
+                <div class="time-info">
+                    <div class="time">11:45</div>
+                    <div class="location">Dubai</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flight-card">
+            <div class="flight-header">
+                <div>
+                    <div class="airline-info">Cebu Pacific</div>
+                    <div class="flight-number">5J 563</div>
+                </div>
+                <div class="price">₱7,600</div>
+            </div>
+            <div class="flight-details">
+                <div class="time-info">
+                    <div class="time">14:20</div>
+                    <div class="location">Manila</div>
+                </div>
+                <div class="time-info">
+                    <div class="time">07:06</div>
+                    <div class="location">Cebu</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flight-card">
+            <div class="flight-header">
+                <div>
+                    <div class="airline-info">AirAsia Philippines</div>
+                    <div class="flight-number">Z2 938</div>
+                </div>
+                <div class="price">₱6,890</div>
+            </div>
+            <div class="flight-details">
+                <div class="time-info">
+                    <div class="time">19:10</div>
+                    <div class="location">Manila</div>
+                </div>
+                <div class="time-info">
+                    <div class="time">22:25</div>
+                    <div class="location">United Kingdom</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('flightForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const resultsDiv = document.getElementById('flightResults');
+            resultsDiv.style.display = 'block';
+            resultsDiv.style.opacity = '1';
+        });
+    </script>
+</body> 
+</html>
