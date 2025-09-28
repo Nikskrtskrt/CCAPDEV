@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             background-image: url("clouds.jpg");
@@ -8,40 +9,45 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
             font-family: Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         #airplane {
             position: absolute;
             top: 50%;
-            left: -200px; 
-            width: 400px; 
-            animation: fly 6s forwards; 
+            left: -200px;
+            width: 400px;
+            animation: fly 5s forwards;
         }
 
         @keyframes fly {
-            0%{ 
+            0% { 
                 left: -200px; 
                 top: 50%; 
             }
-            50%{ 
+            50% { 
                 top: 40%;
             }  
-            100%{ 
+            100% { 
                 left: 110%; 
                 top: 50%; 
                 opacity: 0;
             } 
         }
 
-        #title {
-            text-align: center;
-            font-size: 32px;
-            font-weight: bold;
-            color: dodgerblue;
-            margin-top: 40px;
+        #flightPageImage {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 1000px;
+            width: 90%;
             opacity: 0;
             animation: fadeIn 2s ease forwards;
-            animation-delay: 4s; 
+            animation-delay: 4s;
+            z-index: 10;
         }
 
         #flightForm {
@@ -49,14 +55,23 @@
             top: 65%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 40px;
-            width: 380px;  
+            width: 300px;
+            max-width: 30%;
             border-radius: 15px;
             box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
-            opacity: 0; 
+            opacity: 0;
             animation: fadeIn 2s ease forwards;
-            animation-delay: 4.0s; 
+            animation-delay: 4s;
+            z-index: 15;
+            transition: left 0.5s ease;
+        }
+
+        #flightForm.slide-right {
+            left: 60%; /* Kept at 60% for 20% gap with results at 40% */
         }
 
         @keyframes fadeIn {
@@ -84,6 +99,7 @@
             font-size: 16px;
             border: 1px solid #ccc;
             border-radius: 10px;
+            box-sizing: border-box;
         }
 
         button {
@@ -103,33 +119,61 @@
             background: royalblue;
         }
 
-        #title { 
-    text-align: center; 
-    font-size: 80px; 
-    color: white; 
-    margin: 20px auto; 
-    width: fit-content; 
-    padding: 15px 40px; 
-    border-radius: 20px; 
-    text-shadow: 
-        10px 10px 0px dodgerblue, 
-        -10px -10px 0px dodgerblue;    
-    opacity: 0;
-    animation: fadeIn 2s ease forwards;
-    animation-delay: 4s; 
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-}
-
-.flight-card {
+        .flight-card {
             background: rgba(255, 255, 255, 0.95);
             margin: 20px 0;
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .flight-card:hover {
+            background: dodgerblue;
+            color: white;
+        }
+
+        .flight-card:hover .airline-info,
+        .flight-card:hover .flight-number,
+        .flight-card:hover .price,
+        .flight-card:hover .location,
+        .flight-card:hover .time {
+            color: white; 
+        }
+
+        .flight-card.selected {
+            background: dodgerblue; 
+            color: white;
+        }
+
+        .flight-card.selected .airline-info,
+        .flight-card.selected .flight-number,
+        .flight-card.selected .price,
+        .flight-card.selected .location,
+        .flight-card.selected .time {
+            color: white;
+        }
+
+        .next-button {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            background: royalblue;
+            color: white;
+            cursor: pointer;
+        }
+
+        .next-button:hover {
+            background: navy;
+        }
+
+        .flight-card.selected .next-button {
+            display: block;
         }
 
         .flight-header {
@@ -178,37 +222,156 @@
             color: #666;
         }
 
-
         #flightResults {
-    position: absolute;
-    top: 125%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 600px;
-    display: none;
-    opacity: 0;
-    animation: fadeIn 2s ease forwards;
-}
+            position: absolute;
+            top: 65%;
+            left: -50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            max-width: 30%;
+            display: none;
+            opacity: 0;
+            z-index: 15;
+            transition: left 0.5s ease, opacity 0.5s ease;
+        }
+
+        #flightResults.slide-in {
+            left: 40%; 
+            opacity: 1;
+            display: block;
+        }
+
+        /*media for fixing the look of tha page in different screens*/
+        @media (min-width: 1200px) and (max-width: 1600px) {
+            #flightForm {
+                max-width: 45%;
+                width: 400px;
+                left: 50%;
+            }
+            
+            #flightForm.slide-right {
+                left: 70%;
+            }
+            
+            #flightResults {
+                max-width: 45%;
+                width: 400px;
+            }
+            
+            #flightResults.slide-in {
+                left: 25%;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            #flightPageImage {
+                max-width: 600px;
+                top: 12%;
+            }
+
+            #flightForm {
+                max-width: 40%;
+                padding: 20px;
+            }
+
+            #flightForm.slide-right {
+                left: 70%; 
+            }
+
+            #flightResults {
+                width: 260px;
+                max-width: 40%;
+            }
+
+            #flightResults.slide-in {
+                left: 25%;
+            }
+
+            .flight-card {
+                padding: 15px;
+            }
+
+            .price {
+                font-size: 20px;
+            }
+
+            .time {
+                font-size: 16px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            #flightPageImage {
+                max-width: 90%;
+                top: 10%;
+            }
+
+            #flightForm {
+                top: 60%;
+                left: 50%;
+                max-width: 85%;
+                padding: 15px;
+            }
+
+            #flightForm.slide-right {
+                top: 60%;
+                left: 50%;
+            }
+
+            #flightResults {
+                top: 140%;
+                left: -50%;
+                width: 85%;
+                max-width: 85%;
+                transform: translate(-50%, 0);
+            }
+
+            #flightResults.slide-in {
+                left: 50%;
+                top: 140%;
+                opacity: 1;
+                display: block;
+            }
+
+            .flight-card {
+                padding: 10px;
+            }
+
+            .price {
+                font-size: 18px;
+            }
+
+            .time {
+                font-size: 14px;
+            }
+
+            .airline-info {
+                font-size: 16px;
+            }
+
+            .flight-number {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
     <img id="airplane" src="airplane.png" alt="Airplane">
-
-    <h1 id="title">Flight Search Page</h1>
+    <img id="flightPageImage" src="FlightPage.png" alt="Flight Page Image">
 
     <form id="flightForm">
-        <label for="origin">Origin</label> 
-        <input type="text" id="origin" placeholder="Enter origin"> 
-        <label for="destination">Destination</label> 
-        <input type="text" id="destination" placeholder="Enter destination"> 
-        <label for="departure">Departure Date</label> 
-        <input type="date" id="departure"> 
-        <label for="return">Return Date</label> 
-        <input type="date" id="return"> 
-        <label for="passengers">Passenger Count</label> 
-        <input type="number" id="passengers" min="1" value="1"> 
-        <button type="submit">Search Flights</button> 
-    </form> 
+        <label for="origin">Origin</label>
+        <input type="text" id="origin" placeholder="Enter origin">
+        <label for="destination">Destination</label>
+        <input type="text" id="destination" placeholder="Enter destination">
+        <label for="departure">Departure Date</label>
+        <input type="date" id="departure">
+        <label for="return">Return Date</label>
+        <input type="date" id="return">
+        <label for="passengers">Passenger Count</label>
+        <input type="number" id="passengers" min="1" value="1">
+        <button type="submit">Search Flights</button>
+    </form>
 
     <div id="flightResults">
         <div class="flight-card">
@@ -229,6 +392,7 @@
                     <div class="location">Dubai</div>
                 </div>
             </div>
+            <button class="next-button">Next</button>
         </div>
 
         <div class="flight-card">
@@ -245,10 +409,11 @@
                     <div class="location">Manila</div>
                 </div>
                 <div class="time-info">
-                    <div class="time">07:06</div>
+                    <div class="time">22:25</div>
                     <div class="location">Cebu</div>
                 </div>
             </div>
+            <button class="next-button">Next</button>
         </div>
 
         <div class="flight-card">
@@ -269,17 +434,25 @@
                     <div class="location">United Kingdom</div>
                 </div>
             </div>
+            <button class="next-button">Next</button>
         </div>
     </div>
 
     <script>
         document.getElementById('flightForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+            const form = document.getElementById('flightForm');
             const resultsDiv = document.getElementById('flightResults');
-            resultsDiv.style.display = 'block';
-            resultsDiv.style.opacity = '1';
+            form.classList.add('slide-right');
+            resultsDiv.classList.add('slide-in');
+        });
+
+        document.querySelectorAll('.flight-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.flight-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            });
         });
     </script>
-</body> 
+</body>
 </html>
