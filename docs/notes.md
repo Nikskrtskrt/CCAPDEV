@@ -24,6 +24,9 @@ Workflow
         git commit -m "short clean message"
         git push origin <branch_name>
 
+    #please make sure to save your changes into your own branch before pulling the dev server
+    #also remember to update the changelogs.md everytime you push 
+
     ~FOR DOCS BRANCH ONLY
         git checkout docs
         git pull origin docs #please update your local repository before making changes
