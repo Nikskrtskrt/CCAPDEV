@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Reservation Form</title>
-    <link rel="stylesheet" type="text/css" media="all" href="css/Reservation_Form.css">
+    <link rel="stylesheet" type="text/css" media="all" href="css/Reservation_Form.css"></link>
     <script src="script/Reservation_Form.js"></script>
 </head>
 <body>
@@ -19,5 +19,27 @@
     - Show a summary panel with total price calculation (JavaScript updates dynamically).
     
     -->
+
+    <form>
+        <label for="fullName">Full Name: </label>
+        <input type="text" id="fullName" placeholder="Full Name" required></input>
+        <label for="email">Email Address: </label>
+        <input type="email" id="email" placeholder="Email Address" required></input>
+        <label for="passportNumber">Passport Number: </label>
+        <input type="number" id="passportNumber" placeholder="Passport Number" required></input>
+        
+        <label for="meal-options">Meal Options:</label>
+        <select>
+            <option value="" disabled selected>None</option>
+            <option value="standard">Standard</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="kosher">Kosher</option>
+        </select>
+        
+        <label for="seat-selection">Seat Selection:</label>
+        <!-- Grid seatmap here -->
+
+        <input type="checkbox" id="extraBaggage" name="extraBaggage"></input>
+    </form>
 </body>
 </html>
