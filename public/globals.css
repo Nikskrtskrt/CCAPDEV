@@ -1,0 +1,65 @@
+/* please keep in mind this the default styles file so all pages would be affected */
+:root{ 
+
+    /*when adding custom colors to pages, please put them here to allow uniform color coding
+    example user case color: var(--greyishBlueLight);*/
+    --greyishBlueLight: #708090;
+    --greyishBlueDark:  #36454f;
+}s
+
+
+body {
+    background-image: linear-gradient(to bottom, var(--greyishBlueLight), var(--greyishBlueDark));
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+input {
+    display: block;
+    margin-top: 5px;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    margin-top: 20px;
+    padding: 14px;
+    width: 100%;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    background: dodgerblue;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: royalblue;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translate(-50%, -40%); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translate(-50%, -50%); 
+    }
+}

@@ -8,5 +8,3 @@ Pictures:
 https://www.pexels.com/photo/aerial-view-of-cloudscape-314726/
 CHECK THIS CANVA LINK <33:
 https://www.canva.com/design/DAG0GXPRJxI/ld7tqPzCEy-0x-20Zm6E2g/edit?utm_content=DAG0GXPRJxI&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
-
-
