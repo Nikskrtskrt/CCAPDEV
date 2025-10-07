@@ -43,4 +43,19 @@ Workflow
 Additional Formatting notes
     ~default html file naming convention (i.e lowercase and use hyphens(-) instead of space(example. main-page.html))
     ~when using custom colors please set them in :root of globals.css to ensure consistent color coding
-    
+
+Subject for change
+    ~
+
+New elements and how to use them
+    ~ to add new background add background container inside <body> before elements
+     <!-- background image containers -->
+    <div class="background-container">
+        <div class="panel left"></div>
+        <div class="panel center"></div>
+        <div class="panel right"></div>
+    </div>
+    ~ to add new slide in and slide out animations, just add to css of object
+    transform: translateY(0);
+    animation-duration: 1.5s;
+    animation-name: slide-up; or slide-down
