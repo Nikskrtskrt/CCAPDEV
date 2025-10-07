@@ -26,5 +26,60 @@ $(function() {
             `);
         });
     }
+    //Adds flights to table
     renderTable();
-})
+
+    // Add Flights
+    $("#addFlightBtn").click(function(){
+        $("#modalTitle").text("Add Flight");
+        $("flightForm")[0].reset();
+        $("#editIndex").val("");
+    });
+
+    //Flight Saving
+    $("#saveFlightBtn").click(function(){
+        let flight = {
+            flightNo: $("#flightNo").val(),
+            origin: $("#origin").val(),
+            destination: $("#destination").val(),
+            departure: $("#departure").val(),
+            arrival: $("#arrival").val(),
+            aircraft: $("#aircraft").val(),
+            capacity: $("#capacity").val()
+        }
+
+    let index = $("#editIndex").val();
+
+    if (index === ""){
+        flights.push(flight);
+    }
+    else{
+        flights[index] = flight;
+    }
+
+    $("#flightModal").modal("hide");
+        renderTable();
+    }); 
+
+    $(document).on("click", ".edit-btn", function(){
+        let i = $(this).data("index");
+        let f = flights[i];
+        $("#modalTitle").text("Edit Flight");
+        $("#flightNo").val(f.flightNo);
+        $("#origin").val(f.origin);
+        $("#destination").val(f.destination);
+        $("#departure").val(f.departure);
+        $("#aircraft").val(f.aircraft);
+        $("#capacity").val(f.capacity);
+        $("#editIndex").val(i);
+        $("#flightModal").modal("show");
+    });
+
+    $(document).on("click", ".delete-btn", function(){
+        let i = $(this).data("index");
+        if(confirm("confirm delete this fligt?")){
+            flights.splice(i,1);
+            renderTable();
+        }
+    })
+});

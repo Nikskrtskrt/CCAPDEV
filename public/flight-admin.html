@@ -27,7 +27,7 @@
     <header>
         <h1><b>Admin Panel | Flight Management</b></h1>
     </header>
-  
+
     <main>
         
         <!--Flight List-->
@@ -60,6 +60,63 @@
     </main>
 
     <!--Implement Add Flight Modal-->
+    <div class="modal fade" id="flightModal">
+        <div class="modal-dialog modal-lg"> 
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Flight</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="" id="flightForm">
+                    <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Flight No.</label>
+                                <input type="text" class="form-control" id="flightNo" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Origin</label>
+                                <input type="text" class="form-control" id="origin" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Destination</label>
+                                <input type="text" class="form-control" id="destination" required>
+                            </div>
+                        </div>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4">
+                                <label class="form-label">Departure</label>
+                                <input type="datetime-local" class="form-control" id="departure" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Arrival</label>
+                                <input type="datetime-local" class="form-control" id="arrival" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Aircraft</label>
+                                <input type="text" class="form-control" id="aircraft" required>
+                            </div>
+                        </div>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4">
+                                <label class="form-label">Seat Capacity</label>
+                                <input type="number" class="form-control" id="capacity" min="1" required>
+                            </div>
+                        </div>
+                    <input type="hidden" id="editIndex">
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" id="saveFlightBtn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--jQuery Script-->
     <script src="flight-admin.js"></script>
 
     <!-- Bootstrap JS bundle -->
