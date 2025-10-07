@@ -17,3 +17,13 @@ This project follow [Smenatic Versioning] (https://semver.org/)
     -:root in globals.css for custom colors
     -Sources.txt moved into docs/sources.md
     
+##[0.1.1] 2025-10-7
+    
+### Changed
+    -Global css changes
+        -new background images and animations
+        -bootstrap card container css modifications
+        -removed old input and label for simplifications
+    -flight-admin css and html files created
+
+    -notes updated, instructions on how to use new background and animation objects
