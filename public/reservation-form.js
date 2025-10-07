@@ -4,13 +4,25 @@ const seatPrices = {
     "middle": 0
 }
 
+const seatType = {
+    'A': "window",
+    'B': "middle",
+    'C': "aisle",
+    'D': "aisle",
+    'E': "middle",
+    'F': "window",
+}
+
 const mealPrices = {
     "standard": 50,
     "vegetarian": 100,
     "kosher": 150
 };
 
+let seatData = {}
+
 $(function() { //Note: Same as $(document).ready(function() {
+    const reservationForm = $("#reservationForm")
     const inputFirstName = $("#firstName");
     const inputLastName = $("#lastName");
     const inputEmail = $("#email");
@@ -20,9 +32,35 @@ $(function() { //Note: Same as $(document).ready(function() {
     const checkBoxExtraBaggage = $("#extraBaggage");
     const totalCostElement = $("#totalCost");
     const btnSubmit = $("#submitBtn");
+
+    let selectedSeat = null;
     
+    function unselectSelectedSeat() {
+        if (selectedSeat === null)
+            return;
+
+        const oldSeatNumber = selectedSeat.data("seat-number");
+        selectedSeat.removeClass("selected");
+        selectedSeat = null;
+    }
+
+    function onSeatClick(seatElement) {
+        const seatNumber = seatElement.data("seat-number");
+        const curSeatData = seatData[seatNumber];
+        const curStatus = curSeatData.status;
+        console.log("Clicked " + seatNumber);
+
+        if (curStatus != "available")
+            return;
+                        
+        unselectSelectedSeat();
+        selectedSeat = seatElement;
+        seatElement.addClass("selected");
+        console.log("selected");
+    }
+
     function initializeSeats() {
-        const TOTAL_ROWS = 10;
+        const TOTAL_ROWS = 5;
         const TOTAL_COLS = 6;
         const ROW_CLASS = "row justify-content-center seat-row";
         const COL_CLASS = "col-1 d-flex align-items-center justify-content-center";
@@ -35,16 +73,25 @@ $(function() { //Note: Same as $(document).ready(function() {
 
             for (let col = 1; col <= TOTAL_COLS; col++) {
                 //ASCII of A is 65
-                const letterEquivalent = String.fromCharCode(64 + col);
-                
-                const seatNumber = `${row}${letterEquivalent}`
-                
+                const letter = String.fromCharCode(64 + col);
+                const seatNumber = `${row}${letter}`
+                seatData[seatNumber] = {
+                    'type': "middle",
+                    'status': "available" 
+                }
+
                 const curColElement = $("<div>").addClass(COL_CLASS);
                 const seatDisplay = $("<div>")
                     .addClass("seat")
+                    .addClass("available")
                     .text(seatNumber)
                     .data("seat-number", seatNumber);
-                            //on("click", func)
+                    //.data("seat-type", "Middle")
+                    //.data("status", "available")
+                
+                seatDisplay.on("click", function() {
+                    onSeatClick(seatDisplay);
+                });
                 
                 curRowElement.append(curColElement.append(seatDisplay));
 
@@ -61,8 +108,8 @@ $(function() { //Note: Same as $(document).ready(function() {
     function getTotalCost() {
         const mealOptionValue = selectMealOptions.val().trim();
         const extraBaggageValue = checkBoxExtraBaggage.is(":checked");
-        const baseCost = 500;
-        let totalCost = baseCost;
+        const BASE_COST = 500;
+        let totalCost = BASE_COST;
 
         totalCost += mealPrices[mealOptionValue] || 0;
 
@@ -105,6 +152,9 @@ $(function() { //Note: Same as $(document).ready(function() {
           //`Seat: ${seatNumber} (${seatType} seat)\n` +
           `Total Cost: $${totalCost}\n\n` +
           `(This is a client-side demo)`);
+        
+        reservationForm.trigger("reset");
+        unselectSelectedSeat();
     }
 
     selectMealOptions.on("change", updateTotalCost);
