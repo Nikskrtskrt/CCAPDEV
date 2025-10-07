@@ -20,6 +20,7 @@
                 opacity: 0;
             } 
         }
+        
 
         #flightPageImage {
             position: absolute;
@@ -34,12 +35,23 @@
             z-index: 10;
         }
 
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -40%); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%); 
+            }
+        }
+
         #flightForm {
             position: absolute;
             top: 65%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.7);
+            background: var(--greyishBlueLight);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 40px;
