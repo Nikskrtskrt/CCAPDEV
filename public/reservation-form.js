@@ -1,3 +1,15 @@
+const seatPrices = {
+    "window": 50,
+    "aisle": 25,
+    "middle": 0
+}
+
+const mealPrices = {
+    "standard": 50,
+    "vegetarian": 100,
+    "kosher": 150
+};
+
 $(function() { //Note: Same as $(document).ready(function() {
     const inputFirstName = $("#firstName");
     const inputLastName = $("#lastName");
@@ -14,18 +26,7 @@ $(function() { //Note: Same as $(document).ready(function() {
         const baseCost = 500;
         let totalCost = baseCost;
 
-        switch (mealOptionValue) {
-            case "standard":
-                totalCost += 50;
-                break;
-            case "vegetarian":
-                totalCost += 100;
-                break;
-            case "kosher":
-                totalCost += 150;
-                break;
-            default:
-        }
+        totalCost += mealPrices[mealOptionValue] || 0;
 
         if (extraBaggageValue) {
             totalCost += 75;
@@ -53,12 +54,19 @@ $(function() { //Note: Same as $(document).ready(function() {
         if (!passportNumber) errors.push("Passport number is required.");
         if (errors.length > 0) {
             // $message.html("<div class="alert alert-danger">" + errors.join("<br>") + "</div>");
+            alert("Errors:\n" + errors.join("\n"));
             return;
         }
 
+        const totalCost = getTotalCost();
+
         // $message.html("<div class="alert alert-success">Registration successful!(client-side only)</div>");
         // $("#regForm")[0].reset();
-        alert("Submitted! (client-side)");
+        alert(`Reservation Confirmed!\n\n` +
+          `Passenger: ${firstName} ${lastName}\n` +
+          //`Seat: ${seatNumber} (${seatType} seat)\n` +
+          `Total Cost: $${totalCost}\n\n` +
+          `(This is a client-side demo)`);
     }
 
     selectMealOptions.on("change", updateTotalCost);
