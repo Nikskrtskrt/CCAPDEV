@@ -16,12 +16,35 @@
     transition: left 0.5s ease;
 }
 
+.legend-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.legend-color {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #000000;
+}
+
+.legend-available {
+    background-color: #ffffff;
+}
+
+.legend-booked {
+    background-color: #434343;
+}
+
 .seat-map-container {
     display: grid;
     grid-template-rows: repeat(10, 50px);
     grid-template-columns: repeat(6, 50px);
     grid-gap: 5px;
 }
+
 .buffer {
     grid-row: 1 / 10;
     grid-column: 3 / 4;
