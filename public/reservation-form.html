@@ -44,9 +44,9 @@
             <label for="mealOptions">Meal Options:</label>
             <select id="mealOptions" name="meal-options">
                 <option value="none" selected>None</option>
-                <option value="standard">Standard</option>
-                <option value="vegetarian">Vegetarian</option>
-                <option value="kosher">Kosher</option>
+                <option value="standard">Standard (+$50)</option>
+                <option value="vegetarian">Vegetarian (+$100)</option>
+                <option value="kosher">Kosher (+$150)</option>
             </select>
         </div>
         
@@ -92,6 +92,7 @@
                 </div>
                 <!-- Seat will be created in javascript -->
                 <!-- Template -->
+                <!--
                 <div class="row justify-content-center seat-row">
                     <div class="col-1 d-flex align-items-center justify-content-center">
                         <div class="seat" >
@@ -127,17 +128,34 @@
                     </div>
                     
                 </div>
-                
+                -->
 
             </div>
         </div>
             
         <div class="extra-baggage-container">
-            <label for="extraBaggage">Extra Baggage ($75):</label>
+            <label for="extraBaggage">Extra Baggage (+$75):</label>
             <input type="checkbox" id="extraBaggage" name="extra-baggage"></input>
         </div>
-            
-        <div id="total-cost-container">
+        
+        <div id="summary-container">
+            <label>Summary</label>
+            <div class="row">
+                <div class="col-2">Base Cost</div>
+                <div class="col-3" id="summaryBaseCost">$XXX.XX</div>
+            </div>
+            <div class="row">
+                <div class="col-2">Seat Type</div>
+                <div class="col-3" id="summarySeatTypeCost">+$XXX.XX</div>
+            </div>
+            <div class="row">
+                <div class="col-2">Meal Option</div>
+                <div class="col-3" id="summaryMealOptionCost">+$XXX.XX</div>
+            </div>
+            <div class="row">
+                <div class="col-2">Extra Baggage</div>
+                <div class="col-3" id="summaryExtraBaggageCost">+$XXX.XX</div>
+            </div>
             <label id="totalCostLabel">Total Cost: $0</label>
         </div>
 
