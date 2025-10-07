@@ -58,7 +58,7 @@ select {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-sizing: border-box;
-    background-color: #ccc;
+    background-color: #dddddd;
 }
 
 button:hover {
