@@ -16,12 +16,15 @@
     transition: left 0.5s ease;
 }
 
-.legend-container {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
+#legendContainer {
+    /*display: grid;*/
+    /*grid-template-columns: auto auto auto auto;*/
     align-items: center;
     justify-content: center;
-    gap: 15px;
+}
+
+.legend-label {
+    margin-top: 0;
 }
 
 .legend-color {
@@ -35,18 +38,43 @@
 }
 
 .legend-booked {
-    background-color: #434343;
+    background-color: #a3a3a3;
 }
 
-.seat-map-container {
+.available {
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.booked {
+    background-color: #a3a3a3;
+    cursor: not-allowed;
+}
+
+/*
+#seatMapContainer {
     display: grid;
     grid-template-rows: repeat(10, 50px);
     grid-template-columns: repeat(6, 50px);
     grid-gap: 5px;
 }
+*/
 
-.buffer {
-    grid-row: 1 / 10;
-    grid-column: 3 / 4;
-    background-color: transparent;
+.seat-row {
+    height: 80px;
 }
+
+.seat {
+    height: 60px;
+    aspect-ratio: 1 / 1;
+    border: 1px solid #000000;
+    text-align: center;
+    align-content: center;
+}
+
+/*
+.label-checkbox {
+    align-content: center;
+    text-align: center;
+}
+*/

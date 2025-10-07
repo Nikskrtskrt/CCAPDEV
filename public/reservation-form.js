@@ -20,6 +20,11 @@ $(function() { //Note: Same as $(document).ready(function() {
     const totalCostElement = $("#totalCost");
     const btnSubmit = $("#submitBtn");
     
+    function initializeSeats() {
+        const nRows = 6;
+        const nCols = 10;
+    }
+
     function getTotalCost() {
         const mealOptionValue = selectMealOptions.val().trim();
         const extraBaggageValue = checkBoxExtraBaggage.is(":checked");

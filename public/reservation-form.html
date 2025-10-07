@@ -55,19 +55,82 @@
             <!--
             <label>Seat Legend:</label>
             -->
-            <div class="legend-container">
-                <div class="legend-color legend-available"></div>
-                <label>Available</label>
-
-                <div class="legend-color legend-booked"></div>
-                <label>Booked</label>
+            <div id="legendContainer" class="container">
+                <div class="row justify-content-center">
+                    <div class="col-1 legend-color legend-available"></div>
+                    <div class="col-2 justify-content-center">
+                        <label class="legend-label">Available</label>
+                    </div>
+                    <div class="col-1 legend-color legend-booked"></div>
+                    <div class="col-2 justify-content-center">
+                        <label class="legend-label">Booked</label>
+                    </div>
+                </div>
             </div>
-
+            <br>
             <!-- Grid seatmap here -->
-            <div class="seat-map-container">
+            <div id="seatMapContainer" class="container">
+                <div class="row justify-content-center">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        Window
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        Middle
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        Aisle
+                    </div>
+                    <div class="col-1 aisle-buffer"></div>
+                    
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        Aisle
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        Middle
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        Window
+                    </div>
+                    
+                </div>
                 <!-- Seat will be created in javascript -->
                 <!-- Template -->
-                <div class="seat available" data-seat="1A">1A</div>
+                <div class="row justify-content-center seat-row">
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1 aisle-buffer" style="border: 1px solid red;"></div>
+                    
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1 d-flex align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    
+                </div>
+
             </div>
         </div>
             
