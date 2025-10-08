@@ -215,10 +215,13 @@ $(function() { //Note: Same as $(document).ready(function() {
         // $("#regForm")[0].reset();
         const seatNumber = selectedSeat.data("seat-number");
         const seatType = seatData[seatNumber];
+        seatData[seatNumber].status = "booked";
+        selectedSeat.removeClass("available").addClass("booked");
 
         alert(reservationMsg);
         reservationForm.trigger("reset");
         unselectSelectedSeat();
+        updateSummary();
     }
 
     selectMealOptions.on("change", updateSummary);
