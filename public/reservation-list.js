@@ -1,4 +1,3 @@
-
 const reservations = [
   {
     id: '001',
@@ -36,28 +35,27 @@ const bookingCards = document.getElementById('bookingCards');
 
 reservations.forEach(res => {
   const col = document.createElement('div');
-  col.classList.add('col-md-4');
+  col.classList.add('col-12', 'col-lg-6');
 
   col.innerHTML = `
-    <div class="card shadow-sm position-relative">
-      <img src="${res.img}" class="card-img-top" alt="${res.flight}">
-      
-      <div class="position-absolute top-0 end-0 bg-white feature-bar py-3">
-        <p><i class="bi bi-wifi"></i><br>In-flight WiFi</p>
-        <p><i class="bi bi-cup-hot"></i><br>Meal: ${res.meal}</p>
-        <p><i class="bi bi-suitcase2"></i><br>${res.baggage}</p>
+    <div class="card booking-card shadow-sm border-0 d-flex flex-row align-items-stretch mb-4">
+      <!-- Image + top-right feature box -->
+      <div class="position-relative flex-shrink-0" style="width: 50%;">
+        <img src="${res.img}" class="img-fluid h-100 object-fit-cover rounded-start" alt="${res.flight}">
       </div>
 
-      <div class="card-body">
-        <h5 class="card-title fw-bold">${res.airline}</h5>
-        <p class="card-text text-muted">${res.flight} • ${res.departure.split(' - ')[0]} → ${res.arrival.split(' - ')[0]}</p>
-        <p class="small text-secondary">${res.departure}<br>${res.arrival}</p>
+      <!-- Card Body -->
+      <div class="card-body d-flex flex-column justify-content-between bg-white text-dark rounded-end">
+        <div>
+          <h5 class="fw-bold mb-1">${res.airline}</h5>
+          <p class="text-muted mb-1">${res.flight} • ${res.departure.split(' - ')[0]} → ${res.arrival.split(' - ')[0]}</p>
+          <p class="small mb-3">${res.departure}<br>${res.arrival}</p>
+        </div>
 
-        <div class="d-flex justify-content-between align-items-center mt-3">
-          <span class="text-primary fw-bold fs-6">${res.total}</span>
+        <div class="price-button-row">
           <button class="btn btn-select btn-sm" onclick="viewDetails('${res.id}')" data-bs-toggle="modal" data-bs-target="#bookingDetailsModal">
             View Details
-          </button>
+        </button>
         </div>
       </div>
     </div>

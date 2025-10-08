@@ -2,92 +2,88 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Search Flight
+    </title>
+    <link rel="stylesheet" href="flight-admin.css">
     <link rel="stylesheet" href="globals.css">
-    <link rel="stylesheet" href="flight-search.css">
+   
+        <!--jQuery-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <img id="airplane" src="airplane.png" alt="Airplane">
-    <img id="flightPageImage" src="FlightPage.png" alt="Flight Page Image">
 
-    <form id="flightForm">
-        <label for="origin">Origin</label>
-        <input type="text" id="origin" placeholder="Enter origin">
-        <label for="destination">Destination</label>
-        <input type="text" id="destination" placeholder="Enter destination">
-        <label for="departure">Departure Date</label>
-        <input type="date" id="departure">
-        <label for="return">Return Date</label>
-        <input type="date" id="return">
-        <label for="passengers">Passenger Count</label>
-        <input type="number" id="passengers" min="1" value="1">
-        <button type="submit">Search Flights</button>
-    </form>
-
-    <div id="flightResults">
-        <div class="flight-card">
-            <div class="flight-header">
-                <div>
-                    <div class="airline-info">Philippine Airlines</div>
-                    <div class="flight-number">PR 67</div>
-                </div>
-                <div class="price">₱67,000</div>
-            </div>
-            <div class="flight-details">
-                <div class="time-info">
-                    <div class="time">6:07</div>
-                    <div class="location">Japan</div>
-                </div>
-                <div class="time-info">
-                    <div class="time">11:45</div>
-                    <div class="location">Dubai</div>
-                </div>
-            </div>
-            <button class="next-button">Next</button>
-        </div>
-
-        <div class="flight-card">
-            <div class="flight-header">
-                <div>
-                    <div class="airline-info">Cebu Pacific</div>
-                    <div class="flight-number">5J 563</div>
-                </div>
-                <div class="price">₱7,600</div>
-            </div>
-            <div class="flight-details">
-                <div class="time-info">
-                    <div class="time">14:20</div>
-                    <div class="location">Manila</div>
-                </div>
-                <div class="time-info">
-                    <div class="time">22:25</div>
-                    <div class="location">Cebu</div>
-                </div>
-            </div>
-            <button class="next-button">Next</button>
-        </div>
-
-        <div class="flight-card">
-            <div class="flight-header">
-                <div>
-                    <div class="airline-info">AirAsia Philippines</div>
-                    <div class="flight-number">Z2 938</div>
-                </div>
-                <div class="price">₱6,890</div>
-            </div>
-            <div class="flight-details">
-                <div class="time-info">
-                    <div class="time">19:10</div>
-                    <div class="location">Manila</div>
-                </div>
-                <div class="time-info">
-                    <div class="time">22:25</div>
-                    <div class="location">United Kingdom</div>
-                </div>
-            </div>
-            <button class="next-button">Next</button>
-        </div>
+    <div class="background-container">
+        <div class="panel left"></div>
+        <div class="panel center"></div>
+        <div class="panel right"></div>
     </div>
 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="welcome.html">Flight Booking PlatForm </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="user-admin.html"></a></li>
+                    <li class="nav-item"><a class="nav-link text" href="reservation-form.html">Reserve Now</a></li>
+                    <li class="nav-item"><a class="nav-link text" href="flight-search.html">Search Flight</a></li>
+                    <li class="nav-item"><a class="nav-link text" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger" href="login.html">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <h1 class="text-center py-3"><b>Search Flights</b></h1>
+    </header>
+
+    <main class="container mt-5">
+        <div class="card shadow-lg p-4 mb-4 text-light">
+            <div class="card-header-sm">
+                <h3 class="mb-3">Search Flight</h3>
+                <button type="submit" class="btn btn-primary">Search Flights</button>
+            </div>
+                <form action="" id="flightForm">
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Origin</label>
+                            <input type="text" name="" id="origin" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Destination</label>
+                            <input type="text" name="" id="destination" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Departure Date</label>
+                            <input type="date" name="" id="departure" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Return Date</label>
+                            <input type="date" name="" id="returnDate" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Passenger Count</label>
+                            <input type="number" name="" id="passengerCount" class="form-control">
+                        </div>
+                    </div>    
+                    </div>
+                </form>
+        </div>
+
+        <div class="container" id="flightResults"></div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script src="flight-search.js"></script>
 </body>
 </html>

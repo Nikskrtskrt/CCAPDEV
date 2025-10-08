@@ -3,37 +3,65 @@
 
     /*when adding custom colors to pages, please put them here to allow uniform color coding
     example user case color: var(--greyishBlueLight);*/
-    --greyishBlueLight: #708090;
-    --greyishBlueDark:  #36454f;
-}s
+    --greyishBlueLight: #9daab8;
+    --greyishBlueDark:  #303c44;
+}
 
+*{ /*universal selector, defaults*/
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
 
 body {
-    background-image: linear-gradient(to bottom, var(--greyishBlueLight), var(--greyishBlueDark));
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     font-family: Arial, sans-serif;
-    margin: 0;
     min-height: 100vh;
-    overflow-x: hidden;
+    display:flex;
+    flex-direction: column;
+    background-color: black;
+}
+
+nav, header{
+    z-index: 2;
+    position:sticky !important;
+    width: 100%;
+}
+
+nav {
+    top:0;
+    left:0;
+}
+
+header{
+    top: 56px;
+    left: 0;
+    min-height: auto;
+    margin-bottom: 3vh;
+    box-shadow: 0px 10px 20px black; 
+    background-color: var(--greyishBlueDark);
+    color: white;
+
+    /*animations*/
+    transform: translateY(0);
+    animation-duration: 1.5s;
+    animation-name: slide-down;
+}
+
+header h1{
+    padding: 20px;
+}
+
+
+main{
+    display: flex;
+    justify-content: center;
+    z-index: 1;
 }
 
 label {
     display: block;
     font-weight: bold;
     margin-top: 15px;
-}
-
-input {
-    display: block;
-    margin-top: 5px;
-    padding: 12px;
-    width: 100%;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-sizing: border-box;
 }
 
 button {
@@ -43,23 +71,100 @@ button {
     font-size: 18px;
     border: none;
     border-radius: 12px;
-    background: dodgerblue;
-    color: white;
+    background: var();
+    color: rgb(128, 127, 127);
     font-weight: bold;
     cursor: pointer;
 }
 
-button:hover {
-    background: royalblue;
+select {
+    display: block;
+    margin-top: 5px;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background-color: #dddddd;
 }
 
-@keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translate(-50%, -40%); 
+button:hover {
+    background: royalblue;
+    animation-delay: 0.75s;
+    color: white;
+}
+
+.card {
+    background-color: var(--greyishBlueDark);
+    color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 3px 10px black !important;
+    max-width: 80%;
+    max-height: 80%;
+    
+    /* animations */
+    transform: translateY(0);
+    animation-duration: 1.5s;
+    animation-name: slide-up;
+}
+
+/*Background Container Stuff*/
+.background-container{
+    display: flex;
+    justify-content: center;
+    position:fixed;
+    top: 0;
+    z-index: 0;
+    left: 0;
+    gap: 20px;
+    width: 100%;;
+    height: 100vh;
+}
+
+.panel{
+    flex: 1;
+    max-width: 33%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    
+    /*animations*/
+    transform: translateY(0);
+    animation-duration: 1.5s;
+}
+
+.left{
+    background-image: url('images/left.jpg');
+    animation-name: slide-up;
+}
+
+.center{
+    background-image: url('images/center.jpg');
+    animation-name: slide-down;
+}
+
+.right{
+    background-image: url('images/right.jpg');
+    animation-name: slide-up;
+}
+
+/* animations */
+@keyframes slide-up{
+    from{
+        transform: translateY(100%);
     }
-    to { 
-        opacity: 1; 
-        transform: translate(-50%, -50%); 
+    to{
+        transform: translateY(0);
+    }
+}
+
+@keyframes  slide-down{
+    from{
+        transform: translateY(-100%);
+    }
+    to{
+        transform: translateY(0);
     }
 }
