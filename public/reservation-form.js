@@ -33,6 +33,7 @@ $(function() { //Note: Same as $(document).ready(function() {
     const seatMapContainer = $("#seatMapContainer");
     const checkBoxExtraBaggage = $("#extraBaggage");
     
+    const errorContainer = $("#errorContainer")
     const btnSubmit = $("#submitBtn");
     
     function unselectSelectedSeat() {
@@ -189,7 +190,7 @@ $(function() { //Note: Same as $(document).ready(function() {
         }
         
         const totalCost = getTotalCost();
-        totalCostElement.text(`Total Cost $${totalCost}`);
+        totalCostElement.text(`Total Cost: $${totalCost}`);
 
         if (!selectedSeat)
             return;
@@ -219,6 +220,7 @@ $(function() { //Note: Same as $(document).ready(function() {
         const email = inputEmail.val().trim();
         const passportNumber = inputPassportNumber.val().trim();
 
+        errorContainer.empty();
         labelFirstName.removeClass("error");
         labelLastName.removeClass("error");
         labelEmail.removeClass("error");
@@ -248,7 +250,8 @@ $(function() { //Note: Same as $(document).ready(function() {
         }
         if (errors.length > 0) {
             // $message.html("<div class="alert alert-danger">" + errors.join("<br>") + "</div>");
-            alert("Errors:\n" + errors.join("\n"));
+            // alert("Errors:\n" + errors.join("\n"));
+            errorContainer.html(errors.join("<br>"));
             return;
         }
 
