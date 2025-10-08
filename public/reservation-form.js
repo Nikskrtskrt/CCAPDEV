@@ -18,7 +18,9 @@ const MEAL_PRICES = {
     "kosher": 150,
 };
 
-let seatData = {}
+let seatData = {};
+let selectedSeat = null;
+let reservationMsg = "ERROR";
 
 $(function() { //Note: Same as $(document).ready(function() {
     const reservationForm = $("#reservationForm");
@@ -42,8 +44,6 @@ $(function() { //Note: Same as $(document).ready(function() {
     const summaryExtraBaggageCostElement = $("#summaryExtraBaggageCost");
     const totalCostElement = $("#totalCostLabel");
     const btnSubmit = $("#submitBtn");
-
-    let selectedSeat = null;
     
     function unselectSelectedSeat() {
         if (!selectedSeat)
@@ -78,7 +78,6 @@ $(function() { //Note: Same as $(document).ready(function() {
         const COL_CLASS = "col-1 d-flex align-items-center justify-content-center";
         const BUFFER_CLASS = "col-1 aisle-buffer";
         
-        //seatMapContainer.empty();
         for (let row = 1; row <= TOTAL_ROWS; row++) {
             const curRowElement = $("<div>").addClass(ROW_CLASS);
             seatMapContainer.append(curRowElement)
@@ -89,7 +88,7 @@ $(function() { //Note: Same as $(document).ready(function() {
                 const seatNumber = `${row}${letter}`
                 seatData[seatNumber] = {
                     'type': SEAT_TYPE[letter],
-                    'status': "available" 
+                    'status': "available",
                 }
 
                 const curColElement = $("<div>").addClass(COL_CLASS);
@@ -121,7 +120,6 @@ $(function() { //Note: Same as $(document).ready(function() {
         const mealOptionValue = selectMealOptions.val().trim();
         const extraBaggageValue = checkBoxExtraBaggage.is(":checked");
         
-
         let totalCost = BASE_COST;
         
         if (selectedSeat) {
@@ -131,11 +129,7 @@ $(function() { //Note: Same as $(document).ready(function() {
         }
 
         totalCost += MEAL_PRICES[mealOptionValue] || 0;
-
-        if (extraBaggageValue) {
-            totalCost += 75;
-        }
-
+        totalCost += extraBaggageValue ? 75 : 0;
         return totalCost;
     }
 
@@ -159,6 +153,21 @@ $(function() { //Note: Same as $(document).ready(function() {
         
         const totalCost = getTotalCost();
         totalCostElement.text(`Total Cost $${totalCost}`);
+
+        if (!selectedSeat)
+            return;
+
+        const firstName = inputFirstName.val().trim();
+        const lastName = inputLastName.val().trim();
+        const seatNumber = selectedSeat.data("seat-number");
+        const seatType = seatData[seatNumber].type
+        reservationMsg = `Reservation Confirmed!\n\n` +
+            `Passenger: ${firstName} ${lastName}\n` +
+            `Seat: ${seatNumber} (${seatType} seat)\n` +
+            `Meal Option: ${mealOptionValue}\n` +
+            `Extra Baggage: ${extraBaggageValue ? "Yes" : "No"}\n` +
+            `Total Cost: $${totalCost}\n\n` +
+            `(Client Side)`;
     }
 
     function onConfirm() {
@@ -204,12 +213,10 @@ $(function() { //Note: Same as $(document).ready(function() {
 
         // $message.html("<div class="alert alert-success">Registration successful!(client-side only)</div>");
         // $("#regForm")[0].reset();
-        alert(`Reservation Confirmed!\n\n` +
-          `Passenger: ${firstName} ${lastName}\n` +
-          //`Seat: ${seatNumber} (${seatType} seat)\n` +
-          `Total Cost: $${totalCost}\n\n` +
-          `(This is a client-side demo)`);
-        
+        const seatNumber = selectedSeat.data("seat-number");
+        const seatType = seatData[seatNumber];
+
+        alert(reservationMsg);
         reservationForm.trigger("reset");
         unselectSelectedSeat();
     }
