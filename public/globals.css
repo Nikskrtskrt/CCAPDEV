@@ -77,6 +77,18 @@ button {
     cursor: pointer;
 }
 
+select {
+    display: block;
+    margin-top: 5px;
+    padding: 12px;
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background-color: #dddddd;
+}
+
 button:hover {
     background: royalblue;
     animation-delay: 0.75s;
