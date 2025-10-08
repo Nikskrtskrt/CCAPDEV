@@ -45,48 +45,44 @@
     </header>
     
     <form id="reservationForm">
+        <h1>Booking Form</h1>
+
         <div class="full-name-container">
-            <label for="firstName">First Name: </label>
+            <label for="firstName" id="labelFirstName">First Name: </label>
             <input type="text" id="firstName" placeholder="First Name" required></input>
-            <label for="lastName">Last Name: </label>
+            <label for="lastName" id="labelLastName">Last Name: </label>
             <input type="text" id="lastName" placeholder="Last Name" required></input>
         </div>
 
         <div class="email-container"> 
-            <label for="email">Email Address: </label>
+            <label for="email" id="labelEmail">Email Address: </label>
             <input type="email" id="email" placeholder="Email Address" required></input>
         </div>
         <div class="passport-number-container">
-            <label for="passportNumber">Passport Number: </label>
+            <label for="passportNumber" id="labelPassport">Passport Number: </label>
             <input type="text" id="passportNumber" placeholder="Passport Number" required></input>
         </div>
         
         <div class="container optional-container">
-            <div class="row">
-                <div class="col">
-                    <div class="meal-options-container">
-                        <label for="mealOptions">Meal Options:</label>
-                        <select id="mealOptions" name="meal-options">
-                            <option value="none" selected>None</option>
-                            <option value="standard">Standard (+$50)</option>
-                            <option value="vegetarian">Vegetarian (+$100)</option>
-                            <option value="kosher">Kosher (+$150)</option>
-                        </select>
-                    </div>
-                </div>
+            <div class="meal-options-container">
+                <label for="mealOptions">Meal Options:</label>
+                <select id="mealOptions" name="meal-options">
+                    <option value="none" selected>None</option>
+                    <option value="standard">Standard (+$50)</option>
+                    <option value="vegetarian">Vegetarian (+$100)</option>
+                    <option value="kosher">Kosher (+$150)</option>
+                </select>
+            </div>
 
-                <div class="col">
-                    <div class="extra-baggage-container">
-                        <label for="extraBaggage">Extra Baggage (+$75):</label>
-                        <input type="checkbox" id="extraBaggage" name="extra-baggage"></input>
-                    </div>
-                </div>
+            <div class="extra-baggage-container">
+                <label for="extraBaggage">Extra Baggage (+$75):</label>
+                <input type="checkbox" id="extraBaggage" name="extra-baggage"></input>
             </div>
         </div>
         
         
         <div class="seat-selection-container">
-            <label for="seat-selection">Seat Selection:</label>
+            <label for="seat-selection" id="labelSeatSelection">Seat Selection:</label>
             <div id="legendContainer" class="container">
                 <div class="row justify-content-center">
                     <div class="col-1 legend-color legend-available"></div>
@@ -171,19 +167,19 @@
             <label>Summary</label>
             <div class="row">
                 <div class="col-2">Base Cost</div>
-                <div class="col-3" id="summaryBaseCost">$XXX.XX</div>
+                <div class="col-3 summary-cost" id="summaryBaseCost">$XXX.XX</div>
             </div>
             <div class="row">
                 <div class="col-2">Seat Type</div>
-                <div class="col-3" id="summarySeatTypeCost">+$XXX.XX</div>
+                <div class="col-3 summary-cost" id="summarySeatTypeCost">+$XXX.XX</div>
             </div>
             <div class="row">
                 <div class="col-2">Meal Option</div>
-                <div class="col-3" id="summaryMealOptionCost">+$XXX.XX</div>
+                <div class="col-3 summary-cost" id="summaryMealOptionCost">+$XXX.XX</div>
             </div>
             <div class="row">
                 <div class="col-2">Extra Baggage</div>
-                <div class="col-3" id="summaryExtraBaggageCost">+$XXX.XX</div>
+                <div class="col-3 summary-cost" id="summaryExtraBaggageCost">+$XXX.XX</div>
             </div>
             <label id="totalCostLabel">Total Cost: $0</label>
         </div>

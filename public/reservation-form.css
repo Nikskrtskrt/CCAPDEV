@@ -35,6 +35,33 @@ body {
     margin: 20px auto;
 }
 
+.optional-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.meal-options-container, .extra-baggage-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.meal-options-container label, .extra-baggage-container label {
+    white-space: nowrap;
+    margin: 0;
+    align-items: center;
+}
+
+.meal-options-container select {
+    align-items: center;
+}
+
+.extra-baggage-container input {
+    align-items: center;
+}
+
 #legendContainer {
     /*display: grid;*/
     /*grid-template-columns: auto auto auto auto;*/
@@ -74,7 +101,9 @@ body {
     cursor: not-allowed;
 }
 
-
+.error {
+    color: red;
+}
 
 /*
 #seatMapContainer {
@@ -90,7 +119,7 @@ body {
 }
 
 .seat {
-    height: 60px;
+    height: 65px;
     aspect-ratio: 1 / 1;
     border: 1px solid #000000;
     text-align: center;
@@ -110,3 +139,7 @@ body {
     text-align: center;
 }
 */
+
+.summary-cost {
+    text-align: right;
+}

@@ -21,8 +21,13 @@ const MEAL_PRICES = {
 let seatData = {}
 
 $(function() { //Note: Same as $(document).ready(function() {
-    const reservationForm = $("#reservationForm")
-    
+    const reservationForm = $("#reservationForm");
+    const labelFirstName = $("#labelFirstName");
+    const labelLastName = $("#labelLastName");
+    const labelEmail = $("#labelEmail");
+    const labelPassportNumber = $("#labelPassport");
+    const labelSeatSelection = $("#labelSeatSelection");
+
     const inputFirstName = $("#firstName");
     const inputLastName = $("#lastName");
     const inputEmail = $("#email");
@@ -41,7 +46,7 @@ $(function() { //Note: Same as $(document).ready(function() {
     let selectedSeat = null;
     
     function unselectSelectedSeat() {
-        if (selectedSeat === null)
+        if (!selectedSeat)
             return;
 
         const oldSeatNumber = selectedSeat.data("seat-number");
@@ -119,7 +124,7 @@ $(function() { //Note: Same as $(document).ready(function() {
 
         let totalCost = BASE_COST;
         
-        if (selectedSeat !== null) {
+        if (selectedSeat) {
             const seatNumber = selectedSeat.data("seat-number");
             const seatType = seatData[seatNumber].type
             totalCost += SEAT_PRICES[seatType]
@@ -140,7 +145,7 @@ $(function() { //Note: Same as $(document).ready(function() {
 
         summaryBaseCostElement.text(`$${BASE_COST}`);
         
-        if (selectedSeat !== null) {
+        if (selectedSeat) {
             const seatNumber = selectedSeat.data("seat-number");
             const seatType = seatData[seatNumber].type
             summarySeatTypeCostElement.text(`+$${SEAT_PRICES[seatType] || 0}`);
@@ -162,11 +167,33 @@ $(function() { //Note: Same as $(document).ready(function() {
         const email = inputEmail.val().trim();
         const passportNumber = inputPassportNumber.val().trim();
 
+        labelFirstName.removeClass("error");
+        labelLastName.removeClass("error");
+        labelEmail.removeClass("error");
+        labelPassportNumber.removeClass("error");
+        labelSeatSelection.removeClass("error");
+
         let errors = [];
-        if (!firstName) errors.push("First name is required.");
-        if (!lastName) errors.push("Last name is required.");
-        if (!email) errors.push("Email is required.");
-        if (!passportNumber) errors.push("Passport number is required.");
+        if (!firstName) {
+            errors.push("First name is required.");
+            labelFirstName.addClass("error");
+        }
+        if (!lastName) {
+            errors.push("Last name is required.");
+            labelLastName.addClass("error");
+        }
+        if (!email) {
+            errors.push("Email is required.");
+            labelEmail.addClass("error");
+        }
+        if (!passportNumber) {
+            errors.push("Passport number is required.");
+            labelPassportNumber.addClass("error");
+        }
+        if (!selectedSeat) {
+            errors.push("Must select a seat");
+            labelSeatSelection.addClass("error");
+        }
         if (errors.length > 0) {
             // $message.html("<div class="alert alert-danger">" + errors.join("<br>") + "</div>");
             alert("Errors:\n" + errors.join("\n"));
