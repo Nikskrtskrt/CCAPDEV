@@ -76,11 +76,14 @@
     border: 1px solid #000000;
     text-align: center;
     align-content: center;
+    transition: transform 0.1s ease;
 }
 
 .seat:hover {
-    height: 80px;
+    transform: scale(1.2);
 }
+
+
 
 /*
 .label-checkbox {

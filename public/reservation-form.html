@@ -39,16 +39,30 @@
             <label for="passportNumber">Passport Number: </label>
             <input type="text" id="passportNumber" placeholder="Passport Number" required></input>
         </div>
-            
-        <div class="meal-options-container">
-            <label for="mealOptions">Meal Options:</label>
-            <select id="mealOptions" name="meal-options">
-                <option value="none" selected>None</option>
-                <option value="standard">Standard (+$50)</option>
-                <option value="vegetarian">Vegetarian (+$100)</option>
-                <option value="kosher">Kosher (+$150)</option>
-            </select>
+        
+        <div class="container optional-container">
+            <div class="row">
+                <div class="col">
+                    <div class="meal-options-container">
+                        <label for="mealOptions">Meal Options:</label>
+                        <select id="mealOptions" name="meal-options">
+                            <option value="none" selected>None</option>
+                            <option value="standard">Standard (+$50)</option>
+                            <option value="vegetarian">Vegetarian (+$100)</option>
+                            <option value="kosher">Kosher (+$150)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="extra-baggage-container">
+                        <label for="extraBaggage">Extra Baggage (+$75):</label>
+                        <input type="checkbox" id="extraBaggage" name="extra-baggage"></input>
+                    </div>
+                </div>
+            </div>
         </div>
+        
         
         <div class="seat-selection-container">
             <label for="seat-selection">Seat Selection:</label>
@@ -65,7 +79,6 @@
                 </div>
             </div>
             <br>
-            <!-- Grid seatmap here -->
             <div id="seatMapContainer" class="container">
                 <div class="row justify-content-center">
                     <div class="col-1 d-flex align-items-center justify-content-center">
@@ -131,11 +144,6 @@
                 -->
 
             </div>
-        </div>
-            
-        <div class="extra-baggage-container">
-            <label for="extraBaggage">Extra Baggage (+$75):</label>
-            <input type="checkbox" id="extraBaggage" name="extra-baggage"></input>
         </div>
         
         <div id="summary-container">
