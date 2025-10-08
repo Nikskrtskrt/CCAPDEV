@@ -18,19 +18,29 @@ body {
     min-height: 100vh;
     display:flex;
     flex-direction: column;
-
-    overflow: hidden;
     background-color: black;
 }
 
+nav, header{
+    z-index: 2;
+    position:sticky !important;
+    width: 100%;
+}
+
+nav {
+    top:0;
+    left:0;
+}
+
 header{
+    top: 56px;
+    left: 0;
     min-height: auto;
-    background-color: var(--greyishBlueDark);
     margin-bottom: 3vh;
     box-shadow: 0px 10px 20px black; 
-
+    background-color: var(--greyishBlueDark);
     color: white;
-    
+
     /*animations*/
     transform: translateY(0);
     animation-duration: 1.5s;
@@ -41,9 +51,11 @@ header h1{
     padding: 20px;
 }
 
+
 main{
     display: flex;
     justify-content: center;
+    z-index: 1;
 }
 
 label {
@@ -79,7 +91,7 @@ button:hover {
     box-shadow: 0px 3px 10px black !important;
     max-width: 80%;
     max-height: 80%;
-
+    
     /* animations */
     transform: translateY(0);
     animation-duration: 1.5s;
@@ -87,10 +99,6 @@ button:hover {
 }
 
 /*Background Container Stuff*/
-header, main{
-    z-index: 1;
-}
-
 .background-container{
     display: flex;
     justify-content: center;
