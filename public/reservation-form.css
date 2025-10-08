@@ -1,11 +1,4 @@
 body {
-    background-image: linear-gradient(to bottom, var(--greyishBlueLight), var(--greyishBlueDark));
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    min-height: 100vh;
     overflow: auto;
 }
 
@@ -63,8 +56,6 @@ body {
 }
 
 #legendContainer {
-    /*display: grid;*/
-    /*grid-template-columns: auto auto auto auto;*/
     align-items: center;
     justify-content: center;
 }
@@ -87,6 +78,10 @@ body {
     background-color: #a3a3a3;
 }
 
+.aisle-buffer {
+    text-align: center;
+}
+
 .available {
     background-color: #ffffff;
     cursor: pointer;
@@ -94,6 +89,7 @@ body {
 
 .selected {
     background-color: dodgerblue;
+    color: white;
 }
 
 .booked {
@@ -105,15 +101,6 @@ body {
     color: red;
 }
 
-/*
-#seatMapContainer {
-    display: grid;
-    grid-template-rows: repeat(10, 50px);
-    grid-template-columns: repeat(6, 50px);
-    grid-gap: 5px;
-}
-*/
-
 .seat-row {
     height: 80px;
 }
@@ -121,7 +108,9 @@ body {
 .seat {
     height: 65px;
     aspect-ratio: 1 / 1;
-    border: 1px solid #000000;
+    font-weight: bold;
+    border: 2px solid #000000;
+    border-radius: 15%;
     text-align: center;
     align-content: center;
     transition: transform 0.1s ease;
@@ -130,15 +119,6 @@ body {
 .seat:hover {
     transform: scale(1.2);
 }
-
-
-
-/*
-.label-checkbox {
-    align-content: center;
-    text-align: center;
-}
-*/
 
 .summary-cost {
     text-align: right;

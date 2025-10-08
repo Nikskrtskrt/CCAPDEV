@@ -45,7 +45,7 @@
     </header>
     
     <form id="reservationForm">
-        <h1>Booking Form</h1>
+        <h1 class="text-center py-3"><b>Booking Form</b></h1>
 
         <div class="full-name-container">
             <label for="firstName" id="labelFirstName">First Name: </label>
@@ -97,61 +97,38 @@
             </div>
             <br>
             <div id="seatMapContainer" class="container">
-                <div class="row justify-content-center">
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        Window
-                    </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        Middle
-                    </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        Aisle
-                    </div>
-                    <div class="col-1 aisle-buffer"></div>
-                    
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        Aisle
-                    </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        Middle
-                    </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        Window
-                    </div>
-                    
-                </div>
                 <!-- Seat will be created in javascript -->
                 <!-- Template -->
                 <!--
                 <div class="row justify-content-center seat-row">
-                    <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="col-1  align-items-center justify-content-center">
                         <div class="seat" >
                             1A
                         </div>
                     </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="col-1  align-items-center justify-content-center">
                         <div class="seat" data-seat-type>
                             1A
                         </div>
                     </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="col-1  align-items-center justify-content-center">
                         <div class="seat">
                             1A
                         </div>
                     </div>
                     <div class="col-1 aisle-buffer" style="border: 1px solid red;"></div>
                     
-                    <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="col-1  align-items-center justify-content-center">
                         <div class="seat">
                             1A
                         </div>
                     </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="col-1  align-items-center justify-content-center">
                         <div class="seat">
                             1A
                         </div>
                     </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
+                    <div class="col-1  align-items-center justify-content-center">
                         <div class="seat">
                             1A
                         </div>
@@ -173,17 +150,19 @@
                 <div class="col-2">Seat Type</div>
                 <div class="col-3 summary-cost" id="summarySeatTypeCost">+$XXX.XX</div>
             </div>
-            <div class="row">
+            <div class="row" id="summaryMealOption">
                 <div class="col-2">Meal Option</div>
                 <div class="col-3 summary-cost" id="summaryMealOptionCost">+$XXX.XX</div>
             </div>
-            <div class="row">
+            <div class="row" id="summaryExtraBaggage">
                 <div class="col-2">Extra Baggage</div>
                 <div class="col-3 summary-cost" id="summaryExtraBaggageCost">+$XXX.XX</div>
             </div>
             <label id="totalCostLabel">Total Cost: $0</label>
         </div>
+        <div>
 
+        </div>
         <button type="button" id="submitBtn">Confirm Reservation</button>
     </form>
 
