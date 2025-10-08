@@ -1,8 +1,23 @@
 $(function() {
     // Test Flight Data
     let flights = [
-        { flightNo: "PAL420", origin: "Manila", destination: "Tokyo", departure: "2025-11-01T08:00", arrival: "2025-11-01T13:00", aircraft: "A320", capacity: 180 },
-        { flightNo: "CEB6767", origin: "Cebu", destination: "Singapore", departure: "2025-11-02T09:00", arrival: "2025-11-02T12:30", aircraft: "B737", capacity: 150 }
+        { 
+            flightNo: "PAL420", 
+            origin: "Manila", 
+            destination: "Tokyo", 
+            departure: "2025-11-01T08:00", 
+            arrival: "2025-11-01T13:00", 
+            aircraft: "A320", 
+            capacity: 180 
+        },
+        { 
+            flightNo: "CEB6767", 
+            origin: "Cebu", 
+            destination: "Singapore", 
+            departure: "2025-11-02T09:00", 
+            arrival: "2025-11-02T12:30", 
+            aircraft: "B737", 
+            capacity: 150 }
     ];
 
     function renderTable() {

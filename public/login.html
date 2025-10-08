@@ -17,7 +17,7 @@
 </head>
 
 <body>
-        <!-- background image containers -->
+    <!-- background image containers -->
     <div class="background-container">
         <div class="panel left"></div>
         <div class="panel center"></div>
@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="user-admin.html">Manage Users</a></li>
-                <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+                <li class="nav-item"><a class="nav-link text-danger" href="login.html">Logout</a></li>
             </ul>
         </div>
     </div>
@@ -40,7 +40,7 @@
         <h1 class="text-center py-3"><b>Admin Panel | Flight Management</b></h1>
     </header>
 
-    <main class="d-flex justify-content-center align-items-center vh-100">
+    <main class="d-flex justify-content-center align-items-center">
         <div class="card shadow-lg p-5 text-light" style="width: 400px;">
             <h2 class="text-center mb-4">Login</h2>
 
@@ -56,10 +56,14 @@
 
                 <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
 
-                <div class="text-center small text-secondary mb-2">Test Buttons (UI only)</div>
+                <div class="text-center small text-secondary mb-2">Test Buttons</div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-outline-light btn-sm w-50 me-1" id="userLogin">Login as User</button>
-                    <button type="button" class="btn btn-outline-warning btn-sm w-50 ms-1" id="adminLogin">Login as Admin</button>
+                    <a href="user-profile.html" class="btn btn-outline-light btn-sm w-50 me-1">
+                    Login As User
+                    </a>
+                    <a href="user-admin.html" class="btn btn-outline-warning btn-sm w-50 ms-1">
+                    Login As Admin
+                    </a>
                 </div>
             </form>
         </div>
