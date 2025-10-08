@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Flight Management</title>
+
+    <!--bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--global and local style sheet-->
+    <link rel="stylesheet" href="globals.css">
+    <link rel="stylesheet" href="flight-admin.css">
+
+    <!--jQuery-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+        <!-- background image containers -->
+    <div class="background-container">
+        <div class="panel left"></div>
+        <div class="panel center"></div>
+        <div class="panel right"></div>
+    </div>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">Airline System</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="flight-search.html">Search Flights</a></li>
+                <li class="nav-item"><a class="nav-link" href="my-reservations.html">My Reservations</a></li>
+                <li class="nav-item"><a class="nav-link text-danger" href="#">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+    </nav>
+
+    <header>
+        <h1 class="text-center py-3"><b>User Profile</b></h1>
+    </header>
+
+    <main>
+        <div class="card shadow-lg p-4 mx-auto">
+            <h3 class="mb-3">Personal Information</h3>
+
+            <form action="" id="profileForm">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Full name</label>
+                        <input type="text" value="P Diddy" id="name" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Email</label>
+                        <input type="email" name="" id="email" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-3">
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Phone</label>
+                        <input type="tel" name="" id="phone" class="form-control">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="" class="form-label">Passport No.</label>
+                        <input type="text" name="" id="passport" class="form-control">
+                    </div>
+                </div>
+                <div class="row g-3 mt-3">
+                    <div class="col-md-12">
+                        <label for="" class="form-label">Address</label>
+                        <input type="text" name="" id="address" class="form-control">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary w-100 mt-4" id="saveProfile">Save Changes</button>
+            </form>
+        </div>
+
+        <div class="card shadow-lg p-4 mx-auto mt-4" style="max-width: 700px;">
+            <h3 class="mb-3">Change Password</h3>
+            <form id="passwordForm">
+                <div class="row g-3">
+                <div class="col-md-12">
+                    <label class="form-label">Current Password</label>
+                    <input type="password" class="form-control" id="currentPassword">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">New Password</label>
+                    <input type="password" class="form-control" id="newPassword">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword">
+                </div>
+                </div>
+                <button type="button" class="btn btn-warning w-100 mt-4" id="changePassword">Update Password</button>
+            </form>
+        </div>
+    </main>
+
+
+    <!--jQuery Script-->
+    <script src="user-profile.js"></script>
+
+    <!-- Bootstrap JS bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
