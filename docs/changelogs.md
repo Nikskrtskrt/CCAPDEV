@@ -27,3 +27,13 @@ This project follow [Smenatic Versioning] (https://semver.org/)
     -flight-admin css and html files created
 
     -notes updated, instructions on how to use new background and animation objects
+
+##[0.2.0] 2025-10-7
+### Added
+    - flight-admin .html .css .js
+    - login.html
+    - reservation-form .html .css .js
+    - reservation-list .html .css .js
+    - user-admin .html .js
+    - user-profile .html .js
+    - welcome.html
