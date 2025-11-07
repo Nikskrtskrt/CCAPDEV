@@ -1,0 +1,178 @@
+<!DOCTYPE = html>
+
+<html>
+<head>
+    <title>Reservation Form</title>
+    <!-- Bootstrap CSS (Official website link) -->
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="globals.css"></link>
+    <link rel="stylesheet" href="reservation-form.css"></link>
+</head>
+<body>
+    <!--
+    
+    Requirements:
+    - Passenger details: name, email, passport number. 
+    - Optional package selection: 
+        - Meal options (dropdown: standard, vegetarian, kosher, etc.) 
+        - Seat selection (interactive seat map UI using Bootstrap grid & jQuery click events). 
+        - Extra baggage (checkbox or number input). 
+    - Show a summary panel with total price calculation (JavaScript updates dynamically).
+    
+    -->
+        <!-- background image containers -->
+    <div class="background-container">
+        <div class="panel left"></div>
+        <div class="panel center"></div>
+        <div class="panel right"></div>
+    </div>
+    
+    <!--navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="welcome.html">Flight Booking PlatForm </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="user-admin.html"></a></li>
+                    <li class="nav-item"><a class="nav-link text" href="reservation-form.html">Reserve Now</a></li>
+                    <li class="nav-item"><a class="nav-link text" href="flight-search.html">Search Flight</a></li>
+                    <li class="nav-item"><a class="nav-link text" href="login.html">Login</a></li>
+                    <li class="nav-item"><a class="nav-link text-danger" href="login.html">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <h1 class="text-center py-3"><b>Admin Panel | Flight Management</b></h1>
+    </header>
+    
+    <form id="reservationForm">
+        <h1 class="text-center py-3"><b>Booking Form</b></h1>
+
+        <div class="full-name-container">
+            <label for="firstName" id="labelFirstName">First Name: </label>
+            <input type="text" id="firstName" placeholder="First Name" required></input>
+            <label for="lastName" id="labelLastName">Last Name: </label>
+            <input type="text" id="lastName" placeholder="Last Name" required></input>
+        </div>
+
+        <div class="email-container"> 
+            <label for="email" id="labelEmail">Email Address: </label>
+            <input type="email" id="email" placeholder="Email Address" required></input>
+        </div>
+        <div class="passport-number-container">
+            <label for="passportNumber" id="labelPassport">Passport Number: </label>
+            <input type="text" id="passportNumber" placeholder="Passport Number" required></input>
+        </div>
+        
+        <div class="container optional-container">
+            <div class="meal-options-container">
+                <label for="mealOptions">Meal Options:</label>
+                <select id="mealOptions" name="meal-options">
+                    <option value="none" selected>None</option>
+                    <option value="standard">Standard (+$50)</option>
+                    <option value="vegetarian">Vegetarian (+$100)</option>
+                    <option value="kosher">Kosher (+$150)</option>
+                </select>
+            </div>
+
+            <div class="extra-baggage-container">
+                <label for="extraBaggage">Extra Baggage (+$75):</label>
+                <input type="checkbox" id="extraBaggage" name="extra-baggage"></input>
+            </div>
+        </div>
+        
+        
+        <div class="seat-selection-container">
+            <label for="seat-selection" id="labelSeatSelection">Seat Selection:</label>
+            <div id="legendContainer" class="container">
+                <div class="row justify-content-center">
+                    <div class="col-1 legend-color legend-available"></div>
+                    <div class="col-2 justify-content-center">
+                        <label class="legend-label">Available</label>
+                    </div>
+                    <div class="col-1 legend-color legend-booked"></div>
+                    <div class="col-2 justify-content-center">
+                        <label class="legend-label">Booked</label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div id="seatMapContainer" class="container">
+                <!-- Seat will be created in javascript -->
+                <!-- Template -->
+                <!--
+                <div class="row justify-content-center seat-row">
+                    <div class="col-1  align-items-center justify-content-center">
+                        <div class="seat" >
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1  align-items-center justify-content-center">
+                        <div class="seat" data-seat-type>
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1  align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1 aisle-buffer" style="border: 1px solid red;"></div>
+                    
+                    <div class="col-1  align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1  align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    <div class="col-1  align-items-center justify-content-center">
+                        <div class="seat">
+                            1A
+                        </div>
+                    </div>
+                    
+                </div>
+                -->
+
+            </div>
+        </div>
+        
+        <div id="summary-container">
+            <label>Summary</label>
+            <div class="row">
+                <div class="col-2">Base Cost</div>
+                <div class="col-3 summary-cost" id="summaryBaseCost">$XXX.XX</div>
+            </div>
+            <div class="row">
+                <div class="col-2">Seat Type</div>
+                <div class="col-3 summary-cost" id="summarySeatTypeCost">+$XXX.XX</div>
+            </div>
+            <div class="row" id="summaryMealOption">
+                <div class="col-2">Meal Option</div>
+                <div class="col-3 summary-cost" id="summaryMealOptionCost">+$XXX.XX</div>
+            </div>
+            <div class="row" id="summaryExtraBaggage">
+                <div class="col-2">Extra Baggage</div>
+                <div class="col-3 summary-cost" id="summaryExtraBaggageCost">+$XXX.XX</div>
+            </div>
+            <label id="totalCostLabel">Total Cost: $0</label>
+        </div>
+        <div class="error" id="errorContainer">
+            
+        </div>
+        <button type="button" id="submitBtn">Confirm Reservation</button>
+    </form>
+
+    <!-- jQuery (Official website link) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Bootstrap JS (Official website link) -->
+    <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="reservation-form.js"></script>
+</body>
+</html>
