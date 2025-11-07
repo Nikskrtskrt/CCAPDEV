@@ -14,14 +14,14 @@ router.post('/', async (req, res) => {
     }
 });
 
-// router.get('/', async (req, res) => {
-//     try {
-//         const flights = await Flight.find().lean();
-//         res.json(flights);
-//     } catch {
-//         res.status(500).json({ error: 'Failed to fetch flights' });
-//     }
-// });
+router.get('/', async (req, res) => {
+     try {
+         const flights = await Flight.find().lean();
+         res.json(flights);
+     } catch {
+         res.status(500).json({ error: 'Failed to fetch flights' });
+     }
+ });
 
 router.get('/:id', async (req, res) => {
     try {

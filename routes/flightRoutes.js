@@ -17,4 +17,8 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/new', (req, res) => {
+    res.render('flights/form', { title: 'Add New Flight' });
+});
+
 module.exports = router; 
