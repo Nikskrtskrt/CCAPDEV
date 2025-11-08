@@ -37,7 +37,6 @@
                     <button class="btn btn-info btn-sm view-btn" data-id="{{_id}}">View</button>
                     <button class="btn btn-warning btn-sm edit-btn" data-id="{{_id}}">Edit</button>
                     <button class="btn btn-danger btn-sm delete-btn" data-id="{{_id}}">Delete</button>
-                    <button class="btn btn-success btn-sm generate-btn" data-id="{{_id}}">Generate</button>
                 </td>
                 </tr>
             {{/each}}
@@ -47,11 +46,11 @@
         </tbody>
         </table>
     </div>
-    </main>
+</main>
 
-    <div class="modal fade" id="flightModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content bg-dark text-light">
+<div class="modal fade" id="flightModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-dark text-light">
             <div class="modal-header">
                 <h4 id="modalTitle" class="modal-title">Add Flight</h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -122,6 +121,19 @@
                     </div>
                 </form>
             </div>
+            <h5 class="mt-4">Flight Instances</h5>
+            <table class="table table-dark table-bordered" id="instancesTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 </div>

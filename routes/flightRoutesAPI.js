@@ -7,21 +7,47 @@ router.post('/', async (req, res) => {
     try {
         const flight = new Flight(req.body);
         await flight.save();
-        res.status(201).json({ success: true, message: 'Flight template added!' });
+
+        const { seasonStart, seasonEnd, daysOfWeek, departure, arrival } = flight;
+        const start = new Date(seasonStart);
+        const end = new Date(seasonEnd);
+        const generated = [];
+
+        function createDateWithTime(baseDate, timeStr) {
+            const [hour, minute] = timeStr.split(':').map(Number);
+            const dt = new Date(baseDate.getTime());
+            dt.setHours(hour, minute, 0, 0);
+            return dt;
+        }
+
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            const weekday = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+            if (daysOfWeek.includes(weekday)) {
+                const depDate = createDateWithTime(d, departure);
+                const arrDate = createDateWithTime(d, arrival);
+
+                generated.push({
+                    template: flight._id,
+                    flightNo: flight.flightNo,
+                    date: new Date(d.getTime()),
+                    departureTime: depDate,
+                    arrivalTime: arrDate,
+                    aircraftNo: flight.aircraft,
+                    seats: flight.capacity
+                });
+            }
+        }
+
+        if (generated.length) await FlightInstance.insertMany(generated);
+
+        res.status(201).json({ success: true, message: `Flight created with ${generated.length} instances!` });
     } catch (err) {
         console.error('Flight creation failed:', err.message);
         res.status(400).json({ success: false, error: err.message });
     }
 });
 
-// router.get('/', async (req, res) => {
-//     try {
-//         const flights = await Flight.find().lean();
-//         res.json(flights);
-//     } catch {
-//         res.status(500).json({ error: 'Failed to fetch flights' });
-//     }
-// });
+router.get('/', async (req, res) => res.redirect('/flights'));
 
 router.get('/:id', async (req, res) => {
     try {
@@ -30,6 +56,18 @@ router.get('/:id', async (req, res) => {
         res.json(flight);
     } catch {
         res.status(400).json({ error: 'Invalid flight ID' });
+    }
+});
+
+router.get('/:id/details', async (req, res) => {
+    try {
+        const flight = await Flight.findById(req.params.id).lean();
+        if (!flight) return res.status(404).json({ error: 'Flight not found' });
+
+        const instances = await FlightInstance.find({ template: flight._id }).lean();
+        res.json({ flight, instances });
+    } catch (err) {
+        res.status(500).json({ error: 'Failed to load flight details' });
     }
 });
 
@@ -45,63 +83,19 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         await Flight.findByIdAndDelete(req.params.id);
+        await FlightInstance.deleteMany({ template: req.params.id });
         res.json({ success: true });
     } catch {
-        res.status(400).json({ success: false, error: 'Failed to delete flight' });
+        res.status(400).json({ success: false, error: 'Failed to delete flight and instances' });
     }
 });
 
-router.post('/:id/generate', async (req, res) => {
+router.delete('/instance/:id', async (req, res) => {
     try {
-        const flight = await Flight.findById(req.params.id).lean();
-        if (!flight) return res.status(404).json({ error: 'Template not found' });
-
-        const { seasonStart, seasonEnd, daysOfWeek, departure, arrival } = flight;
-        const start = new Date(seasonStart);
-        const end = new Date(seasonEnd);
-        const generated = [];
-
-        
-        function createDateWithTime(baseDate, timeStr) {
-            const [hour, minute] = timeStr.split(':').map(Number);
-            const dt = new Date(baseDate.getTime()); 
-            dt.setHours(hour, minute, 0, 0); 
-            return dt;
-        }
-
-        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-            const weekday = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
-            if (daysOfWeek.includes(weekday)) {
-                const depDate = createDateWithTime(d, departure);
-                const arrDate = createDateWithTime(d, arrival);
-
-                const exists = await FlightInstance.findOne({
-                    template: flight._id,
-                    departureTime: depDate
-                });
-
-                if (!exists) {
-                    generated.push({
-                        template: flight._id,
-                        flightNo: flight.flightNo,
-                        date: new Date(d.getTime()),
-                        departureTime: depDate,
-                        arrivalTime: arrDate,
-                        aircraftNo: flight.aircraft,
-                        seats: flight.capacity
-                    });
-                }
-            }
-        }
-
-        if (generated.length) {
-            await FlightInstance.insertMany(generated);
-        }
-
-        res.json({ success: true, message: `${generated.length} instances created.` });
-    } catch (err) {
-        console.error('Generate route failed:', err);
-        res.status(500).json({ error: 'Failed to generate flights' });
+        await FlightInstance.findByIdAndDelete(req.params.id);
+        res.json({ success: true });
+    } catch {
+        res.status(400).json({ success: false, error: 'Failed to delete instance' });
     }
 });
 

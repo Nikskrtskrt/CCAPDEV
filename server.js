@@ -31,7 +31,6 @@ app.get('/', (req, res) =>{
     res.render('home', {title: 'Admin Dashboard'});
 });
 
-// app.get('/', (req, res) => res.redirect('/flights'));
 
 app.listen(PORT, async () => {
     console.log(` Server running at http://localhost:${PORT}`);
