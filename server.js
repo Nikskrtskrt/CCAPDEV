@@ -26,11 +26,16 @@ app.use('/flights', flightRoutes);
 const flightRoutesAPI = require('./routes/flightRoutesAPI');
 app.use('/api/flights', flightRoutesAPI);
 
+const adminUserRoutes = require('./routes/adminUserRoutes');
+app.use('/users', adminUserRoutes);
+
+const adminUserRoutesAPI = require('./routes/adminUserRoutesAPI');
+app.use('/api/users', adminUserRoutesAPI);
+
 //Home
 app.get('/', (req, res) =>{
     res.render('home', {title: 'Admin Dashboard'});
 });
-
 
 app.listen(PORT, async () => {
     console.log(` Server running at http://localhost:${PORT}`);
