@@ -1,0 +1,105 @@
+<h2>My Reservations</h2>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Flight No.</th>
+                    <th>Date</th>
+                    <th>Seat</th>
+                    <th>Meal</th>
+                    <th>Baggage (kg)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each reservations}}
+                <tr>
+                    <td>{{this.flight.flightNo}}</td>
+                    <td>{{formatDate this.flight.date}}</td> <td>{{this.seatNo}}</td>
+                    <td>{{this.mealType}}</td>
+                    <td>{{this.baggage}}</td>
+                    <td>
+                        {{#if (eq this.status 'Confirmed')}}
+                            <span class="badge text-bg-success">{{this.status}}</span>
+                        {{else}}
+                            <span class="badge text-bg-danger">{{this.status}}</span>
+                        {{/if}}
+                    </td>
+                    <td>
+                        {{#if (eq this.status 'Confirmed')}}
+                            <button class="btn btn-primary btn-sm edit-btn" data-id="{{this._id}}">
+                                <i class="bi bi-pencil-fill"></i> Edit
+                            </button>
+                            <button class="btn btn-warning btn-sm cancel-btn" data-id="{{this._id}}">
+                                <i class="bi bi-x-circle-fill"></i> Cancel
+                            </button>
+                        {{else}}
+                            {{/if}}
+                    </td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="7" class="text-center">You have no reservations.</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="reservationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="reservationForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalTitle">Edit Reservation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="reservationId" />
+
+                    <div class="mb-3">
+                        <label for="mealType" class="form-label">Meal Type</label>
+                        <select class="form-select" id="mealType">
+                            <option value="Standard">Standard</option>
+                            <option value="Vegetarian">Vegetarian</option>
+                            <option value="Kosher">Kosher</option>
+                            <option value="Halal">Halal</option>
+                            <option value="Vegan">Vegan</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="seatNo" class="form-label">Seat Number</label>
+                        <input type="number" class="form-control" id="seatNo" placeholder="e.g., 12">
+                    </div>
+
+                     <div class="mb-3">
+                        <label for="baggage" class="form-label">Baggage (kg)</label>
+                        <input type="number" class="form-control" id="baggage" placeholder="e.g., 20">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="saveReservationBtn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="toastMsg" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastText">
+                </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/manageReservations.js"></script>
