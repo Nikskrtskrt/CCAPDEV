@@ -36,6 +36,7 @@ const reservationRoutes = require('./routes/reservationRoutes');
 app.use('/reservation', reservationRoutes);
 
 const reservationRoutesAPI = require('./routes/reservationRoutesAPI');
+const FlightInstance = require('./models/FlightInstance');
 app.use('/api/reservations', reservationRoutesAPI);
 
 //Home
@@ -87,6 +88,32 @@ app.listen(PORT, async () => {
             capacity: 160
             }
         ]);
+
         console.log('Test flights seeded.');
+    }
+
+    const countInstances = await FlightInstance.countDocuments();
+    if (countInstances === 0) {
+        console.log('Seeding testing flight instances...');
+
+        const flight1 = await Flight.findOne({ flightNo: 'FL100' });
+        //const flight2 = await Flight.findOne({ flightNo: 'FL101' });
+        //const flight3 = await Flight.findOne({ flightNo: 'FL102' });
+
+        await FlightInstance.insertMany([
+            {
+                template:       flight1._id,
+                flightNo:       flight1.flightNo,
+                date:           new Date('2025-11-30'),
+                departureTime:  new Date(2025, 10, 30, 8, 0),
+                arrivalTime:    new Date(2025, 10, 30, 9, 30),
+    
+                aircraftNo:     'A1234',
+                status:         'Scheduled',
+
+                seats:          flight1.capacity,
+            },
+        ]);
+        console.log('Test flight instances seeded.');
     }
 });
