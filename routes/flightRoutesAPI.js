@@ -47,23 +47,9 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res) => res.redirect('/flights'));
-
 router.get('/:id', async (req, res) => {
     try {
         const flight = await Flight.findById(req.params.id).lean();
-        if (!flight) return res.status(404).json({ error: 'Flight not found' });
-        res.json(flight);
-    } catch {
-        res.status(400).json({ error: 'Invalid flight ID' });
-    }
-});
-
-router.get('/:id/details', async (req, res) => {
-    try {
-        const flight = await Flight.findById(req.params.id).lean();
-        if (!flight) return res.status(404).json({ error: 'Flight not found' });
-
         const instances = await FlightInstance.find({ template: flight._id }).lean();
         res.json({ flight, instances });
     } catch (err) {

@@ -26,7 +26,7 @@ $(document).on('click', '.view-btn', function () {
     if (!id) return showToast('Invalid id');
 
     $.ajax({
-        url: `/api/flights/${id}/details`, 
+        url: `/api/flights/${id}`, 
         method: 'GET',
         success: function (data) {
             const tpl = data.flight;
@@ -65,15 +65,11 @@ $(document).on('click', '.view-btn', function () {
                             </td>
                         </tr>`;
                 });
-            } else {
-                tableHTML = `<tr><td colspan="5" class="text-center text-muted">No instances found</td></tr>`;
             }
 
             $('#instancesTable tbody').html(tableHTML);
-
             $('input, select').prop('disabled', true);
             $('#saveFlightBtn').hide();
-
             flightModal.show();
         },
         error: function (xhr) {

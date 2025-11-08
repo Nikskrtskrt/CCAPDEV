@@ -12,8 +12,8 @@ router.get('/', async (req, res) => {
             flights,
             daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
             });
-    } catch {
-        res.render('error', { subtext: 'Failed to load flights.' });
+    } catch (err){
+        res.status(400).json({ success: false, error: err.message });
     }
 });
 

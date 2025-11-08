@@ -35,7 +35,7 @@ app.get('/', (req, res) =>{
 app.listen(PORT, async () => {
     console.log(` Server running at http://localhost:${PORT}`);
 
-        const count = await Flight.countDocuments();
+    const count = await Flight.countDocuments();
     if (count === 0) {
         console.log('Seeding test flights...');
         await Flight.insertMany([
