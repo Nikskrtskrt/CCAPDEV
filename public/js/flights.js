@@ -19,16 +19,19 @@ $(document).ready(function () {
         $('input, select').prop('disabled', false);
         $('input[name="daysOfWeek"]').prop('checked', false);
         flightModal.show();
-    });
+});
 
-    $(document).on('click', '.view-btn', function () {
-        const id = $(this).data('id');
-        if (!id) return showToast('Invalid id');
+$(document).on('click', '.view-btn', function () {
+    const id = $(this).data('id');
+    if (!id) return showToast('Invalid id');
 
-        $.ajax({
-        url: `/api/flights/${id}`,
+    $.ajax({
+        url: `/api/flights/${id}`, 
         method: 'GET',
-        success: function (tpl) {
+        success: function (data) {
+            const tpl = data.flight;
+            const instances = data.instances;
+
             $('#modalTitle').text('View Flight Template');
             $('#flightId').val(tpl._id);
             $('#flightNo').val(tpl.flightNo || '');
@@ -43,9 +46,28 @@ $(document).ready(function () {
 
             $('input[name="daysOfWeek"]').prop('checked', false);
             (tpl.daysOfWeek || []).forEach(day => {
-            $(`input[name="daysOfWeek"][value="${day}"]`).prop('checked', true);
+                $(`input[name="daysOfWeek"][value="${day}"]`).prop('checked', true);
             });
 
+            let tableHTML = '';
+            if (instances.length > 0) {
+                instances.forEach(inst => {
+                    tableHTML += `
+                        <tr>
+                            <td>${new Date(inst.date).toLocaleDateString()}</td>
+                            <td>${new Date(inst.departureTime).toLocaleTimeString()}</td>
+                            <td>${new Date(inst.arrivalTime).toLocaleTimeString()}</td>
+                            <td>${inst.status}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm delete-instance-btn" data-id="${inst._id}">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>`;
+                });
+            }
+
+            $('#instancesTable tbody').html(tableHTML);
             $('input, select').prop('disabled', true);
             $('#saveFlightBtn').hide();
             flightModal.show();
@@ -53,9 +75,25 @@ $(document).ready(function () {
         error: function (xhr) {
             showToast(xhr.responseJSON?.error || 'Error retrieving template');
         }
-        });
     });
+});
 
+$(document).on('click', '.delete-instance-btn', function () {
+    const id = $(this).data('id');
+    if (!confirm('Delete this flight instance?')) return;
+
+    $.ajax({
+        url: `/api/flights/instance/${id}`,
+        method: 'DELETE',
+        success: function () {
+            showToast('Instance deleted!');
+            $(`button[data-id="${id}"]`).closest('tr').remove();
+        },
+        error: function () {
+            showToast('Error deleting instance');
+        }
+    });
+});
 
     $(document).on('click', '.edit-btn', function () {
         const id = $(this).data('id');
@@ -151,22 +189,6 @@ $(document).ready(function () {
         },
         error: function (xhr) {
             showToast(xhr.responseJSON?.error || 'Failed to delete template');
-        }
-        });
-    });
-
-    $(document).on('click', '.generate-btn', function () {
-        const id = $(this).data('id');
-        if (!id) return showToast('Invalid id');
-
-        $.ajax({
-        url: `/api/flights/${id}/generate`,
-        method: 'POST',
-        success: function (resp) {
-            showToast(resp.message || 'Instances generated', 'success');
-        },
-        error: function (xhr) {
-            showToast(xhr.responseJSON?.error || 'Failed to generate instances');
         }
         });
     });

@@ -26,6 +26,12 @@ app.use('/flights', flightRoutes);
 const flightRoutesAPI = require('./routes/flightRoutesAPI');
 app.use('/api/flights', flightRoutesAPI);
 
+const adminUserRoutes = require('./routes/adminUserRoutes');
+app.use('/users', adminUserRoutes);
+
+const adminUserRoutesAPI = require('./routes/adminUserRoutesAPI');
+app.use('/api/users', adminUserRoutesAPI);
+
 const reservationRoutes = require('./routes/reservationRoutes');
 app.use('/reservation', reservationRoutes);
 
@@ -37,12 +43,10 @@ app.get('/', (req, res) =>{
     res.render('home', {title: 'Admin Dashboard'});
 });
 
-// app.get('/', (req, res) => res.redirect('/flights'));
-
 app.listen(PORT, async () => {
     console.log(` Server running at http://localhost:${PORT}`);
 
-        const count = await Flight.countDocuments();
+    const count = await Flight.countDocuments();
     if (count === 0) {
         console.log('Seeding test flights...');
         await Flight.insertMany([
