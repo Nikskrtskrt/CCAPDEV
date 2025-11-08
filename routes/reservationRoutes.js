@@ -11,15 +11,15 @@ router.get('/', async (req, res) => {
         //request.params.flightNo;
         const flightInstance = await FlightInstance.findOne({ flightNo: "FL100" }).lean();
 
-        console.log(user, flightInstance);
+        console.log(flightInstance);
 
         res.render('reservation/booking', {
             title: 'Reservation Form',
             flightInstance,
         });
 
-    } catch {
-        res.render('error', { subtext: 'Failed to load booking form.' });
+    } catch(err) {
+        res.status(400).json({ success: false, error: err.message });
     }
 });
 
@@ -34,8 +34,8 @@ router.get('/:flightNo', async (req, res) => {
             flightInstance,
         });
 
-    } catch {
-        res.render('error', { subtext: 'Failed to load booking form.' });
+    } catch(err) {
+        res.status(400).json({ success: false, error: err.message });
     }
 });
 
