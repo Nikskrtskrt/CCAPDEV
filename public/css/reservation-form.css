@@ -1,0 +1,125 @@
+body {
+    overflow: auto;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#reservationForm {
+    position: relative;
+    top: auto;
+    left: auto;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 40px;
+    width: 1000px;
+    max-width: 70%;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+    margin: 20px auto;
+}
+
+.optional-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.meal-options-container, .extra-baggage-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.meal-options-container label, .extra-baggage-container label {
+    white-space: nowrap;
+    margin: 0;
+    align-items: center;
+}
+
+.meal-options-container select {
+    align-items: center;
+}
+
+.extra-baggage-container input {
+    align-items: center;
+}
+
+#legendContainer {
+    align-items: center;
+    justify-content: center;
+}
+
+.legend-label {
+    margin-top: 0;
+}
+
+.legend-color {
+    width: 25px;
+    height: 25px;
+    border: 1px solid #000000;
+}
+
+.legend-available {
+    background-color: #ffffff;
+}
+
+.legend-booked {
+    background-color: #a3a3a3;
+}
+
+.aisle-buffer {
+    text-align: center;
+}
+
+.available {
+    background-color: #ffffff;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.booked {
+    background-color: #a3a3a3;
+    cursor: not-allowed;
+}
+
+.error {
+    color: red;
+}
+
+.seat-row {
+    height: 80px;
+}
+
+.seat {
+    height: 65px;
+    aspect-ratio: 1 / 1;
+    font-weight: bold;
+    border: 2px solid #000000;
+    border-radius: 15%;
+    text-align: center;
+    align-content: center;
+    transition: transform 0.1s ease;
+}
+
+.seat:hover {
+    transform: scale(1.2);
+}
+
+.summary-cost {
+    text-align: right;
+}
