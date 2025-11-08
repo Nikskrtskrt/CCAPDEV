@@ -26,6 +26,12 @@ app.use('/flights', flightRoutes);
 const flightRoutesAPI = require('./routes/flightRoutesAPI');
 app.use('/api/flights', flightRoutesAPI);
 
+const reservationRoutes = require('./routes/reservationRoutes');
+app.use('/reservation', reservationRoutes);
+
+const reservationRoutesAPI = require('./routes/reservationRoutesAPI');
+app.use('/api/reservations', reservationRoutesAPI);
+
 //Home
 app.get('/', (req, res) =>{
     res.render('home', {title: 'Admin Dashboard'});
