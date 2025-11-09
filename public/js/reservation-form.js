@@ -56,7 +56,7 @@ $(function () { //Note: Same as $(document).ready(function() {
     function setSeatAsBooked(seatObj) {
         const seatNumber = seatObj.data("seat-number");
         seatData[seatNumber].status = "booked";
-        selectedSeat.removeClass("available").addClass("booked");
+        seatObj.removeClass("available").addClass("booked");
     }
 
     function onSeatClick(seatElement) {
