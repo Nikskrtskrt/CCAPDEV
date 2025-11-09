@@ -1,4 +1,5 @@
 const BASE_COST = 500;
+const EXTRA_WEIGHT_PER_COST = 10
 const SEAT_PRICES = {
     "window": 50,
     "aisle": 25,
@@ -13,29 +14,36 @@ const SEAT_TYPE = {
     'F': "window",
 }
 const MEAL_PRICES = {
-    "standard": 50,
-    "vegetarian": 100,
-    "kosher": 150,
+    "Standard": 0,
+    "Vegetarian": 100,
+    "Kosher": 150,
 };
 
 let seatData = {};
+let prevReservations = {};
 let selectedSeat = null;
 let reservationMsg = "ERROR";
 
-$(function() { //Note: Same as $(document).ready(function() {
+function capitalizeAtFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+$(function () { //Note: Same as $(document).ready(function() {
+    const flightNo = $("#titleContainer").data("flight-no");
+
     const reservationForm = $("#reservationForm");
-    
+
     const inputFirstName = $("#firstName");
     const inputLastName = $("#lastName");
     const inputEmail = $("#email");
     const inputPassportNumber = $("#passportNumber");
     const selectMealOptions = $("#mealOptions");
     const seatMapContainer = $("#seatMapContainer");
-    const checkBoxExtraBaggage = $("#extraBaggage");
-    
+    const inputExtraBaggage = $("#extraBaggageWeight");
+
     const errorContainer = $("#errorContainer")
     const btnSubmit = $("#submitBtn");
-    
+
     function unselectSelectedSeat() {
         if (!selectedSeat)
             return;
@@ -45,38 +53,41 @@ $(function() { //Note: Same as $(document).ready(function() {
         selectedSeat = null;
     }
 
+    function setSeatAsBooked(seatObj) {
+        const seatNumber = seatObj.data("seat-number");
+        seatData[seatNumber].status = "booked";
+        selectedSeat.removeClass("available").addClass("booked");
+    }
+
     function onSeatClick(seatElement) {
         const seatNumber = seatElement.data("seat-number");
         const curSeatData = seatData[seatNumber];
         const curStatus = curSeatData.status;
-        console.log("Clicked " + seatNumber);
+        //console.log("Clicked " + seatNumber);
 
         if (curStatus != "available")
             return;
-                        
+
         unselectSelectedSeat();
         selectedSeat = seatElement;
         seatElement.addClass("selected");
         updateSummary();
 
-        console.log("selected");
+        //console.log("selected");
     }
 
-    function capitalizeAtFirst(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
-    function initializeSeats() {
-        const TOTAL_ROWS = 5;
+    function initializeSeats(flight) {
+        //TODO: REMOVE DEBUG LINE AFTER TESTING
+        const TOTAL_ROWS = 5; //flight.seats / 6;
         const TOTAL_COLS = 6;
         const ROW_CLASS = "row justify-content-center seat-row";
         const COL_CLASS = "col-1 d-flex align-items-center justify-content-center";
         const BUFFER_CLASS = "col-1 aisle-buffer";
-        
+
         //Creates the label per column
         const infoRow = $("<div>").addClass(ROW_CLASS);
         seatMapContainer.append(infoRow)
-        for (let col = 1; col <= TOTAL_COLS; col++){
+        for (let col = 1; col <= TOTAL_COLS; col++) {
             const letter = String.fromCharCode(64 + col);
             let seatType = SEAT_TYPE[letter];
             seatType = capitalizeAtFirst(seatType);
@@ -115,13 +126,19 @@ $(function() { //Note: Same as $(document).ready(function() {
                     .addClass("available")
                     .text(seatNumber)
                     .data("seat-number", seatNumber);
-                    //.data("seat-type", "Middle")
-                    //.data("status", "available")
-                
-                seatDisplay.click(function() {
+                //.data("seat-type", "Middle")
+                //.data("status", "available")
+
+                //Check if seat is already booked
+                const exist = prevReservations.find(reservation => reservation.seatNo === seatNumber)
+                if (exist) {
+                    setSeatAsBooked(seatDisplay);
+                }
+
+                seatDisplay.click(function () {
                     onSeatClick(seatDisplay);
                 });
-                
+
                 curRowElement.append(curColElement.append(seatDisplay));
 
                 //Create Buffer after 3rd seat
@@ -136,18 +153,21 @@ $(function() { //Note: Same as $(document).ready(function() {
 
     function getTotalCost() {
         const mealOptionValue = selectMealOptions.val().trim();
-        const extraBaggageValue = checkBoxExtraBaggage.is(":checked");
-        
+        const extraBaggageValue = inputExtraBaggage.val();
+        console.log("Baggage Value:", extraBaggageValue);
+
         let totalCost = BASE_COST;
-        
+
         if (selectedSeat) {
             const seatNumber = selectedSeat.data("seat-number");
             const seatType = seatData[seatNumber].type
             totalCost += SEAT_PRICES[seatType]
         }
-
+        console.log("Total After Seat:", totalCost);
         totalCost += MEAL_PRICES[mealOptionValue] || 0;
-        totalCost += extraBaggageValue ? 75 : 0;
+        console.log("Total After Meal:", totalCost);
+        totalCost += extraBaggageValue * EXTRA_WEIGHT_PER_COST;
+        console.log("Total After Baggage:", totalCost);
         return totalCost;
     }
 
@@ -162,7 +182,7 @@ $(function() { //Note: Same as $(document).ready(function() {
         const totalCostElement = $("#totalCostLabel");
 
         summaryBaseCostElement.text(`$${BASE_COST}`);
-        
+
         if (selectedSeat) {
             const seatNumber = selectedSeat.data("seat-number");
             const seatType = seatData[seatNumber].type
@@ -170,7 +190,7 @@ $(function() { //Note: Same as $(document).ready(function() {
         } else {
             summarySeatTypeCostElement.text(`Please select a seat`);
         }
-        
+
         const mealOptionValue = selectMealOptions.val().trim();
         const mealCost = MEAL_PRICES[mealOptionValue] || 0;
         summaryMealOptionCostElement.text(`(${capitalizeAtFirst(mealOptionValue)}) +$${mealCost}`);
@@ -179,18 +199,19 @@ $(function() { //Note: Same as $(document).ready(function() {
         } else {
             summaryMealOptionElement.hide();
         }
-        
-        const extraBaggageValue = checkBoxExtraBaggage.is(":checked");
-        const extraBaggageCost = extraBaggageValue ? 75 : 0;
-        summaryExtraBaggageCostElement.text(`+$${(extraBaggageCost)}`);
+
+        const extraBaggageValue = inputExtraBaggage.val();
+        const extraBaggageCost = extraBaggageValue * EXTRA_WEIGHT_PER_COST
+        summaryExtraBaggageCostElement.text(`(${extraBaggageValue}Kg) +$${(extraBaggageCost)}`);
         if (extraBaggageCost > 0) {
             summaryExtraBaggageElement.show();
         } else {
             summaryExtraBaggageElement.hide();
         }
-        
+
         const totalCost = getTotalCost();
         totalCostElement.text(`Total Cost: $${totalCost}`);
+
 
         if (!selectedSeat)
             return;
@@ -206,6 +227,7 @@ $(function() { //Note: Same as $(document).ready(function() {
             `Extra Baggage: ${extraBaggageValue ? "Yes" : "No"}\n` +
             `Total Cost: $${totalCost}\n\n` +
             `(Client Side)`;
+
     }
 
     function onConfirm() {
@@ -261,18 +283,60 @@ $(function() { //Note: Same as $(document).ready(function() {
         // $("#regForm")[0].reset();
         const seatNumber = selectedSeat.data("seat-number");
         const seatType = seatData[seatNumber];
-        seatData[seatNumber].status = "booked";
-        selectedSeat.removeClass("available").addClass("booked");
+        setSeatAsBooked(selectedSeat);
 
         alert(reservationMsg);
-        reservationForm[0].reset();
-        unselectSelectedSeat();
-        updateSummary();
+
+
+        $.ajax({
+            url: `/api/reservations/${flightNo}`,
+            method: 'POST',
+            data: {
+                user: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    passportNumber: passportNumber,
+                },
+                reservation: {
+                    seatNo: seatNumber,
+                    mealOption: selectMealOptions.val().trim(),
+                    extraBaggageWeight: inputExtraBaggage.val(),
+                    //totalCost: totalCost,
+                },
+            },
+            success: function (data) {
+                alert("Reservation successful!(server-side)");
+                //reservationForm[0].reset();
+                unselectSelectedSeat();
+                updateSummary();
+            },
+            error: function (xhr) {
+                console.error('Error fetching flight data:', xhr.responseText);
+            }
+        });
     }
 
+    console.log("FlightNo:", flightNo);
     selectMealOptions.on("change", updateSummary);
-    checkBoxExtraBaggage.on("change", updateSummary);
-    btnSubmit.click(onConfirm);
-    initializeSeats();
-    updateSummary(); //Sets up on load    
+    inputExtraBaggage.on("input", updateSummary);
+    $.ajax({
+        url: `/api/reservations/${flightNo}`,
+        method: 'GET',
+        success: function (data) {
+            const flight = data.flight;
+            prevReservations = data.reservations;
+
+            console.log("Flight Data:", flight);
+            console.log("Reservations Data:", prevReservations);
+
+            updateSummary(); //Sets up on load   
+            initializeSeats(flight);
+            btnSubmit.click(onConfirm);
+            //reservationForm.on('submit', onConfirm);
+        },
+        error: function (xhr) {
+            console.error('Error fetching flight data:', xhr.responseText);
+        }
+    });
 });
