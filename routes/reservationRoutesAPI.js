@@ -107,7 +107,7 @@ router.post('/:flightNo', async (req, res) => {
         let totalPrice = BASE_COST;
         totalPrice += SEAT_PRICES[SEAT_TYPE[seatChar]] || 0;
         totalPrice += MEAL_PRICES[mealOption] || 0;
-        totalPrice += extraBaggageWeight / EXTRA_WEIGHT_PER_COST;
+        totalPrice += extraBaggageWeight * EXTRA_WEIGHT_PER_COST;
         
 
         const newReservation = new Reservation({
