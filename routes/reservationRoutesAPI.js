@@ -49,6 +49,8 @@ router.get('/user/:userId', async (req, res) => {
 
 //Create new reservation
 router.post('/:flightNo', async (req, res) => {
+    console.log('Received reservation post request:', req.body);
+
     //Verify if user exists
     const userDataSent = req.body.user;
     const user = await User.findOne({
@@ -58,6 +60,7 @@ router.post('/:flightNo', async (req, res) => {
         passportNo: userDataSent.passportNo,
     }).lean();
     if (!user) {
+        console.log('User not found with details:', userDataSent);
         res.status(400).json({ success: false, message: 'User not found' });
         return
     }
@@ -65,6 +68,7 @@ router.post('/:flightNo', async (req, res) => {
     //Verify if flight instance exists
     const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo }).lean();
     if (!flightInstance) {
+        console.log('Flight instance not found with flightNo:', req.params.flightNo);
         res.status(400).json({ success: false, message: 'Flight instance not found' });
         return
     }
@@ -75,6 +79,7 @@ router.post('/:flightNo', async (req, res) => {
         flight: flightInstance._id,
     }).lean();
     if (existingReservation) {
+        console.log('User has already booked this flight:', user._id, flightInstance._id);
         res.status(400).json({ success: false, message: 'User has already booked this flight' });
         return
     }
@@ -87,6 +92,7 @@ router.post('/:flightNo', async (req, res) => {
         status: 'Confirmed',
     }).lean();
     if (seatToBeTaken) {
+        console.log('Seat already taken:', seatToBeTaken._id);
         res.status(400).json({ success: false, message: 'Seat already taken' });
         return
     }
