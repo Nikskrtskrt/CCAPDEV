@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
         //request.params.flightNo;
         const flightInstance = await FlightInstance.findOne({ flightNo: "FL100" }).lean();
 
-        console.log(flightInstance);
+        //console.log(flightInstance);
 
         res.render('reservation/booking', {
             title: 'Reservation Form',
