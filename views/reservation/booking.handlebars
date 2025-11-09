@@ -9,7 +9,7 @@
 </head>
 
 <form id="reservationForm">
-    <h1 id="titleContainer" flight-no="{{flightInstance.flightNo}}" class="text-center py-3"><b>{{flightInstance.flightNo}} - {{title}}</b></h1>
+    <h1 id="titleContainer" data-flight-no="{{flightInstance.flightNo}}" class="text-center py-3"><b>{{flightInstance.flightNo}} - {{title}}</b></h1>
 
     <div class="full-name-container">
         <label for="firstName" id="labelFirstName">First Name: </label>
@@ -57,10 +57,10 @@
         <div class="col-3 meal-options-container">
             <label class="row" for="mealOptions">Meal Options:</label>
             <select class="row" id="mealOptions" name="meal-options">
-                <option value="none" selected>None</option>
-                <option value="standard">Standard (+$50)</option>
-                <option value="vegetarian">Vegetarian (+$100)</option>
-                <option value="kosher">Kosher (+$150)</option>
+                <!--<option value="None" selected>None</option>-->
+                <option value="Standard">Standard</option>
+                <option value="Vegetarian">Vegetarian (+$100)</option>
+                <option value="Kosher">Kosher (+$150)</option>
             </select>
         </div>
     </div>
