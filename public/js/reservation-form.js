@@ -154,7 +154,7 @@ $(function () { //Note: Same as $(document).ready(function() {
     function getTotalCost() {
         const mealOptionValue = selectMealOptions.val().trim();
         const extraBaggageValue = inputExtraBaggage.val();
-        console.log("Baggage Value:", extraBaggageValue);
+        //console.log("Baggage Value:", extraBaggageValue);
 
         let totalCost = BASE_COST;
 
@@ -163,11 +163,11 @@ $(function () { //Note: Same as $(document).ready(function() {
             const seatType = seatData[seatNumber].type
             totalCost += SEAT_PRICES[seatType]
         }
-        console.log("Total After Seat:", totalCost);
+        //console.log("Total After Seat:", totalCost);
         totalCost += MEAL_PRICES[mealOptionValue] || 0;
-        console.log("Total After Meal:", totalCost);
+        //console.log("Total After Meal:", totalCost);
         totalCost += extraBaggageValue * EXTRA_WEIGHT_PER_COST;
-        console.log("Total After Baggage:", totalCost);
+        //console.log("Total After Baggage:", totalCost);
         return totalCost;
     }
 
@@ -296,7 +296,7 @@ $(function () { //Note: Same as $(document).ready(function() {
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
-                    passportNumber: passportNumber,
+                    passportNo: passportNumber,
                 },
                 reservation: {
                     seatNo: seatNumber,
