@@ -21,8 +21,7 @@ router.get('/', async (req, res) => {
     let filter = {};
     if (origin) filter.origin = origin;
     if (destination) filter.destination = destination;
-/*
-dateFilteringgggggg---------------------------------
+
  let flights = await Flight.find(filter).lean();
 
 // If date is provided, filter by date
@@ -56,13 +55,7 @@ if (date) {
     }
 
     res.json(flights);
-----------------------------------------------------
-*/ 
 
-//REMOVE FROM HERE....
-    const flights = await Flight.find(filter).lean();
-    res.json(flights);
-//to HERE... if decided to keep the date filtering option
   } catch (err) {
     res.status(500).json({ error: 'Failed to search flights' });
   }
