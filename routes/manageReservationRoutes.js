@@ -9,11 +9,15 @@ router.get('/', async (req, res) => {
         const reservations = await Reservation.find({ user: req.user._id })
             .populate({
                 path: 'flight', 
-                select: 'flightNo date'
+                populate: {
+                    path: 'template', 
+                    model: 'Flight',  
+                    select: 'origin destination aircraft departure arrival' 
+                }
             })
             .lean();
 
-        res.render('manageReservations', {
+        res.render('reservations/manageReservations', {
             title: 'My Reservations',
             reservations
         });
