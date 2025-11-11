@@ -134,7 +134,7 @@ $(function() {
     sessionStorage.setItem('selectedFlight', JSON.stringify(flight));
     
     // REDIRECTING TO to booking page
-    alert(`Proceeding to book ${flightNo} from ${flight.origin} to ${flight.destination}\nFlight Instance ID: ${instanceId}\n\nNote: Booking page needs to be implemented.`);
+    alert(`Proceeding to book ${flightNo} from ${flight.origin} to ${flight.destination}\nFlight Instance ID: ${instanceId}\n\=\.`);
     
   });
 });
