@@ -69,6 +69,13 @@ app.use('/reservations', manageReservationRoutes);
 const manageReservationRoutesAPI = require('./routes/manageReservationRoutesAPI');
 app.use('/api/reservations', manageReservationRoutesAPI);
 
+const flightSearchRoutes = require('./routes/flightSearchRoutes');
+app.use('/search', flightSearchRoutes);
+
+const flightSearchAPI = require('./routes/flightSearchAPI');
+app.use('/api/search', flightSearchAPI);
+
+
 //Home
 app.get('/', (req, res) =>{
     res.render('home', {

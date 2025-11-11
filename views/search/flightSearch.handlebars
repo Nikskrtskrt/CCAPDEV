@@ -1,0 +1,42 @@
+<header>
+  <h1 class="text-center py-3"><b>Search Flights</b></h1>
+</header>
+<main class="container mt-5">
+  <div class="card shadow-lg p-4 mb-4 text-light">
+    <div class="card-header-sm">
+    <h3 class="mb-3">Search Flight</h3>
+    </div>
+    <form id="searchForm">
+    <div class="row g-3 mt-2">
+        <div class="col-md-6">
+          <label for="origin" class="form-label">Origin</label>
+          <select id="origin" class="form-select" required>
+        <option value="">Select Origin</option>
+        {{#each origins}}
+        <option value="{{this}}">{{this}}</option>
+        {{/each}}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="destination" class="form-label">Destination</label>
+          <select id="destination" class="form-select" required>
+            <option value="">Select Destination</option>
+        </select>
+        </div>
+      </div>
+      <div class="row g-3 mt-2">
+        <div class="col-md-6">
+          <label for="departure" class="form-label">Departure Date</label>
+          <input type="date" id="departure" class="form-control">
+        </div>
+        <div class="col-md-6">
+          <label for="passengerCount" class="form-label">Passenger Count</label>
+          <input type="number" id="passengerCount" class="form-control" min="1" value="1">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary mt-3" id="searchButton">Search Flights</button> <!-- Added ID for old parity if CSS targets it -->
+    </form>
+  </div>
+  <div class="container" id="flightResults"></div>
+</main>
+<script src="/js/flightSearch.js"></script>
