@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
-const Flight = require('./models/Flight');
+const User  = require('./models/User');
+const session = require('express-session');
 
 const app = express();
 const PORT = 3000;
@@ -18,19 +19,37 @@ app.set('views', './views');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
+app.use(session({
+    secret: 'dummyLoginSecret',
+    resave: false,
+    saveUninitialized: true
+}));
 
 //routes
-const flightRoutes = require('./routes/flightRoutes');
+const flightRoutes = require('./routes/adminRoutes/flightRoutes');
 app.use('/flights', flightRoutes);
 
-const flightRoutesAPI = require('./routes/flightRoutesAPI');
-app.use('/api/flights', flightRoutesAPI);
-
-const adminUserRoutes = require('./routes/adminUserRoutes');
+const adminUserRoutes = require('./routes/adminRoutes/adminUserRoutes');
 app.use('/users', adminUserRoutes);
 
-const adminUserRoutesAPI = require('./routes/adminUserRoutesAPI');
+const manageReservationRoutes = require('./routes/manageReservationRoutes'); 
+app.use('/reservations', manageReservationRoutes);
+
+//back-end api routes
+const authRoutes = require('./routes/authRoutes');
+app.use('/', authRoutes);
+
+const userRoutes = require('./routes/userRoutes/userProfile');
+app.use('/', userRoutes);
+
+const flightRoutesAPI = require('./routes/adminRoutes/flightRoutesAPI');
+app.use('/api/flights', flightRoutesAPI);
+
+const adminUserRoutesAPI = require('./routes/adminRoutes/adminUserRoutesAPI');
 app.use('/api/users', adminUserRoutesAPI);
+
+const manageReservationRoutesAPI = require('./routes/manageReservationRoutesAPI');
+app.use('/api/reservations', manageReservationRoutesAPI);
 
 const reservationRoutes = require('./routes/reservationRoutes');
 app.use('/reservation', reservationRoutes);
@@ -41,7 +60,9 @@ app.use('/api/reservations', reservationRoutesAPI);
 
 //Home
 app.get('/', (req, res) =>{
-    res.render('home', {title: 'Admin Dashboard'});
+    res.render('home', {
+        title: 'Welcome',
+    });
 });
 
 app.listen(PORT, async () => {

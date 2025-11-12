@@ -3,6 +3,7 @@ https://www.w3schools.com/html/html_images_background.asp
 https://www.youtube.com/watch?v=z2LQYsZhsFw
 https://www.w3schools.com/css/css3_animations.asp
 https://www.w3schools.com/css/css_rwd_viewport.asp
+https://www.w3schools.com/cssref/atrule_media.php
 
 Pictures:
 https://www.pexels.com/photo/aerial-view-of-cloudscape-314726/

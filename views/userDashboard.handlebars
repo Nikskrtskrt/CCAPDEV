@@ -1,0 +1,26 @@
+<header class="text-center py-5">
+    <h1 class="display-3 fw-bold text-light mb-3">Welcome, {{user.firstName}}!</h1>
+    <p class="lead text-secondary mb-4">Choose what you’d like to do today</p>
+</header>
+
+<main class="container my-5">
+    <section class="row g-4 text-center justify-content-center">
+        <div class="col-md-4">
+            <a href="/searchFlights" class="btn btn-outline-primary btn-lg w-100 h-100 py-5 shadow text-light">
+                ✈️Search Flights
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/profile" class="btn btn-outline-success btn-lg w-100 py-5 shadow">
+                😊View / Edit Profile
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="/reservations" class="btn btn-outline-warning btn-lg w-100 py-5 shadow">
+                📃My Reservations
+            </a>
+        </div>
+    </section>
+</main>
