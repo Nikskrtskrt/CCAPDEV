@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
             })
             .lean();
 
-        res.render('reservations/manageReservations', {
+        res.render('reservation/manageReservations', {
             title: 'My Reservations',
             reservations
         });

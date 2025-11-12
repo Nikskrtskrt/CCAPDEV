@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const User  = require('./models/User');
+const Flight = require('./models/Flight');
 const session = require('express-session');
 
 const app = express();
