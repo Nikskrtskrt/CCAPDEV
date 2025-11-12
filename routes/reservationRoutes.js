@@ -3,19 +3,26 @@ const router    = express.Router();
 const User              = require('../models/User');
 const Reservation       = require('../models/Reservation');
 const FlightInstance    = require('../models/FlightInstance');
+const Flight            = require('../models/Flight');
 
 //For Debugging Purposes
 router.get('/', async (req, res) => {
     try {
         //Note: Pass desired FlightInstance data
         //request.params.flightNo;
-        const flightInstance = await FlightInstance.findOne({ flightNo: "FL100" }).lean();
-
+        const flight = await Flight.findOne({ flightNo: "FL100" }).lean();
+        const flightInstance = await FlightInstance.findOne({ flightNo: "FL100" });
         //console.log(flightInstance);
+
+        let flightInstanceToPass = flightInstance.toJSON();
+        flightInstanceToPass.date = flightInstance.date.toDateString();
+        
+        //console.log(flightInstanceToPass);
 
         res.render('reservation/booking', {
             title: 'Reservation Form',
-            flightInstance,
+            flight,
+            flightInstance: flightInstanceToPass,
         });
 
     } catch(err) {
