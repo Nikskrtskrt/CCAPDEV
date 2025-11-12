@@ -5,13 +5,15 @@ $(document).ready(function () {
 
     function showToast(message, type = 'danger') {
         $('#toastMsg')
-        .removeClass('text-bg-danger text-bg-success')
-        .addClass(`text-bg-${type}`);
+            .removeClass('text-bg-danger text-bg-success')
+            .addClass(`text-bg-${type}`);
+
         $('#toastText').text(message);
         toast.show();
     }
 
-    $('#addFlightBtn').on('click', function () {
+
+    $(document).on('click', '#addFlightBtn', function () {
         $('#modalTitle').text('Add Flight Template');
         $('#flightForm')[0].reset();
         $('#flightId').val('');
@@ -19,81 +21,84 @@ $(document).ready(function () {
         $('input, select').prop('disabled', false);
         $('input[name="daysOfWeek"]').prop('checked', false);
         flightModal.show();
-});
+    });
 
-$(document).on('click', '.view-btn', function () {
-    const id = $(this).data('id');
-    if (!id) return showToast('Invalid id');
 
-    $.ajax({
-        url: `/api/flights/${id}`, 
-        method: 'GET',
-        success: function (data) {
-            const tpl = data.flight;
-            const instances = data.instances;
+    $(document).on('click', '.view-btn', function () {
+        const id = $(this).data('id');
+        if (!id) return showToast('Invalid id');
 
-            $('#modalTitle').text('View Flight Template');
-            $('#flightId').val(tpl._id);
-            $('#flightNo').val(tpl.flightNo || '');
-            $('#origin').val(tpl.origin || '');
-            $('#destination').val(tpl.destination || '');
-            $('#departure').val(tpl.departure || '');
-            $('#arrival').val(tpl.arrival || '');
-            $('#aircraft').val(tpl.aircraft || '');
-            $('#capacity').val(tpl.capacity || '');
-            $('#seasonStart').val(tpl.seasonStart ? tpl.seasonStart.slice(0, 10) : '');
-            $('#seasonEnd').val(tpl.seasonEnd ? tpl.seasonEnd.slice(0, 10) : '');
+        $.ajax({
+            url: `/api/flights/${id}`, 
+            method: 'GET',
+            success: function (data) {
+                const tpl = data.flight;
+                const instances = data.instances;
 
-            $('input[name="daysOfWeek"]').prop('checked', false);
-            (tpl.daysOfWeek || []).forEach(day => {
-                $(`input[name="daysOfWeek"][value="${day}"]`).prop('checked', true);
-            });
+                $('#modalTitle').text('View Flight Template');
+                $('#flightId').val(tpl._id);
+                $('#flightNo').val(tpl.flightNo || '');
+                $('#origin').val(tpl.origin || '');
+                $('#destination').val(tpl.destination || '');
+                $('#departure').val(tpl.departure || '');
+                $('#arrival').val(tpl.arrival || '');
+                $('#aircraft').val(tpl.aircraft || '');
+                $('#capacity').val(tpl.capacity || '');
+                $('#seasonStart').val(tpl.seasonStart ? tpl.seasonStart.slice(0, 10) : '');
+                $('#seasonEnd').val(tpl.seasonEnd ? tpl.seasonEnd.slice(0, 10) : '');
 
-            let tableHTML = '';
-            if (instances.length > 0) {
-                instances.forEach(inst => {
-                    tableHTML += `
-                        <tr>
-                            <td>${new Date(inst.date).toLocaleDateString()}</td>
-                            <td>${new Date(inst.departureTime).toLocaleTimeString()}</td>
-                            <td>${new Date(inst.arrivalTime).toLocaleTimeString()}</td>
-                            <td>${inst.status}</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm delete-instance-btn" data-id="${inst._id}">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>`;
+                $('input[name="daysOfWeek"]').prop('checked', false);
+                (tpl.daysOfWeek || []).forEach(day => {
+                    $(`input[name="daysOfWeek"][value="${day}"]`).prop('checked', true);
                 });
+
+                let tableHTML = '';
+                if (instances.length > 0) {
+                    instances.forEach(inst => {
+                        tableHTML += `
+                            <tr>
+                                <td>${new Date(inst.date).toLocaleDateString()}</td>
+                                <td>${new Date(inst.departureTime).toLocaleTimeString()}</td>
+                                <td>${new Date(inst.arrivalTime).toLocaleTimeString()}</td>
+                                <td>${inst.status}</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm delete-instance-btn" data-id="${inst._id}">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>`;
+                    });
+                }
+
+                $('#instancesTable tbody').html(tableHTML);
+                $('input, select').prop('disabled', true);
+                $('#saveFlightBtn').hide();
+                flightModal.show();
+            },
+            error: function (xhr) {
+                showToast('Error retrieving template');
             }
-
-            $('#instancesTable tbody').html(tableHTML);
-            $('input, select').prop('disabled', true);
-            $('#saveFlightBtn').hide();
-            flightModal.show();
-        },
-        error: function (xhr) {
-            showToast(xhr.responseJSON?.error || 'Error retrieving template');
-        }
+        });
     });
-});
 
-$(document).on('click', '.delete-instance-btn', function () {
-    const id = $(this).data('id');
-    if (!confirm('Delete this flight instance?')) return;
 
-    $.ajax({
-        url: `/api/flights/instance/${id}`,
-        method: 'DELETE',
-        success: function () {
-            showToast('Instance deleted!');
-            $(`button[data-id="${id}"]`).closest('tr').remove();
-        },
-        error: function () {
-            showToast('Error deleting instance');
-        }
+    $(document).on('click', '.delete-instance-btn', function () {
+        const id = $(this).data('id');
+        if (!confirm('Delete this flight instance?')) return;
+
+        $.ajax({
+            url: `/api/flights/instance/${id}`,
+            method: 'DELETE',
+            success: function () {
+                showToast('Instance deleted!');
+                $(`button[data-id="${id}"]`).closest('tr').remove();
+            },
+            error: function () {
+                showToast('Error deleting instance');
+            }
+        });
     });
-});
+
 
     $(document).on('click', '.edit-btn', function () {
         const id = $(this).data('id');
@@ -124,11 +129,12 @@ $(document).on('click', '.delete-instance-btn', function () {
             $('#saveFlightBtn').show();
             flightModal.show();
         },
-        error: function (xhr) {
-            showToast(xhr.responseJSON?.error || 'Error retrieving template');
+        error: function () {
+            showToast('Error retrieving template');
         }
         });
     });
+
 
     $('#flightForm').submit(function (e) {
         e.preventDefault();
@@ -169,11 +175,12 @@ $(document).on('click', '.delete-instance-btn', function () {
             flightModal.hide();
             setTimeout(() => location.reload(), 900);
         },
-        error: function (xhr) {
-            showToast(xhr.responseJSON?.error || 'Error saving template');
+        error: function () {
+            showToast('Error saving template');
         }
         });
     });
+
 
     $(document).on('click', '.delete-btn', function () {
         const id = $(this).data('id');
@@ -185,10 +192,10 @@ $(document).on('click', '.delete-instance-btn', function () {
         method: 'DELETE',
         success: function () {
             showToast('Template deleted!', 'success');
-            setTimeout(() => location.reload(), 700);
+            setTimeout(() => location.reload(), 900);
         },
-        error: function (xhr) {
-            showToast(xhr.responseJSON?.error || 'Failed to delete template');
+        error: function () {
+            showToast( 'Failed to delete template');
         }
         });
     });

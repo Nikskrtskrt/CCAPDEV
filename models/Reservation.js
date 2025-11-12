@@ -5,8 +5,8 @@ const reservationSchema = new mongoose.Schema({
     flight:     { type: mongoose.Schema.Types.ObjectId, ref: 'FlightInstance', required: true },
 
     mealType:   { type: String, enum: ['Standard', 'Vegetarian', 'Kosher', 'Halal', 'Vegan'], default: 'Standard' },
-    seatNo:     { type: Number, default: 0 },
-    baggage:    { type: Number, default: 0 }, // added baggage, since the specs had it.
+    seatNo:     { type: String, default: 0 }, //changed to string as requested
+    baggage:    { type: Number, default: 0 }, //in kilos as mentioned by sir
 
     fareClass:  { type: String, enum: ['Economy', 'Business', 'First'], default: 'Economy' },
     totalPrice: { type: Number, required: true },

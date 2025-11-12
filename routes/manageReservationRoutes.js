@@ -6,7 +6,7 @@ const FlightInstance = require('../models/FlightInstance');
 
 router.get('/', async (req, res) => {
     try {
-        const reservations = await Reservation.find({ user: req.user._id })
+        const reservations = await Reservation.find({ user: req.params._id })
             .populate({
                 path: 'flight', 
                 populate: {
