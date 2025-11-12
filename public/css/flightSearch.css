@@ -1,6 +1,57 @@
+.container-fluid {
+    max-width: 1600px;
+    margin: 0 auto;
+}
 
+.row {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Left column - Search form (wider) */
+.col-lg-4 {
+    flex: 0 0 500px;
+    max-width: 1000px;
+}
+
+/* Right column - Results */
+.col-lg-8 {
+    flex: 1;
+    min-width: 0;
+}
+
+.card {
+    padding: 30px;
+}
+
+.card h3 {
+    margin-bottom: 25px;
+}
+
+.mb-3 {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.form-control, .form-select {
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* Flight card styles */
 .flight-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--greyishBlueDark);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 3px 10px black;
 }
 
 .flight-card:hover {
@@ -10,6 +61,8 @@
 
 .flight-card-header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 @media (min-width: 992px) {
@@ -30,6 +83,8 @@ select {
     font-size: 16px;
     font-weight: bold;
     transition: all 0.3s ease;
+    width: auto;
+    padding: 12px 24px;
 }
 
 .select-flight-btn:hover {
@@ -46,10 +101,4 @@ select {
 
 .flight-card h4.text-success {
     color: #28a745 !important;
-}
-
-@media (max-width: 991px) {
-    .card {
-        max-width: 100%;
-    }
 }
