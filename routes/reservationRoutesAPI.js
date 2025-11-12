@@ -5,6 +5,7 @@ const Reservation = require('../models/Reservation');
 const FlightInstance = require('../models/FlightInstance');
 
 const BASE_COST = 500;
+const BASE_WEIGHT = 7;
 const EXTRA_WEIGHT_PER_COST = 10
 const SEAT_PRICES = {
     "window": 50,
@@ -114,7 +115,7 @@ router.post('/:flightNo', async (req, res) => {
             user:           user._id,
             flight:         flightInstance._id,
             mealType:       mealOption,
-            extraBaggage:   extraBaggageWeight,
+            baggage:        BASE_WEIGHT + extraBaggageWeight,
             seatNo:         seatNo,
             fareClass:      'Economy', //TODO: Add more fare classes
             totalPrice:     totalPrice,
