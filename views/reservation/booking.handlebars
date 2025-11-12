@@ -9,24 +9,92 @@
 </head>
 
 <form id="reservationForm">
-    <h1 id="titleContainer" data-flight-no="{{flightInstance.flightNo}}" class="text-center py-3"><b>{{flightInstance.flightNo}} - {{title}}</b></h1>
+    <h1 id="titleContainer" data-flight-no="{{flight.flightNo}}" class="text-center py-3">
+        <b>{{title}}</b>
+    </h1>
 
-    <div class="full-name-container">
-        <label for="firstName" id="labelFirstName">First Name: </label>
-        <input type="text" id="firstName" placeholder="First Name" required></input>
-        <label for="lastName" id="labelLastName">Last Name: </label>
-        <input type="text" id="lastName" placeholder="Last Name" required></input>
+    <div class="row container optional-container">
+
+        <!--
+                {{#if flights.length}}
+                {{#each flights}}
+                <tr>
+                    <td>{{flightNo}}</td>
+                    <td>{{origin}}</td>
+                    <td>{{destination}}</td>
+                    <td>{{departure}}</td>
+                    <td>{{arrival}}</td>
+                    <td>{{aircraft}}</td>
+                    <td>{{capacity}}</td>
+                    <td>
+                        <button class="btn btn-info btn-sm view-btn" data-id="{{_id}}">View</button>
+                        <button class="btn btn-warning btn-sm edit-btn" data-id="{{_id}}">Edit</button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="{{_id}}">Delete</button>
+                    </td>
+                </tr>
+                {{/each}}
+                {{else}}
+                <div class="alert alert-danger">No Flights Found</div>
+                {{/if}}
+            -->
+
+
     </div>
 
-    <div class="email-container">
-        <label for="email" id="labelEmail">Email Address: </label>
-        <input type="email" id="email" placeholder="Email Address" required></input>
-    </div>
-    <div class="passport-number-container">
-        <label for="passportNumber" id="labelPassport">Passport Number: </label>
-        <input type="text" id="passportNumber" placeholder="Passport Number" required></input>
+    <h5 class="py-3 "><b>Flight Details</b></h5>
+    <div id="summary-container">
+
+        <div class="row">
+            <label class="col-2">Origin:</label>
+            <div class="col-2">{{flight.origin}}</div>
+            <label class="col-2">Destination:</label>
+            <div class="col-2">{{flight.destination}}</div>
+        </div>
+        <div class="row">
+            <label class="col-2">Date:</label>
+            <div class="col-2">{{flightInstance.date}}</div>
+            <label class="col-2">Flight No.:</label>
+            <div class="col-2">{{flight.flightNo}}</div>
+        </div>
+        <div class="row">
+            <label class="col-2">Departure:</label>
+            <div class="col-2">{{flight.departure}}</div>
+            <label class="col-2">Arrival:</label>
+            <div class="col-2">{{flight.arrival}}</div>
+        </div>
+        <div class="row">
+            <br />
+            <br />
+        </div>
     </div>
 
+    <h5 class="py-3 "><b>User Details</b></h5>
+    <div class="container">
+        <div class="row full-name-container">
+            <div class="col-3">
+                <label for="firstName" id="labelFirstName">First Name: </label>
+                <input type="text" id="firstName" placeholder="First Name" required></input>
+            </div>
+            <div class="col-3">
+                <label for="lastName" id="labelLastName">Last Name: </label>
+                <input type="text" id="lastName" placeholder="Last Name" required></input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 email-container">
+                <label for="email" id="labelEmail">Email Address: </label>
+                <input type="email" id="email" placeholder="Email Address" required></input>
+            </div>
+            <div class="col-3 passport-number-container">
+                <label for="passportNumber" id="labelPassport">Passport Number: </label>
+                <input type="text" id="passportNumber" placeholder="Passport Number" required></input>
+            </div>
+        </div>
+
+    </div>
+
+
+    <h5 class="py-3 "><br /><br /><b>Packages</b></h5>
     <div class="row container optional-container">
         <div class="col-5">
             <!--Base standard Carry-on is at most 7kg, Extra is at most 32kg-->
@@ -67,7 +135,7 @@
 
 
     <div class="seat-selection-container">
-        <label for="seat-selection" id="labelSeatSelection">Seat Selection:</label>
+        <h5 for="seat-selection" id="labelSeatSelection"><br /><br /><b>Seat Selection:</b></h5>
         <div id="legendContainer" class="container">
             <div class="row justify-content-center">
                 <div class="col-1 legend-color legend-available"></div>
@@ -125,8 +193,9 @@
         </div>
     </div>
 
+
     <div id="summary-container">
-        <label>Summary</label>
+        <h5 class="py-3 "><br /><br /><b>Summary</b></h5>
         <div class="row">
             <div class="col-2">Base Cost</div>
             <div class="col-3 summary-cost" id="summaryBaseCost">$XXX.XX</div>
