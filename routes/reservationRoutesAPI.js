@@ -32,8 +32,11 @@ const MEAL_PRICES = {
 
 //Get existing reservations for flight instance
 router.get('/:flightNo', async (req, res) => {
-    const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo }).lean();
+    const flightNo = req.params.flightNo;
+
+    const flightInstance = await FlightInstance.findOne({ flightNo: flightNo }).lean();
     if (!flightInstance) {
+        console.log('Flight instance not found with flightNo:', flightNo);
         res.status(400).json({ success: false, message: 'Flight instance not found' });
         return
     }
