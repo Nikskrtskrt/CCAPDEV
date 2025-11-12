@@ -39,4 +39,20 @@ router.get('/:flightNo', async (req, res) => {
     }
 });
 
+router.get('/:flightNo/:userId', async (req, res) => {
+    try {
+        //Note: Pass desired FlightInstance data
+        //request.params.flightNo;
+        const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo }).lean();
+
+        res.render('reservation/booking', {
+            title: 'Reservation Form', 
+            flightInstance,
+        });
+
+    } catch(err) {
+        res.status(400).json({ success: false, error: err.message });
+    }
+});
+
 module.exports = router; 
