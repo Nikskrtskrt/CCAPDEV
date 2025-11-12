@@ -58,6 +58,12 @@ const reservationRoutesAPI = require('./routes/reservationRoutesAPI');
 const FlightInstance = require('./models/FlightInstance');
 app.use('/api/reservations', reservationRoutesAPI);
 
+const flightSearchRoutes = require('./routes/flightSearchRoutes');
+app.use('/search', flightSearchRoutes);
+
+const flightSearchAPI = require('./routes/flightSearchAPI');
+app.use('/api/search', flightSearchAPI);
+
 //Home
 app.get('/', (req, res) =>{
     res.render('home', {
