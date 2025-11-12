@@ -18,6 +18,7 @@ const MEAL_PRICES = {
     "Vegetarian": 100,
     "Kosher": 150,
 };
+const URL_DIR = "/api/bookingReservation";
 
 let seatData = {};
 let prevReservations = {};
@@ -289,7 +290,7 @@ $(function () { //Note: Same as $(document).ready(function() {
 
 
         $.ajax({
-            url: `/api/reservations/${flightNo}`,
+            url: `${URL_DIR}/${flightNo}`,
             method: 'POST',
             data: {
                 user: {
@@ -321,7 +322,7 @@ $(function () { //Note: Same as $(document).ready(function() {
     selectMealOptions.on("change", updateSummary);
     inputExtraBaggage.on("input", updateSummary);
     $.ajax({
-        url: `/api/reservations/${flightNo}`,
+        url: `${URL_DIR}/${flightNo}`,
         method: 'GET',
         success: function (data) {
             const flight = data.flight;
