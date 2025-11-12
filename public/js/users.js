@@ -14,7 +14,7 @@ $(document).ready(function () {
         toast.show();
     }
 
-    $('#addUserBtn').on('click', function () {
+    $(document).on('click','#addUserBtn', function () {
         $('#userModalTitle').text('Add New User');
         $('#userForm')[0].reset();
         $('#userId').val('');
@@ -38,7 +38,8 @@ $(document).ready(function () {
                 const reservations = data.reservations;
 
                 $('#viewUserModalTitle').text("User Information");
-                $('#v_fullName').text(user.fullName);
+                $('#v_firstName').text(user.firstName);
+                $('#v_lastName').text(user.lastName);
                 $('#v_email').text(user.email);
                 $('#v_role').text(user.role);
                 $('#v_passportNo').text(user.passportNo);
@@ -91,7 +92,8 @@ $(document).ready(function () {
                 $('#userModalTitle').text('Edit User');
 
                 $('#userId').val(user._id);
-                $('#fullName').val(user.fullName);
+                $('#firstName').val(user.firstName);
+                $('#lastName').val(user.lastName);
                 $('#email').val(user.email);
                 $('#passportNo').val(user.passportNo);
                 $('#role').val(user.role);
@@ -114,7 +116,8 @@ $(document).ready(function () {
         const id = $('#userId').val();
 
         const userData = {
-            fullName: $('#fullName').val(),
+            firstName: $('#firstName').val(),
+            lastName: $('#lastName').val(),
             email: $('#email').val(),
             passportNo: $('#passportNo').val(),
             role: $('#role').val(),
@@ -124,7 +127,7 @@ $(document).ready(function () {
             userData.password = 'Default123';
         }
 
-        if (!userData.fullName || !userData.email || !userData.passportNo) {
+        if (!userData.firstName || !userData.lastName || !userData.email || !userData.passportNo) {
             return showToast('Please fill in all fields');
         }
 
