@@ -5,13 +5,13 @@ const Reservation       = require('../models/Reservation');
 const FlightInstance    = require('../models/FlightInstance');
 const Flight            = require('../models/Flight');
 
-//For Debugging Purposes
-router.get('/', async (req, res) => {
+
+async function handleGetRequest(req, res, flightNo) {
     try {
         //Note: Pass desired FlightInstance data
         //request.params.flightNo;
-        const flight = await Flight.findOne({ flightNo: "FL100" }).lean();
-        const flightInstance = await FlightInstance.findOne({ flightNo: "FL100" });
+        const flight = await Flight.findOne({ flightNo: flightNo }).lean();
+        const flightInstance = await FlightInstance.findOne({ flightNo: flightNo });
         //console.log(flightInstance);
 
         let flightInstanceToPass = flightInstance.toJSON();
@@ -21,45 +21,23 @@ router.get('/', async (req, res) => {
 
         res.render('reservation/booking', {
             title: 'Reservation Form',
-            flight,
+            user: req.session.user,
             flightInstance: flightInstanceToPass,
+            flight,
         });
 
     } catch(err) {
         res.status(400).json({ success: false, error: err.message });
     }
+}
+
+//For Debugging purposes
+router.get('/', async (req, res) => {
+    handleGetRequest(req, res, "FL100");
 });
 
 router.get('/:flightNo', async (req, res) => {
-    try {
-        //Note: Pass desired FlightInstance data
-        //request.params.flightNo;
-        const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo }).lean();
-
-        res.render('reservation/booking', {
-            title: 'Reservation Form', 
-            flightInstance,
-        });
-
-    } catch(err) {
-        res.status(400).json({ success: false, error: err.message });
-    }
-});
-
-router.get('/:flightNo/:userId', async (req, res) => {
-    try {
-        //Note: Pass desired FlightInstance data
-        //request.params.flightNo;
-        const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo }).lean();
-
-        res.render('reservation/booking', {
-            title: 'Reservation Form', 
-            flightInstance,
-        });
-
-    } catch(err) {
-        res.status(400).json({ success: false, error: err.message });
-    }
+    handleGetRequest(req, res, req.params.flightNo);
 });
 
 module.exports = router; 
