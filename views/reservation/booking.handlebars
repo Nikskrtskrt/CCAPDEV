@@ -73,22 +73,22 @@
         
         <div class="row full-name-container">
             <div class="col-3">
-                <label for="firstName" id="labelFirstName">First Name: </label>
-                <input type="text" id="firstName" placeholder="First Name" required></input>
+                <label for="firstName" id="labelFirstName" >First Name: </label>
+                <input type="text" id="firstName" placeholder="First Name" value="{{user.firstName}}" disabled required></input>
             </div>
             <div class="col-3">
                 <label for="lastName" id="labelLastName">Last Name: </label>
-                <input type="text" id="lastName" placeholder="Last Name" required></input>
+                <input type="text" id="lastName" placeholder="Last Name" value="{{user.lastName}}" disabled required></input>
             </div>
         </div>
         <div class="row">
             <div class="col-3 email-container">
                 <label for="email" id="labelEmail">Email Address: </label>
-                <input type="email" id="email" placeholder="Email Address" required></input>
+                <input type="email" id="email" placeholder="Email Address" value="{{user.email}}" disabled required></input>
             </div>
             <div class="col-3 passport-number-container">
                 <label for="passportNumber" id="labelPassport">Passport Number: </label>
-                <input type="text" id="passportNumber" placeholder="Passport Number" required></input>
+                <input type="text" id="passportNumber" placeholder="Passport Number" value="{{user.passportNo}}" disabled required></input>
             </div>
         </div>
 
