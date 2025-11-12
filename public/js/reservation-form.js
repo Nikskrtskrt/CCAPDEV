@@ -17,6 +17,8 @@ const MEAL_PRICES = {
     "Standard": 0,
     "Vegetarian": 100,
     "Kosher": 150,
+    "Halal": 120,
+    "Vegan": 130,
 };
 const URL_DIR = "/api/bookingReservation";
 

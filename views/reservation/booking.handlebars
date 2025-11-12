@@ -42,7 +42,7 @@
     </div>
 
     <h5 class="py-3 "><b>Flight Details</b></h5>
-    <div id="summary-container">
+    <div class="container">
 
         <div class="row">
             <label class="col-2">Origin:</label>
@@ -70,6 +70,7 @@
 
     <h5 class="py-3 "><b>User Details</b></h5>
     <div class="container">
+        
         <div class="row full-name-container">
             <div class="col-3">
                 <label for="firstName" id="labelFirstName">First Name: </label>
@@ -122,13 +123,15 @@
                 </select>
                 -->
         </div>
-        <div class="col-3 meal-options-container">
+        <div class="col-4 meal-options-container">
             <label class="row" for="mealOptions">Meal Options:</label>
             <select class="row" id="mealOptions" name="meal-options">
                 <!--<option value="None" selected>None</option>-->
                 <option value="Standard">Standard</option>
                 <option value="Vegetarian">Vegetarian (+$100)</option>
                 <option value="Kosher">Kosher (+$150)</option>
+                <option value="Halal">Halal (+$120)</option>
+                <option value="Vegan">Vegan (+$130)</option>
             </select>
         </div>
     </div>
@@ -194,8 +197,8 @@
     </div>
 
 
-    <div id="summary-container">
-        <h5 class="py-3 "><br /><br /><b>Summary</b></h5>
+    <h5 class="py-3 "><br/><b>Summary</b></h5>
+    <div class="container" id="summary-container">
         <div class="row">
             <div class="col-2">Base Cost</div>
             <div class="col-3 summary-cost" id="summaryBaseCost">$XXX.XX</div>
