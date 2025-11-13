@@ -41,14 +41,4 @@ router.delete('/api/reservations/:id', async(req,res)=>{
         res.json({success: false});
     }
 });
-
-router.put('/api/reservations/:id', async(req, res)=>{
-    try{
-        await Reservation.findByIdAndUpdate(req.params.id,req.body);
-        res.json({success:true});
-    }catch{
-        res.json({success:false});
-    }
-});
-
 module.exports = router;

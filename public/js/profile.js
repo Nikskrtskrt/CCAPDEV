@@ -29,29 +29,4 @@ $(document).ready(() => {
         }
         });
     });
-
-    $(document).on('click', '.edit-reservation-btn', function () {
-        const row = $(this).closest('tr');
-        const id = row.data('id');
-        const seatNo = prompt('New seat number:', row.find('td:eq(2)').text());
-        const fareClass = prompt('New fare class:', row.find('td:eq(3)').text());
-
-        if (!seatNo || !fareClass) return;
-
-        $.ajax({
-        url: `/api/reservations/${id}`,
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({ seatNo, fareClass }),
-        success: (res) => {
-            if (res.success) {
-            row.find('td:eq(2)').text(seatNo);
-            row.find('td:eq(3)').text(fareClass);
-            showToast('Reservation updated!', 'success');
-            } else {
-            showToast('Failed to update reservation');
-            }
-        }
-        });
-    });
 });
