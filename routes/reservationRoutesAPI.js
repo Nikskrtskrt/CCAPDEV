@@ -106,7 +106,7 @@ router.post('/:flightNo', async (req, res) => {
     try {
         const mealOption = reservationDataSent.mealOption;
         const seatNo = reservationDataSent.seatNo;
-        const extraBaggageWeight = reservationDataSent.extraBaggageWeight;
+        const extraBaggageWeight = parseInt(reservationDataSent.extraBaggageWeight) || 0;
         //const seatInt = seatNo.slice(0, -1).tonumber();
         const seatChar = seatNo.slice(-1).toUpperCase();
         
