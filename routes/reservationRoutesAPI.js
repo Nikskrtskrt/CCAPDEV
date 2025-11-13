@@ -33,10 +33,11 @@ const MEAL_PRICES = {
 //Patch - Update some parts of reservation
 
 //Get existing reservations for flight instance
-router.get('/:flightNo', async (req, res) => {
+router.get('/:flightNo/:date', async (req, res) => {
     const flightNo = req.params.flightNo;
+    const date = new Date(req.params.date);
 
-    const flightInstance = await FlightInstance.findOne({ flightNo: flightNo }).lean();
+    const flightInstance = await FlightInstance.findOne({ flightNo: flightNo, date: date }).lean();
     if (!flightInstance) {
         console.log('Flight instance not found with flightNo:', flightNo);
         res.status(400).json({ success: false, message: 'Flight instance not found' });
@@ -54,7 +55,7 @@ router.get('/user/:userId', async (req, res) => {
 });
 
 //Create new reservation
-router.post('/:flightNo', async (req, res) => {
+router.post('/:flightNo/:date', async (req, res) => {
     console.log('Received reservation post request:', req.body);
 
     //Verify if user exists
@@ -72,7 +73,8 @@ router.post('/:flightNo', async (req, res) => {
     }
 
     //Verify if flight instance exists
-    const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo }).lean();
+    const date = new Date(req.params.date);
+    const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo, date: date }).lean();
     if (!flightInstance) {
         console.log('Flight instance not found with flightNo:', req.params.flightNo);
         res.status(400).json({ success: false, message: 'Flight instance not found' });
