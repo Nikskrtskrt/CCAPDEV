@@ -110,7 +110,7 @@ $(document).on('click', '.edit-btn', function () {
         url: `/api/flights/${id}`,
         method: 'GET',
         success: function (data) {
-            const tpl = data.flight; // ✅ correct structure
+            const tpl = data.flight;
             $('#instancesTable tbody').empty();
 
             $('#modalTitle').text('Edit Flight Template');
