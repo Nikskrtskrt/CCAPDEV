@@ -1,4 +1,5 @@
 const BASE_COST = 500;
+const BASE_WEIGHT = 7;
 const EXTRA_WEIGHT_PER_COST = 10
 const SEAT_PRICES = {
     "window": 50,
@@ -228,7 +229,8 @@ $(function () { //Note: Same as $(document).ready(function() {
             `Passenger: ${firstName} ${lastName}\n` +
             `Seat: ${seatNumber} (${seatType} seat)\n` +
             `Meal Option: ${mealOptionValue}\n` +
-            `Extra Baggage: ${extraBaggageValue ? "Yes" : "No"}\n` +
+            `Extra Baggage: ${extraBaggageValue} kg\n` +
+            `Total Weight: ${parseInt(extraBaggageValue) + BASE_WEIGHT} kg\n` +
             `Total Cost: $${totalCost}\n\n` +
             `(Client Side)`;
 
