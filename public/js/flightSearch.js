@@ -217,7 +217,7 @@ $(document).ready(function () {
                 }
 
                 // REDIRECTION TO RESERVATION PAGE
-                window.location.href = `/reservation/${flightNo}`;
+                window.location.href = `/reservation/${flightNo}/${searchDate}`;
             },
             error: function (xhr) {
                 console.error('Error checking availability:', xhr);
