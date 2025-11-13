@@ -15,7 +15,7 @@ async function handleGetRequest(req, res, flightNo, date) {
         //console.log(flightInstance);
 
         let flightInstanceToPass = flightInstance.toJSON();
-        flightInstanceToPass.date = flightInstance.date.toDateString();
+        flightInstanceToPass.date = flightInstance.date.toLocaleDateString('en-CA');
         
         //console.log(flightInstanceToPass);
 
