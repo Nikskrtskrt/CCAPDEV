@@ -6,12 +6,12 @@ const FlightInstance    = require('../models/FlightInstance');
 const Flight            = require('../models/Flight');
 
 
-async function handleGetRequest(req, res, flightNo) {
+async function handleGetRequest(req, res, flightNo, date) {
     try {
         //Note: Pass desired FlightInstance data
         //request.params.flightNo;
         const flight = await Flight.findOne({ flightNo: flightNo }).lean();
-        const flightInstance = await FlightInstance.findOne({ flightNo: flightNo });
+        const flightInstance = await FlightInstance.findOne({ flightNo: flightNo, date: date  });
         //console.log(flightInstance);
 
         let flightInstanceToPass = flightInstance.toJSON();
@@ -33,11 +33,11 @@ async function handleGetRequest(req, res, flightNo) {
 
 //For Debugging purposes
 router.get('/', async (req, res) => {
-    handleGetRequest(req, res, "FL100");
+    handleGetRequest(req, res, "FL100", 2025-11-30);
 });
 
-router.get('/:flightNo', async (req, res) => {
-    handleGetRequest(req, res, req.params.flightNo);
+router.get('/:flightNo/:date', async (req, res) => {
+    handleGetRequest(req, res, req.params.flightNo, req.params.date);
 });
 
 module.exports = router; 
