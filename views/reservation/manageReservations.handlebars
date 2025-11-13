@@ -1,11 +1,15 @@
-<h2>My Reservations</h2>
-
 <div class="card">
     <div class="card-body">
+        <h4 class = "mb-3">My Reservations</h4>
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Flight No.</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Aircraft</th>
                     <th>Date</th>
                     <th>Seat</th>
                     <th>Meal</th>
@@ -18,7 +22,13 @@
                 {{#each reservations}}
                 <tr>
                     <td>{{this.flight.flightNo}}</td>
-                    <td>{{formatDate this.flight.date}}</td> <td>{{this.seatNo}}</td>
+                    <td>{{this.flight.template.origin}}</td>
+                    <td>{{this.flight.template.destination}}</td>
+                    <td>{{this.flight.template.departure}}</td>
+                    <td>{{this.flight.template.arrival}}</td>
+                    <td>{{this.flight.template.aircraft}}</td>
+                    <td>{{formatDate this.flight.date}}</td>
+                    <td>{{this.seatNo}}</td>
                     <td>{{this.mealType}}</td>
                     <td>{{this.baggage}}</td>
                     <td>
@@ -37,12 +47,15 @@
                                 <i class="bi bi-x-circle-fill"></i> Cancel
                             </button>
                         {{else}}
-                            {{/if}}
+                            <button class="btn btn-danger btn-sm delete-btn" data-id="{{this._id}}">
+                                <i class="bi bi-trash-fill"></i> Delete
+                            </button>
+                        {{/if}}
                     </td>
                 </tr>
                 {{else}}
                 <tr>
-                    <td colspan="7" class="text-center">You have no reservations.</td>
+                    <td colspan="12" class="text-center">You have no reservations.</td>
                 </tr>
                 {{/each}}
             </tbody>

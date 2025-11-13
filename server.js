@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const User  = require('./models/User');
+const Flight = require('./models/Flight');
 const session = require('express-session');
 
 const app = express();
@@ -58,6 +59,12 @@ const reservationRoutesAPI = require('./routes/reservationRoutesAPI');
 const Flight = require('./models/Flight');
 const FlightInstance = require('./models/FlightInstance');
 app.use('/api/bookingReservation', reservationRoutesAPI);
+
+const flightSearchRoutes = require('./routes/flightSearchRoutes');
+app.use('/search', flightSearchRoutes);
+
+const flightSearchAPI = require('./routes/flightSearchAPI');
+app.use('/api/search', flightSearchAPI);
 
 //Home
 app.get('/', (req, res) =>{

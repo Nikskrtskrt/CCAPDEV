@@ -78,4 +78,25 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on('click', '.delete-btn', function () {
+        const id = $(this).data('id');
+        if (!id) return showToast('Invalid reservation ID');
+
+        if (!confirm('Are you sure you want to PERMANENTLY DELETE this reservation? This cannot be undone.')) {
+            return;
+        }
+
+        $.ajax({
+            url: `/api/reservations/${id}`,
+            method: 'DELETE',
+            success: function () {
+                showToast('Reservation deleted successfully!', 'success');
+                setTimeout(() => location.reload(), 700); 
+            },
+            error: function (xhr) {
+                showToast(xhr.responseJSON?.error || 'Failed to delete reservation.');
+            }
+        });
+    });
+
 });

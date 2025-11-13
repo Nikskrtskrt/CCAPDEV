@@ -1,0 +1,72 @@
+<header>
+  <h1><b>Search Flights</b></h1>
+</header>
+
+<main class="container-fluid mt-4">
+  <div class="row g-4">
+    <!-- SEARCH -->
+    <div class="col-lg-4 col-md-5" style="width: 100%;">
+      <div class="card">
+        <h3 class="mb-4">Search Flight</h3>
+        
+        <form id="searchForm">
+          <!-- Origin -->
+          <div class="mb-3">
+            <label for="origin" class="form-label">Origin</label>
+            <select id="origin" class="form-select" required>
+              <option value="">Select Origin</option>
+              {{#each origins}}
+              <option value="{{this}}">{{this}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <!-- Destination -->
+          <div class="mb-3">
+            <label for="destination" class="form-label">Destination</label>
+            <select id="destination" class="form-select" required>
+              <option value="">Select Destination</option>
+            </select>
+          </div>
+
+          <!-- Departure Date -->
+          <div class="mb-3">
+            <label for="departure" class="form-label">Departure Date</label>
+            <input type="date" id="departure" class="form-control" required>
+          </div>
+
+          <!-- Return Date -->
+          <div class="mb-3">
+            <label for="returnDate" class="form-label">Return Date</label>
+            <input type="date" id="returnDate" class="form-control">
+          </div>
+
+          <!-- Passenger Count -->
+          <div class="mb-3">
+            <label for="passengerCount" class="form-label">Passenger Count</label>
+            <input type="number" id="passengerCount" class="form-control" min="1" value="1" required>
+          </div>
+
+          <!-- Search Button -->
+          <button type="submit" class="btn btn-primary w-100 py-2 mt-2">
+            <i class="bi bi-search me-2"></i>Search Flights
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN: Flight Results -->
+    <div class="col-lg-8 col-md-7" style="width: 100%;">
+      <div id="flightResults">
+        <!-- Initial State: Show search prompt -->
+        <div class="text-center text-light py-5">
+          <i class="bi bi-airplane" style="font-size: 4rem; opacity: 0.3;"></i>
+          <h4 class="mt-3" style="opacity: 0.6;">Search for flights to see results</h4>
+          <p style="opacity: 0.5;">Select your origin, destination, and travel dates</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="/js/flightSearch.js"></script>
