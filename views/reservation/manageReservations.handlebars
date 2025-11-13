@@ -55,7 +55,10 @@
                 </tr>
                 {{else}}
                 <tr>
-                    <td colspan="12" class="text-center">You have no reservations.</td>
+                   <td colspan="12" class="text-center">
+                       <p class="mb-3">You have no reservations.</p>
+                       <a href="/search" class="btn btn-primary">Book Now</a>
+                   </td>
                 </tr>
                 {{/each}}
             </tbody>
