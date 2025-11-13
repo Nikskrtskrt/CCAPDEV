@@ -56,7 +56,7 @@ const reservationRoutes = require('./routes/reservationRoutes');
 app.use('/reservation', reservationRoutes);
 
 const reservationRoutesAPI = require('./routes/reservationRoutesAPI');
-const Flight = require('./models/Flight');
+
 const FlightInstance = require('./models/FlightInstance');
 app.use('/api/bookingReservation', reservationRoutesAPI);
 
