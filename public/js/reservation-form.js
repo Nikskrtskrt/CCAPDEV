@@ -33,6 +33,7 @@ function capitalizeAtFirst(str) {
 
 $(function () { //Note: Same as $(document).ready(function() {
     const flightNo = $("#titleContainer").data("flight-no");
+    const date = $("#titleContainer").data("date");
 
     const reservationForm = $("#reservationForm");
 
@@ -292,7 +293,7 @@ $(function () { //Note: Same as $(document).ready(function() {
 
 
         $.ajax({
-            url: `${URL_DIR}/${flightNo}`,
+            url: `${URL_DIR}/${flightNo}/${date}`,
             method: 'POST',
             data: {
                 user: {
@@ -324,7 +325,7 @@ $(function () { //Note: Same as $(document).ready(function() {
     selectMealOptions.on("change", updateSummary);
     inputExtraBaggage.on("input", updateSummary);
     $.ajax({
-        url: `${URL_DIR}/${flightNo}`,
+        url: `${URL_DIR}/${flightNo}/${date}`,
         method: 'GET',
         success: function (data) {
             const flight = data.flight;
