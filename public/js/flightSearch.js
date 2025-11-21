@@ -163,7 +163,7 @@ $(document).ready(function () {
                         <small class="text-warning">${f.flightNo}</small>
                     </div>
                     <div class="text-end">
-                        <h4 class="mb-0 text-success fw-bold">₱${(Math.random() * 50000 + 5000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h4>
+                       <h4 class="mb-0 text-success fw-bold">$500</h4>
                         <small class="text-muted">per person</small>
                     </div>
                 </div>
