@@ -71,7 +71,7 @@
     opacity: 0.6;
 }
 
-/* Enabled state for time dropdown - make it stand out */
+/* Enabled state for time dropdown - stand out */
 .form-select:not(:disabled) {
     background-color: #ffffff;
     color: #000;

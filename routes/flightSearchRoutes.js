@@ -4,10 +4,8 @@ const Flight = require('../models/Flight');
 
 router.get('/', async (req, res) => {
     try {
-        // Get all active flights to extract unique origins
+        //Get all active flights to extract unique origins
         const flights = await Flight.find({ active: true }).lean();
-        
-        // Extract unique origins
         const origins = [...new Set(flights.map(f => f.origin))];
         
         res.render('flightSearch', { 

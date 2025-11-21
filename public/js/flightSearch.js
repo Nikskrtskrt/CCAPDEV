@@ -3,17 +3,17 @@ $(document).ready(function () {
     let searchDate = null;
     let availableTimes = [];
 
-    // When origin changes, populate destinations
+    //When origin changes, populate destinations
     $('#origin').on('change', function () {
         const origin = $(this).val();
         
-        // Reset dependent fields
+        //Reset dependent fields
         $('#destination').html('<option value="">Select Destination</option>');
         $('#departureTime').html('<option value="">Select a date first</option>').prop('disabled', true);
         
         if (!origin) return;
 
-        // Get destinations for selected origin
+        //Get destinations for selected origin
         $.ajax({
             url: `/api/search/destinations?origin=${origin}`,
             method: 'GET',
@@ -30,12 +30,12 @@ $(document).ready(function () {
         });
     });
 
-    // When destination changes, reset time dropdown TO NOTHING
+    //When destination changes, reset time dropdown TO NOTHING
     $('#destination').on('change', function () {
         $('#departureTime').html('<option value="">Select a date first</option>').prop('disabled', true);
     });
 
-    // When date changes, get any available departure times
+    //When date changes, get any available departure times
     $('#departure').on('change', function () {
         const origin = $('#origin').val();
         const destination = $('#destination').val();
@@ -54,7 +54,7 @@ $(document).ready(function () {
 
         $('#departureTime').html('<option value="">Loading times...</option>').prop('disabled', true);
 
-        // GET available times for this route and date
+        //GET available times for this route and date
         $.ajax({
             url: `/api/search/times?origin=${origin}&destination=${destination}&date=${searchDate}`,
             method: 'GET',
@@ -82,7 +82,7 @@ $(document).ready(function () {
         });
     });
 
-    // This handles the search form submission
+    //This handles the search form submission
     $('#searchForm').on('submit', function (e) {
         e.preventDefault();
 
@@ -106,7 +106,7 @@ $(document).ready(function () {
             return;
         }
 
-        // Finds the selected flight from available times
+        //Finds the selected flight from available times
         const selectedFlight = availableTimes.find(f => f.flightNo === selectedFlightNo);
         
         if (!selectedFlight) {
@@ -138,7 +138,7 @@ $(document).ready(function () {
             Selected Flight
         </h4>`);
 
-        // Rendering the flight card
+        //Rendering the flight card
         $.each(list, function (i, f) {
             const departureTime = new Date(f.departureTime).toLocaleTimeString('en-US', { 
                 hour: '2-digit', 
@@ -163,7 +163,7 @@ $(document).ready(function () {
                         <small class="text-warning">${f.flightNo}</small>
                     </div>
                     <div class="text-end">
-                        <h4 class="mb-0 text-success fw-bold">₱${(Math.random() * 50000 + 5000).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</h4>
+                       <h4 class="mb-0 text-success fw-bold">$500</h4>
                         <small class="text-muted">per person</small>
                     </div>
                 </div>
@@ -226,12 +226,12 @@ $(document).ready(function () {
         });
     }
 
-    // Handles flight selection
+    //Handles flight selection
     $(document).on("click", ".select-flight-btn", function () {
         const $btn = $(this);
         const originalText = $btn.html();
 
-        // shows loading
+        //shows loading
         $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Checking availability...');
 
         const flightNo = $btn.data("flight-no");
@@ -249,21 +249,21 @@ $(document).ready(function () {
             return;
         }
 
-        // Checks if there are available seats
+        //Checks if there are available seats
         if (flight.availableSeats <= 0) {
             alert('Sorry, this flight is fully booked.');
             $btn.prop('disabled', false).html(originalText);
             return;
         }
 
-        // Check if flight instance is available (not cancelled)
+        //Check if flight instance is available (not cancelled)
         if (flight.status === 'Cancelled') {
             alert(`This flight has been cancelled for ${new Date(searchDate).toLocaleDateString()}`);
             $btn.prop('disabled', false).html(originalText);
             return;
         }
 
-        // REDIRECTION TO RESERVATION PAGE
+        //REDIRECTION TO RESERVATION PAGE
         window.location.href = `/reservation/${flightNo}/${searchDate}`;
     });
 });
