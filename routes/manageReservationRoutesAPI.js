@@ -1,19 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const Reservation = require('../models/Reservation');
+const FlightInstance = require('../models/FlightInstance');
 
-router.get('/:userId', async (req, res) => {
+router.get('/user', async (req, res) => {
     try {
-        const reservation = await Reservation.find({
-            user: req.params.userId
-        });
+        const reservations = await Reservation.find({
+            user: req.session.user._id
+        }).lean();
+
+        const flighIds = reservations.map(reservation => reservation.flight);
+        const flights = await FlightInstance.find({
+            _id: { "$in": flighIds }
+        }).lean();
 
         /*
         if (!reservation) {
             return res.status(404).json({ error: 'Reservation not found' });
         }
         */
-        res.json(reservation);
+        res.json( {reservations: reservations, flights: flights} );
     } catch (err) {
         res.status(500).json({ error: 'Server error' });
     }
