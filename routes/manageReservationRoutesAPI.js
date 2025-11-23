@@ -8,9 +8,11 @@ router.get('/:userId', async (req, res) => {
             user: req.params.userId
         });
 
+        /*
         if (!reservation) {
             return res.status(404).json({ error: 'Reservation not found' });
         }
+        */
         res.json(reservation);
     } catch (err) {
         res.status(500).json({ error: 'Server error' });
