@@ -17,16 +17,18 @@ $(document).ready(() => {
         if (!confirm('Delete this reservation?')) return;
 
         $.ajax({
-        url: `/api/reservations/${id}`,
-        method: 'DELETE',
-        success: (res) => {
-            if (res.success) {
-            row.remove();
-            showToast('Reservation deleted!', 'success');
-            } else {
-            showToast('Failed to delete reservation');
+            url: `/api/reservations/${id}`,
+            method: 'DELETE',
+            success: (res) => {
+                if (res.success) {
+                    row.remove();
+                    showToast('Reservation deleted!', 'success');
+                } else {
+                    showToast('Failed to delete reservation');
+                }
             }
-        }
         });
     });
+
+
 });
