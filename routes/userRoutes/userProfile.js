@@ -7,16 +7,24 @@ const FlightInstance= require('../../models/FlightInstance');
 
 router.get('/profile', async(req ,res) =>{
     if(!req.session.user) return res.redirect('/login');
-
+    
     const user = await User.findById(req.session.user._id).lean();
-    const reservations = await Reservation.find({user: req.session._id})
+    /*
+    const reservations = await Reservation.find({user: req.session.user._id})
         .populate('flight')
         .lean();
 
+    
+    // console.log('Current User logged in:');
+    // console.log(req.session.user);
+    console.log('Reservation for User: ' + req.session.user._id);
+    console.log(reservations);
+    */
+    
     res.render('userViews/viewProfile',{
         title: 'User Profile', 
         user,
-        reservations
+        //reservations
     }); 
 });
 

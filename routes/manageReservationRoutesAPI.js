@@ -2,11 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Reservation = require('../models/Reservation');
 
-router.get('/:id', async (req, res) => {
+router.get('/:userId', async (req, res) => {
     try {
-        const reservation = await Reservation.findOne({
-            _id: req.params.id,
-            user: req.user._id
+        const reservation = await Reservation.find({
+            user: req.params.userId
         });
 
         if (!reservation) {
