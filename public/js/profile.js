@@ -39,13 +39,27 @@ $(document).ready(() => {
                 .append( $("<td>").append(seatNo) )
                 .append( $("<td>").append(fareClass) )
                 .append( $("<td>").append(totalPrice) )
-                .append( $("<td>").append(status) )
                 .append( $("<td>")
-                    .addClass("btn btn-sm btn-danger delete-reservation-btn")
-                    .append("Delete")
+                    .append(status)
+                    .attr('id', curReservation._id + '_status')
+                )
+                .append( $("<td>")
+                    .append( $("<button>")
+                        .attr('id', curReservation._id + '_button')
+                        .addClass("btn btn-sm btn-danger delete-reservation-btn")
+                        .append("Cancel")
+                    ) 
                 );
             
             reservationTableBody.append(tr);
+
+            if (status == "Cancelled") {
+                console.log("Cancelled booking detected");
+                const button = $(`#${curReservation._id}_button`);
+                button.hide()
+            }
+
+            
 
             /*
             <tr data-id="{{_id}}">
@@ -70,15 +84,30 @@ $(document).ready(() => {
         const row = $(this).closest('tr');
         const id = row.data('id');
 
-        if (!confirm('Delete this reservation?')) return;
+        const isConfirmed = confirm("Cancel this reservation?")
+        if (!isConfirmed) {
+            console.log("User did not cancel");
+            return;
+        }
+        console.log("User choose cancelled");
 
         $.ajax({
-            url: `/api/reservations/${id}`,
-            method: 'DELETE',
+            url: `/api/bookingReservation/${id}`,
+            //method: 'DELETE',
+            method: 'PATCH',
             success: (res) => {
                 if (res.success) {
-                    row.remove();
-                    showToast('Reservation deleted!', 'success');
+                    showToast('Reservation Cancelled!', 'success');
+                    //const statusLabel = $("#" + id + "_status");
+                    const statusLabel = $(`#${id}_status`)
+                    //statusLabel.innerHtml = "Cancelled"
+                    statusLabel.empty()
+                    statusLabel.append("Cancelled")
+
+                    //const button = $("#" + id + "_button");
+                    const button = $(`#${id}_button`);
+                    button.hide()
+
                 } else {
                     showToast('Failed to delete reservation');
                 }
