@@ -111,21 +111,21 @@ router.post('/:flightNo/:date', async (req, res) => {
         const extraBaggageWeight = parseInt(reservationDataSent.extraBaggageWeight) || 0;
         //const seatInt = seatNo.slice(0, -1).tonumber();
         const seatChar = seatNo.slice(-1).toUpperCase();
-        
+
         let totalPrice = BASE_COST;
         totalPrice += SEAT_PRICES[SEAT_TYPE[seatChar]] || 0;
         totalPrice += MEAL_PRICES[mealOption] || 0;
         totalPrice += extraBaggageWeight * EXTRA_WEIGHT_PER_COST;
-        
+
 
         const newReservation = new Reservation({
-            user:           user._id,
-            flight:         flightInstance._id,
-            mealType:       mealOption,
-            baggage:        BASE_WEIGHT + extraBaggageWeight,
-            seatNo:         seatNo,
-            fareClass:      'Economy', //TODO: Add more fare classes
-            totalPrice:     totalPrice,
+            user: user._id,
+            flight: flightInstance._id,
+            mealType: mealOption,
+            baggage: BASE_WEIGHT + extraBaggageWeight,
+            seatNo: seatNo,
+            fareClass: 'Economy', //TODO: Add more fare classes
+            totalPrice: totalPrice,
         });
         await newReservation.save();
         console.log('Reservation created successfully for user:', user._id);
@@ -137,10 +137,63 @@ router.post('/:flightNo/:date', async (req, res) => {
 });
 
 
-//TODO: Do patch method
 //Updates reservation info
 router.patch('/:reservationId', async (req, res) => {
-    //If already cancelled, do not update
+    console.log("Reservation Cancel Attempt");
+
+    //Verify if it is an existing flight
+    const reservationId = req.params.reservationId;
+    const existingReservation = await Reservation.findById(reservationId);
+    if (!existingReservation) {
+        console.log('Reservation not found');
+        res.status(400).json({ success: false, message: 'Reservation not found' });
+        return
+    }
+
+    //Verify if it is an upcoming flight
+    const flightInstance = await FlightInstance.findById(existingReservation.flight);
+    if (!flightInstance) {
+        console.log('Flight not found');
+        res.status(400).json({ success: false, message: 'Flight not found' });
+        return
+    }
+
+    const now = Date.now();
+    const flightDate = flightInstance.date;
+    const flightTime = flightInstance.departureTime;
+    console.log(typeof flightTime);
+    
+    //const timeParts = flightTime.split(':');
+    const hours = flightTime.getHours();
+    const mins = flightTime.getMinutes();
+    flightDate.setHours(hours, mins, 0, 0);
+    if (flightDate.getTime() < now) {
+        console.log("User can not cancel a past flight");
+        res.status(400).json({ success: false, message: 'User can not cancel a past flight' });
+        return
+    }
+
+    //Verify if it is not cancelled already
+    const status = existingReservation.status;
+    if (status == "Cancelled") {
+        console.log("User can not cancel an already cancelled flight");
+        res.status(400).json({ success: false, message: 'User can not cancel an already cancelled flight' });
+        return;
+    }
+
+    try {
+        const reservationToUpdate = await Reservation.findByIdAndUpdate(reservationId, {
+            status: 'Cancelled'
+        })
+        await reservationToUpdate.save()
+
+        console.log('Reservation cancelled successfully');
+        res.status(201).json({ success: true, message: 'Reservation cancelled!' });
+
+    } catch {
+        console.error('Failed to cancel a flight:', err.message);
+        res.status(400).json({ success: false, error: err.message });
+    }
 });
 
 module.exports = router; 
