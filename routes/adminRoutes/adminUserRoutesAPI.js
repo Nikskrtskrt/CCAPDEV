@@ -1,12 +1,24 @@
 const express = require('express');
 const router = express.Router();
-
+const bcrypt = require('bcrypt');
 const User = require('../../models/User');
 const Reservation = require('../../models/Reservation');
 
 router.post('/', async (req, res) => {
     try {
-        const user = new User(req.body);
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
+
+        const plainPassword = req.body.password || 'Default123';
+        const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+        const userData = {
+            ...req.body,
+            password: hashedPassword 
+        };
+
+        const user = new User(userData);
         await user.save();
 
         res.status(201).json({
@@ -21,6 +33,10 @@ router.post('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
+
         const user = await User.findById(req.params.id).lean();
         const reservations = await Reservation.find({ user: req.params.id })
             .populate('flight')
@@ -34,6 +50,10 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
+
         await User.findByIdAndUpdate(req.params.id, req.body);
         res.json({ success: true });
     } catch (err) {
@@ -43,6 +63,9 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
         await User.findByIdAndDelete(req.params.id);
         await Reservation.deleteMany({ user: req.params.id });
 

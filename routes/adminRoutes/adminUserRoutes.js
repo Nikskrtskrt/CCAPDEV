@@ -6,6 +6,10 @@ const Reservation = require('../../models/Reservation');
 
 router.get('/', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
+
         const users = await User.find().lean();
         res.render('admin/users/list', {
             title: 'User Management',

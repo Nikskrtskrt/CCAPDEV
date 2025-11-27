@@ -5,6 +5,11 @@ const FlightInstance = require('../models/FlightInstance');
 
 router.get('/user', async (req, res) => {
     try {
+        if (!req.session.user) {
+            return res.redirect('/login');
+        }
+
+
         const reservations = await Reservation.find({
             user: req.session.user._id
         }).lean();
@@ -27,6 +32,10 @@ router.get('/user', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
+        if (!req.session.user) {
+            return res.redirect('/login');
+        }
+
         const { mealType, seatNo, baggage } = req.body;
 
         const updatedReservation = await Reservation.findOneAndUpdate(
@@ -53,6 +62,12 @@ router.put('/:id', async (req, res) => {
 
 router.put('/:id/cancel', async (req, res) => {
     try {
+
+        if (!req.session.user) {
+            return res.redirect('/login');
+        }
+
+
         const cancelledReservation = await Reservation.findOneAndUpdate(
             { _id: req.params.id, user: req.user._id },
             { $set: { status: 'Cancelled' } },
@@ -71,6 +86,12 @@ router.put('/:id/cancel', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
+
+        if (!req.session.user) {
+            return res.redirect('/login');
+        }   
+
+
         const deletedReservation = await Reservation.findOneAndDelete({
             _id: req.params.id,
             user: req.user._id 
@@ -87,7 +108,5 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
-
-module.exports = router;
 
 module.exports = router;

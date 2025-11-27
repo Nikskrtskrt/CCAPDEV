@@ -5,6 +5,10 @@ const FlightInstance = require('../../models/FlightInstance');
 
 router.post('/', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
+
         const flight = new Flight(req.body);
         await flight.save();
 
@@ -51,6 +55,10 @@ router.post('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
+
         const flight = await Flight.findById(req.params.id).lean();
         const instances = await FlightInstance.find({ template: flight._id }).lean();
         res.json({ flight, instances });
@@ -61,6 +69,10 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
+
         await Flight.findByIdAndUpdate(req.params.id, req.body);
         res.json({ success: true });
     } catch {
@@ -70,6 +82,9 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
         await Flight.findByIdAndDelete(req.params.id);
         await FlightInstance.deleteMany({ template: req.params.id });
         res.json({ success: true });
@@ -80,6 +95,9 @@ router.delete('/:id', async (req, res) => {
 
 router.delete('/instance/:id', async (req, res) => {
     try {
+        if (!req.session.user || req.session.user.role !== 'Admin') {
+            return res.redirect('/login');
+        }
         await FlightInstance.findByIdAndDelete(req.params.id);
         res.json({ success: true });
     } catch {
