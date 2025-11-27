@@ -13,7 +13,7 @@ describe("Testing User Profile Actions", () => {
     });
     */
    
-    test("Testing log in", async () => { // Added async
+    test("Testing log in with valid input", async () => { // Added async
         const loginData = {
             email: "registering@sample.com",
             password: "1234"
@@ -25,5 +25,18 @@ describe("Testing User Profile Actions", () => {
 
         //console.log("Redirect Status: ", result.status);
         expect(result.statusCode).toBe(302); //302 because redirect
+    });
+
+    test("Testing log in with invalid input", async () => { // Added async
+        const loginData = {
+            email: "registering@sample.com",
+            password: "guessed"
+        };
+
+        const result = await agent
+            .post("/login") // Added endpoint
+            .send(loginData);
+
+        expect(result.statusCode).toBe(200); //200 because it sent a render to say invalid
     });
 })
