@@ -1,0 +1,80 @@
+<header class="text-center py-5">
+    <h1 class="display-4 fw-bold text-light mb-3">Search Flights</h1>
+    <p class="lead text-secondary mb-4">Find the best flights for your next trip</p>
+</header>
+
+<main class="container my-5">
+    <section class="row g-4 justify-content-center">
+
+        <!-- SEARCH CARD -->
+        <div class="col-lg-5 col-md-7">
+            <div class="card border-primary shadow h-100">
+                <div class="card-body p-5">
+
+                    <h3 class="display-6 text-center mb-4">✈️ Search Flight</h3>
+
+                    <form id="searchForm" class="d-flex flex-column gap-3">
+
+                        <!-- Origin -->
+                        <div>
+                            <label for="origin" class="form-label fw-semibold">Origin</label>
+                            <select id="origin" class="form-select" required>
+                                <option value="">Select Origin</option>
+                                {{#each origins}}
+                                    <option value="{{this}}">{{this}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+
+                        <!-- Destination -->
+                        <div>
+                            <label for="destination" class="form-label fw-semibold">Destination</label>
+                            <select id="destination" class="form-select" required>
+                                <option value="">Select Destination</option>
+                            </select>
+                        </div>
+
+                        <!-- Departure Date -->
+                        <div>
+                            <label for="departure" class="form-label fw-semibold">Departure Date</label>
+                            <input type="date" id="departure" class="form-control" required>
+                        </div>
+
+                        <!-- Departure Time -->
+                        <div>
+                            <label for="departureTime" class="form-label fw-semibold">Departure Time</label>
+                            <select id="departureTime" class="form-select" required disabled>
+                                <option value="">Select a date first</option>
+                            </select>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-lg mt-3 w-100">
+                            <i class="bi bi-search me-2"></i>
+                            Search Flights
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+      <!-- RIGHT COLUMN — FLIGHT RESULTS -->
+      <div class="col-lg-8 col-md-7">
+        <div id="flightResults">
+
+          <!-- Initial State Message -->
+          <div class="text-center text-light py-5">
+            <i class="bi bi-airplane" style="font-size: 4rem; opacity: 0.3;"></i>
+            <h4 class="mt-3" style="opacity: 0.6;">Search for flights to see results</h4>
+            <p style="opacity: 0.5;">Select your origin, destination, and travel dates</p>
+          </div>
+
+        </div>
+      </div>
+
+
+    </section>
+</main>
+
+<script src="/js/flightSearch.js"></script>

@@ -1,6 +1,7 @@
 $(document).ready(() => {
     const toastEl = $('#toastMsg');
     const toast = new bootstrap.Toast(toastEl[0]);
+    const reservationTableBody = $('#reservationTableBody');
 
     function showToast(msg, type = 'danger') {
         $('#toastMsg')
@@ -10,6 +11,47 @@ $(document).ready(() => {
         toast.show();
     }
 
+    function initializeReservations(arrReservations, arrFlights) {
+        if (arrReservations.length == 0) {
+            return
+        }
+
+        reservationTableBody.empty();
+
+        for (i = 0; i < arrReservations.length; i++) {
+            const curReservation = arrReservations[i];
+            const curFlight = arrFlights.find(flight => flight._id == curReservation.flight)
+            console.log("Current Reservation: ", curReservation);
+            console.log("Current Flight: ", curFlight);
+            console.log("Current Reservation Id: ", curReservation._id);
+
+            const flightNo = curFlight.flightNo;
+            const flightDate = curFlight.date;
+            const seatNo = curReservation.seatNo;
+            const fareClass = curReservation.fareClass;
+            const totalPrice = curReservation.totalPrice;
+            const status = curReservation.status;
+            
+            const tr = $("<tr>")
+                .data("id", curReservation._id)
+                .append( $("<td>").append(flightNo) )
+                .append( $("<td>").append(flightDate) )
+                .append( $("<td>").append(seatNo) )
+                .append( $("<td>").append(fareClass) )
+                .append( $("<td>").append(totalPrice) )
+                .append( $("<td>").append(status) )
+                .append( $("<td>")
+                    .addClass("btn btn-sm btn-danger delete-reservation-btn")
+                    .append("Delete")
+                );
+            
+            reservationTableBody.append(tr);
+
+            
+        }
+
+    }
+
     $(document).on('click', '.delete-reservation-btn', function () {
         const row = $(this).closest('tr');
         const id = row.data('id');
@@ -17,41 +59,29 @@ $(document).ready(() => {
         if (!confirm('Delete this reservation?')) return;
 
         $.ajax({
-        url: `/api/reservations/${id}`,
-        method: 'DELETE',
-        success: (res) => {
-            if (res.success) {
-            row.remove();
-            showToast('Reservation deleted!', 'success');
-            } else {
-            showToast('Failed to delete reservation');
+            url: `/api/reservations/${id}`,
+            method: 'DELETE',
+            success: (res) => {
+                if (res.success) {
+                    row.remove();
+                    showToast('Reservation deleted!', 'success');
+                } else {
+                    showToast('Failed to delete reservation');
+                }
             }
-        }
         });
     });
 
-    $(document).on('click', '.edit-reservation-btn', function () {
-        const row = $(this).closest('tr');
-        const id = row.data('id');
-        const seatNo = prompt('New seat number:', row.find('td:eq(2)').text());
-        const fareClass = prompt('New fare class:', row.find('td:eq(3)').text());
+    $.ajax({
+        url: `/api/reservations/user`,
+        method: 'GET',
+        success: function (data) {
+            console.log(`Data Got:\n`, data);
 
-        if (!seatNo || !fareClass) return;
-
-        $.ajax({
-        url: `/api/reservations/${id}`,
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({ seatNo, fareClass }),
-        success: (res) => {
-            if (res.success) {
-            row.find('td:eq(2)').text(seatNo);
-            row.find('td:eq(3)').text(fareClass);
-            showToast('Reservation updated!', 'success');
-            } else {
-            showToast('Failed to update reservation');
-            }
+            initializeReservations(data.reservations, data.flights)
+        },
+        error: function (xhr) {
+            console.error('Error fetching reservation data:', xhr.responseText);
         }
-        });
     });
 });

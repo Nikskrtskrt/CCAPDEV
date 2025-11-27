@@ -1,0 +1,191 @@
+.container-fluid {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Left column - Search form */
+.col-lg-4 {
+    flex: 0 0 400px;
+    max-width: 400px;
+}
+
+/* Right column - Results */
+.col-lg-8 {
+    flex: 1;
+    min-width: 0;
+}
+
+.card {
+    padding: 30px;
+}
+
+.card h3 {
+    margin-bottom: 25px;
+}
+
+.mb-3 {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.form-control, .form-select {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #495057;
+}
+
+.form-control {
+    background-color: #dddddd;
+    color: #333;
+}
+
+.form-control:focus {
+    background-color: #ffffff;
+    border-color: #007bff;
+    outline: none;
+}
+
+.form-select {
+    background-color: #dddddd;
+    color: #333;
+}
+
+/* Disabled state for time dropdown */
+.form-select:disabled {
+    background-color: #495057;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Enabled state for time dropdown - stand out */
+.form-select:not(:disabled) {
+    background-color: #ffffff;
+    color: #000;
+    font-weight: 500;
+}
+
+/* Flight card styles */
+.flight-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--greyishBlueDark);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 3px 10px black;
+}
+
+.flight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+.flight-card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+/* Sticky search form on larger screens */
+@media (min-width: 992px) {
+    .col-lg-4 .card {
+        position: sticky;
+        top: 76px;
+    }
+}
+
+/* Time selection emphasis */
+#departureTime {
+    font-weight: 500;
+}
+
+#departureTime option:not(:first-child) {
+    padding: 10px;
+}
+
+/* Primary search button */
+.btn-primary {
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3 !important;
+    border-color: #0056b3 !important;
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+/* Select flight button */
+.select-flight-btn {
+    background: #28a745 !important; 
+    color: white !important;
+    font-size: 16px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    width: 100%;
+    padding: 12px 24px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+}
+
+.select-flight-btn:hover:not(:disabled) {
+    background: #218838 !important; 
+    transform: translateY(-2px);
+    box-shadow: 0px 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.select-flight-btn:disabled {
+    background: #6c757d !important;
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.6;
+}
+
+.flight-card h4.text-success {
+    color: #28a745 !important;
+}
+
+/* Available seats indicator */
+.flight-card small.text-muted {
+    font-size: 0.9rem;
+}
+
+.flight-card small.text-muted strong {
+    color: #fff;
+}
+
+/* Loading spinner in button */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.15em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .col-lg-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .row {
+        flex-direction: column;
+    }
+}

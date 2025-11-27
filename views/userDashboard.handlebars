@@ -1,26 +1,61 @@
 <header class="text-center py-5">
-    <h1 class="display-3 fw-bold text-light mb-3">Welcome, {{user.firstName}}!</h1>
-    <p class="lead text-secondary mb-4">Choose what you’d like to do today</p>
+    <h1 class="display-3 fw-bold text-light mb-3">Welcome, {{user.firstName}}!</h1> 
+    <p class="lead text-secondary mb-4">Choose what you’d like to do today</p> 
 </header>
 
 <main class="container my-5">
-    <section class="row g-4 text-center justify-content-center">
+    <section class="row g-4 justify-content-center">
+
         <div class="col-md-4">
-            <a href="/searchFlights" class="btn btn-outline-primary btn-lg w-100 h-100 py-5 shadow text-light">
-                ✈️Search Flights
-            </a>
+            <div class="card border-primary shadow h-100">
+                <div class="card-body text-center d-flex flex-column justify-content-between p-5">
+                    <div>
+                        <h3 class="card-title display-6">✈️</h3>
+                        <h4 class="card-title mb-3">Search Flights</h4>
+                        <p class="card-text text-white-50">
+                            Find and book your next adventure. Search for domestic and international flights.
+                        </p>
+                    </div>
+                    <a href="/search" class="btn btn-primary btn-lg mt-4">
+                        Search Now
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-4">
-            <a href="/profile" class="btn btn-outline-success btn-lg w-100 py-5 shadow">
-                😊View / Edit Profile
-            </a>
+            <div class="card border-success shadow h-100">
+                <div class="card-body text-center d-flex flex-column justify-content-between p-5">
+                    <div>
+                        <h3 class="card-title display-6">😊</h3>
+                        <h4 class="card-title mb-3">My Profile</h4>
+                        <p class="card-text text-white-50">
+                            Update your personal information, manage preferences, and view your account details.
+                        </p>
+                    </div>
+                    <a href="/profile" class="btn btn-success btn-lg mt-4"> 
+                        View Profile
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-4">
-            <a href="/reservations" class="btn btn-outline-warning btn-lg w-100 py-5 shadow">
-                📃My Reservations
-            </a>
+            <div class="card border-warning shadow h-100">
+                <div class="card-body text-center d-flex flex-column justify-content-between p-5">
+                    <div>
+                        <h3 class="card-title display-6">📃</h3>
+                        <h4 class="card-title mb-3">My Reservations</h4>
+                        <p class="card-text text-white-50">
+                            View your upcoming trips, manage existing bookings, delete cancelled flights, or see past itineraries.
+                        </p>
+                    </div>
+                    <a href="/reservations" class="btn btn-warning btn-lg mt-4 text-dark">
+                        View Bookings
+                    </a>
+                </div>
+            </div>
         </div>
+
     </section>
 </main>

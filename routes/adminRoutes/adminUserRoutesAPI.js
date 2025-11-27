@@ -1,12 +1,20 @@
 const express = require('express');
 const router = express.Router();
-
+const bcrypt = require('bcrypt');
 const User = require('../../models/User');
 const Reservation = require('../../models/Reservation');
 
 router.post('/', async (req, res) => {
     try {
-        const user = new User(req.body);
+        const plainPassword = req.body.password || 'Default123';
+        const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+        const userData = {
+            ...req.body,
+            password: hashedPassword 
+        };
+
+        const user = new User(userData);
         await user.save();
 
         res.status(201).json({

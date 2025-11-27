@@ -14,6 +14,7 @@ $(document).ready(function () {
 
 
     $(document).on('click', '#addFlightBtn', function () {
+        $('#instancesTable tbody').empty();
         $('#modalTitle').text('Add Flight Template');
         $('#flightForm')[0].reset();
         $('#flightId').val('');
@@ -34,6 +35,8 @@ $(document).ready(function () {
             success: function (data) {
                 const tpl = data.flight;
                 const instances = data.instances;
+
+                $('#instancesTable tbody').empty();
 
                 $('#modalTitle').text('View Flight Template');
                 $('#flightId').val(tpl._id);
@@ -81,7 +84,6 @@ $(document).ready(function () {
         });
     });
 
-
     $(document).on('click', '.delete-instance-btn', function () {
         const id = $(this).data('id');
         if (!confirm('Delete this flight instance?')) return;
@@ -100,14 +102,17 @@ $(document).ready(function () {
     });
 
 
-    $(document).on('click', '.edit-btn', function () {
-        const id = $(this).data('id');
-        if (!id) return showToast('Invalid id');
+$(document).on('click', '.edit-btn', function () {
+    const id = $(this).data('id');
+    if (!id) return showToast('Invalid id');
 
-        $.ajax({
+    $.ajax({
         url: `/api/flights/${id}`,
         method: 'GET',
-        success: function (tpl) {
+        success: function (data) {
+            const tpl = data.flight;
+            $('#instancesTable tbody').empty();
+
             $('#modalTitle').text('Edit Flight Template');
             $('#flightId').val(tpl._id);
             $('#flightNo').val(tpl.flightNo || '');
@@ -122,7 +127,7 @@ $(document).ready(function () {
 
             $('input[name="daysOfWeek"]').prop('checked', false);
             (tpl.daysOfWeek || []).forEach(day => {
-            $(`input[name="daysOfWeek"][value="${day}"]`).prop('checked', true);
+                $(`input[name="daysOfWeek"][value="${day}"]`).prop('checked', true);
             });
 
             $('input, select').prop('disabled', false);
@@ -132,9 +137,8 @@ $(document).ready(function () {
         error: function () {
             showToast('Error retrieving template');
         }
-        });
     });
-
+});
 
     $('#flightForm').submit(function (e) {
         e.preventDefault();

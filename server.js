@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const User  = require('./models/User');
+const Flight = require('./models/Flight');
 const session = require('express-session');
 
 const app = express();
@@ -20,9 +21,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(session({
-    secret: 'dummyLoginSecret',
+    secret: 'IHateVibeCodersWithAllMyBeing',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 24 //24 hours
+    } 
 }));
 
 //routes
@@ -50,6 +56,20 @@ app.use('/api/users', adminUserRoutesAPI);
 
 const manageReservationRoutesAPI = require('./routes/manageReservationRoutesAPI');
 app.use('/api/reservations', manageReservationRoutesAPI);
+
+const reservationRoutes = require('./routes/reservationRoutes');
+app.use('/reservation', reservationRoutes);
+
+const reservationRoutesAPI = require('./routes/reservationRoutesAPI');
+
+const FlightInstance = require('./models/FlightInstance');
+app.use('/api/bookingReservation', reservationRoutesAPI);
+
+const flightSearchRoutes = require('./routes/flightSearchRoutes');
+app.use('/search', flightSearchRoutes);
+
+const flightSearchAPI = require('./routes/flightSearchAPI');
+app.use('/api/search', flightSearchAPI);
 
 //Home
 app.get('/', (req, res) =>{

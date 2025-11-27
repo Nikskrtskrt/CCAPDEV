@@ -2,11 +2,9 @@
     <div class="card shadow-lg p-5 text-light bg-dark" style="width: 400px;">
         <h2 class="text-center mb-4">Login</h2>
 
-        {{#if error}}
-        <div class="alert alert-danger text-center">{{error}}</div>
-        {{/if}}
+        <div id="loginError" class="alert alert-danger text-center" style="display: none;"></div>
 
-        <form method="POST" action="/login" id="loginForm">
+        <form id="loginForm">
             <div class="mb-3 text-start">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
