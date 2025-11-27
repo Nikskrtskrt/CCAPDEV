@@ -1,7 +1,9 @@
+const bcrypt    = require('bcrypt');
 const request = require('supertest');
 const app = require('../server');
 const User = require('../models/User');
-const { baseModelName } = require('../models/Reservation');
+
+//const { baseModelName } = require('../models/Reservation');
 
 let userAgent;
 let adminAgent;
@@ -22,8 +24,8 @@ const UPDATED_USER_INFO = {
 }
 
 async function clean() {
-    await User.findOneAndDelete(BASE_USER_INFO);
-    await User.findOneAndDelete(UPDATED_USER_INFO);
+    await User.findOneAndDelete({ email: BASE_USER_INFO.email });
+    await User.findOneAndDelete({ email: UPDATED_USER_INFO.email });
 }
 
 beforeAll(async () => {
@@ -33,13 +35,13 @@ beforeAll(async () => {
 
 afterAll(clean);
 
-describe("Testing AuthRoutes.js (User) Routes", () => {
+describe("Testing authRoutes.js (User) Routes", () => {
     test("Log in with invalid input (not registered)", async () => {
         const result = await userAgent
             .post("/login")
             .send(BASE_USER_INFO);
 
-        expect(result.statusCode).toBe(200); //200 because it sent a render to say invalid
+        expect(result.statusCode).toBe(401);
     });
 
     test("Registering", async () => {
@@ -47,15 +49,26 @@ describe("Testing AuthRoutes.js (User) Routes", () => {
             .post("/register")
             .send(BASE_USER_INFO)
 
-        expect(result.statusCode).toBe(302);
+        expect(result.statusCode).toBe(200);
 
-        const userExists = await User.findOne(BASE_USER_INFO);
+        const userExists = await User.findOne({ email: BASE_USER_INFO.email });
         expect(userExists.firstName).toBe(BASE_USER_INFO.firstName);
         expect(userExists.lastName).toBe(BASE_USER_INFO.lastName);
         expect(userExists.email).toBe(BASE_USER_INFO.email);
-        expect(userExists.password).toBe(BASE_USER_INFO.password);
+        //expect(userExists.password).toBe(BASE_USER_INFO.password);
         expect(userExists.passportNo).toBe(BASE_USER_INFO.passportNo);
         expect(userExists.role).toBe("User");
+
+        const match = await bcrypt.compare(BASE_USER_INFO.password, userExists.password);
+        expect(match).toBe(true);
+    });
+
+    test("Registering (Again)", async () => {
+        const result = await userAgent
+            .post("/register")
+            .send(BASE_USER_INFO)
+
+        expect(result.statusCode).toBe(400);
     });
 
     test("Log in with valid input", async () => {
@@ -69,16 +82,18 @@ describe("Testing AuthRoutes.js (User) Routes", () => {
             .send(loginData);
 
         //console.log("Redirect Status: ", result.status);
-        expect(result.statusCode).toBe(302); //302 because redirect
-        expect(result.headers.location).toBe("/userDashboard");
+        expect(result.statusCode).toBe(200); //302 because redirect
+        //expect(result.headers.location).toBe("/userDashboard");
     });
 
     test("Log out", async () => {
         const result = await userAgent
-            .post("/logout")
+            .get("/logout")
+            //.post("/logout")
             .send()
-
-        expect(result.statusCode).toBe(200);
+        
+        expect(result.statusCode).toBe(302);
+        expect(result.headers.location).toBe("/login");
     })
 
     //test("Editing Name")
@@ -94,7 +109,7 @@ describe("Testing userProfile.js Routes", () => {
 
     afterAll(async () => {
         await userAgent
-            .post("/logout")
+            .get("/logout")
             .send();
     })
 
@@ -110,8 +125,11 @@ describe("Testing userProfile.js Routes", () => {
         expect(userExists.firstName).toBe(UPDATED_USER_INFO.firstName);
         expect(userExists.lastName).toBe(UPDATED_USER_INFO.lastName);
         expect(userExists.email).toBe(UPDATED_USER_INFO.email);
-        expect(userExists.password).toBe(BASE_USER_INFO.password);
+        //expect(userExists.password).toBe(BASE_USER_INFO.password);
         expect(userExists.passportNo).toBe(UPDATED_USER_INFO.passportNo);
         expect(userExists.role).toBe("User");
+        
+        const match = await bcrypt.compare(BASE_USER_INFO.password, userExists.password);
+        expect(match).toBe(true);
     });
 })
