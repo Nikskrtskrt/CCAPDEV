@@ -21,9 +21,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(session({
-    secret: 'dummyLoginSecret',
+    secret: 'IHateVibeCodersWithAllMyBeing',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        maxAge: 1000 * 60 * 60 * 24 //24 hours
+    } 
 }));
 
 //routes

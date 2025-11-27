@@ -2,6 +2,7 @@ $(document).ready(() => {
     const toastEl = $('#toastMsg');
     const toast = new bootstrap.Toast(toastEl[0]);
     const reservationTableBody = $('#reservationTableBody');
+    const reservationTableBody = $('#reservationTableBody');
 
     function showToast(msg, type = 'danger') {
         $('#toastMsg')
@@ -115,6 +116,17 @@ $(document).ready(() => {
         });
     });
 
+    $.ajax({
+        url: `/api/reservations/user`,
+        method: 'GET',
+        success: function (data) {
+            console.log(`Data Got:\n`, data);
+
+            initializeReservations(data.reservations, data.flights)
+        },
+        error: function (xhr) {
+            console.error('Error fetching reservation data:', xhr.responseText);
+        }
     $.ajax({
         url: `/api/reservations/user`,
         method: 'GET',
