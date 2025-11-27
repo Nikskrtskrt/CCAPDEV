@@ -2,7 +2,6 @@ $(document).ready(() => {
     const toastEl = $('#toastMsg');
     const toast = new bootstrap.Toast(toastEl[0]);
     const reservationTableBody = $('#reservationTableBody');
-    const reservationTableBody = $('#reservationTableBody');
 
     function showToast(msg, type = 'danger') {
         $('#toastMsg')
@@ -40,44 +39,16 @@ $(document).ready(() => {
                 .append( $("<td>").append(seatNo) )
                 .append( $("<td>").append(fareClass) )
                 .append( $("<td>").append(totalPrice) )
+                .append( $("<td>").append(status) )
                 .append( $("<td>")
-                    .append(status)
-                    .attr('id', curReservation._id + '_status')
-                )
-                .append( $("<td>")
-                    .append( $("<button>")
-                        .attr('id', curReservation._id + '_button')
-                        .addClass("btn btn-sm btn-danger delete-reservation-btn")
-                        .append("Cancel")
-                    ) 
+                    .addClass("btn btn-sm btn-danger delete-reservation-btn")
+                    .append("Delete")
                 );
             
             reservationTableBody.append(tr);
 
-            if (status == "Cancelled") {
-                console.log("Cancelled booking detected");
-                const button = $(`#${curReservation._id}_button`);
-                button.hide()
-            }
-
-            
-
-            /*
-            <tr data-id="{{_id}}">
-                <td>{{ flight.flightNo }}</td>
-                <td>{{ formatDate flight.date }}</td>
-                <td>{{ seatNo }}</td>
-                <td>{{ fareClass }}</td>
-                <td>{{ totalPrice }}</td>
-                <td>{{ status }}</td>
-                <td>
-                    <button class="btn btn-sm btn-danger delete-reservation-btn">Delete</button>
-                </td>
-            </tr>
-            */
             
         }
-
 
     }
 
@@ -85,30 +56,15 @@ $(document).ready(() => {
         const row = $(this).closest('tr');
         const id = row.data('id');
 
-        const isConfirmed = confirm("Cancel this reservation?")
-        if (!isConfirmed) {
-            console.log("User did not cancel");
-            return;
-        }
-        console.log("User choose cancelled");
+        if (!confirm('Delete this reservation?')) return;
 
         $.ajax({
-            url: `/api/bookingReservation/${id}`,
-            //method: 'DELETE',
-            method: 'PATCH',
+            url: `/api/reservations/${id}`,
+            method: 'DELETE',
             success: (res) => {
                 if (res.success) {
-                    showToast('Reservation Cancelled!', 'success');
-                    //const statusLabel = $("#" + id + "_status");
-                    const statusLabel = $(`#${id}_status`)
-                    //statusLabel.innerHtml = "Cancelled"
-                    statusLabel.empty()
-                    statusLabel.append("Cancelled")
-
-                    //const button = $("#" + id + "_button");
-                    const button = $(`#${id}_button`);
-                    button.hide()
-
+                    row.remove();
+                    showToast('Reservation deleted!', 'success');
                 } else {
                     showToast('Failed to delete reservation');
                 }
@@ -116,17 +72,6 @@ $(document).ready(() => {
         });
     });
 
-    $.ajax({
-        url: `/api/reservations/user`,
-        method: 'GET',
-        success: function (data) {
-            console.log(`Data Got:\n`, data);
-
-            initializeReservations(data.reservations, data.flights)
-        },
-        error: function (xhr) {
-            console.error('Error fetching reservation data:', xhr.responseText);
-        }
     $.ajax({
         url: `/api/reservations/user`,
         method: 'GET',
