@@ -1,35 +1,28 @@
-const http = require("http");
-const app = require("../server");
+const request = require('supertest');
+const app = require('../server');
 
+describe("Testing User Profile Actions", () => {
+    let agent;
 
-// Testing user accounts
-let agent
+    beforeAll(() => {
+        agent = request.agent(app);
+    });
+    
+    afterAll(async () => {
+        await new Promise((resolve) => server.close(resolve));
+    });
 
-beforeAll((done) => {
-  agent = http.createServer(app);
-  agent.listen(0, () => {
-    const port = agent.address().port;
-    baseUrl = `http://localhost:${port}`;
-    done();
-  });
-});
+    test("Testing log in", async () => { // Added async
+        const loginData = {
+            email: "registering@sample.com",
+            password: "1234"
+        };
 
-afterAll((done) => {
-  server.close(done);
-});
+        const result = await agent
+            .post("/login") // Added endpoint
+            .send(loginData);
 
-
-
-test("Testing log in", async () => { // Added async
-    const loginData = {
-        email: "registering@sample.com",
-        password: "1234"
-    };
-
-    const result = await agent
-        .post("/login") // Added endpoint
-        .send(loginData); 
-
-    console.log("Redirect Status: ", result.status);
-    expect(result.status).toBe(200);
-});
+        //console.log("Redirect Status: ", result.status);
+        expect(result.statusCode).toBe(302); //302 because redirect
+    });
+})
