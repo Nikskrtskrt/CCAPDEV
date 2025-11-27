@@ -6,7 +6,10 @@ const Reservation   = require('../../models/Reservation');
 const FlightInstance= require('../../models/FlightInstance');
 
 router.get('/profile', async(req ,res) =>{
-    if(!req.session.user) return res.redirect('/login');
+    if (!req.session.user) {
+        return res.redirect('/login');
+    }
+
     
     const user = await User.findById(req.session.user._id).lean();
     /*
@@ -43,6 +46,10 @@ router.post('/api/profile/update', async(req, res)=>{
 
 router.delete('/api/reservations/:id', async(req,res)=>{
     try{
+        if (!req.session.user) {
+            return res.redirect('/login');
+        }
+
         await Reservation.findByIdAndDelete(req.params.id);
         res.json({success: true});
     }catch(err){
