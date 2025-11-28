@@ -46,7 +46,8 @@ router.post('/login', async(req, res) => {
             lastName:   user.lastName,
             email:      user.email,
             role:       user.role,
-            permissions:user.permissions
+            permissions:user.permissions,
+            passportNo: user.passportNo,
         };
 
         const redirectUrl = user.role === 'Admin' ? '/adminDashboard' : '/userDashboard';

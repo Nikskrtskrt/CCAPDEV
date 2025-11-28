@@ -48,7 +48,7 @@ const TEST_USER_DATA = {
 };
 //
 
-async function clean() {
+async function cleanTestUsers() {
     await User.findOneAndDelete({ email: BASE_USER_INFO.email });
     await User.findOneAndDelete({ email: UPDATED_USER_INFO.email });
 }
@@ -63,11 +63,11 @@ async function cleanTestData() {
 //
 
 beforeAll(async () => {
-    await clean();
+    await cleanTestUsers();
     userAgent = await request.agent(app);
 });
 
-afterAll(clean);
+afterAll(cleanTestUsers);
 
 describe("Testing authRoutes.js (User) Routes", () => {
     test("Log in with invalid input (not registered)", async () => {

@@ -19,6 +19,9 @@ async function handleGetRequest(req, res, flightNo, date) {
         
         //console.log(flightInstanceToPass);
 
+        //User to pass
+        console.log('Session User:', req.session.user);
+
         res.render('reservation/booking', {
             title: 'Reservation Form',
             user: req.session.user,

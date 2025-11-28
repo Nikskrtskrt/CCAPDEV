@@ -57,7 +57,7 @@ router.get('/user/:userId', async (req, res) => {
 //Create new reservation
 router.post('/:flightNo/:date', async (req, res) => {
     console.log('Received reservation post request:', req.body);
-    
+
     try {
         //Verify if user exists
         const userDataSent = req.body.user;
@@ -81,6 +81,22 @@ router.post('/:flightNo/:date', async (req, res) => {
             res.status(400).json({ success: false, message: 'Flight instance not found' });
             return
         }
+
+        //Verify if the flight is not in the past
+        const now = Date.now();
+        const flightDate = flightInstance.date;
+        const departureTime = flightInstance.departureTime;
+
+        //const timeParts = flightTime.split(':');
+        const hours = departureTime.getHours();
+        const mins = departureTime.getMinutes();
+        flightDate.setHours(hours, mins, 0, 0);
+        if (flightDate.getTime() < now) {
+            console.log("User can not book a past flight");
+            res.status(400).json({ success: false, message: 'User can not cancel a past flight' });
+            return
+        }
+
 
         //Verify if user has not already booked the flight
         const existingReservation = await Reservation.findOne({
@@ -130,7 +146,13 @@ router.post('/:flightNo/:date', async (req, res) => {
         });
         await newReservation.save();
         console.log('Reservation created successfully for user:', user._id);
-        res.status(201).json({ success: true, message: 'Reservation created!' });
+
+        res.status(201).json({
+            success: true,
+            message: 'Reservation created!',
+            redirectTo: '/userDashboard',
+        });
+
     } catch (err) {
         console.error('Reservation creation failed:', err.message);
         res.status(400).json({ success: false, error: err.message });
