@@ -59,3 +59,7 @@ New elements and how to use them
     transform: translateY(0);
     animation-duration: 1.5s;
     animation-name: slide-up; or slide-down
+
+Running Tests
+    ~ Type "npm test" to cmd to run all test files
+    ~ Type "npx jest tests/file.test.js" to run one test file
