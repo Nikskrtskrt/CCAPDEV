@@ -170,11 +170,12 @@ describe("Testing reservationRoutes.js and its API", () => {
                 user: BASE_USER_INFO,
             });
 
-        expect(result.statusCode).toBe(400);
-        await login();
+        expect(result.statusCode).toBe(401);
+        //await login();
     });
 
     test("Making a reservation - without a valid flightNo", async () => {
+        await login();
         const result = await userAgent
             .post(`/api/bookingReservation/ABC/${FLIGHT_DATE_STR}`)
             .send({
