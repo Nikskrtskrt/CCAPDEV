@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const {isAuthenticated, hasPermission} = require('../middlewares/authMiddleware');
 const User = require('../models/User');
 const Reservation = require('../models/Reservation');
 const FlightInstance = require('../models/FlightInstance');
@@ -28,6 +29,8 @@ const MEAL_PRICES = {
     "Vegan": 130,
 };
 
+const HOME_URL = '/userDashboard';
+
 //Get - Reservations of User
 //Post - Create new reservation
 //Patch - Update some parts of reservation
@@ -45,6 +48,30 @@ router.get('/:flightNo/:date', async (req, res) => {
     }
 
     const reservations = await Reservation.find({ flight: flightInstance._id }).lean();
+
+    if (reservations && flightInstance.seats - reservations.length <= 0) {
+        console.log('No seats available for flight instance:', flightInstance._id);
+        //res.status(400).json({ success: false, message: 'No seats available' });
+        res.json({
+            flight: flightInstance,
+            reservations: [],
+            redirectTo: HOME_URL,
+            alertMsg: "No seats available for flight. Redirecting to Home Page.",
+        });
+        return
+    }
+
+    if (reservations && reservations.find(r => r.user == req.session.user._id && r.status == 'Confirmed')) {
+        console.log('User has already booked this flight:', req.session.user._id);
+        res.json({
+            flight: flightInstance,
+            reservations: [],
+            redirectTo: HOME_URL,
+            alertMsg: "You are already booked for this flight. Redirecting to Home Page.",
+        });
+        return;
+    }
+
     res.json({ flight: flightInstance, reservations });
 });
 
@@ -150,7 +177,7 @@ router.post('/:flightNo/:date', isAuthenticated("User"), async (req, res) => {
         res.status(201).json({
             success: true,
             message: 'Reservation created!',
-            redirectTo: '/userDashboard',
+            redirectTo: HOME_URL,
         });
 
     } catch (err) {

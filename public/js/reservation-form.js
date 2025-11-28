@@ -32,6 +32,10 @@ function capitalizeAtFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function goToDir(dir) {
+    window.location.href = dir;
+}
+
 $(function () { //Note: Same as $(document).ready(function() {
     const flightNo = $("#titleContainer").data("flight-no");
     const date = $("#titleContainer").data("date");
@@ -317,7 +321,7 @@ $(function () { //Note: Same as $(document).ready(function() {
                 unselectSelectedSeat();
                 updateSummary();
                 if (data.redirectTo) {
-                    window.location.href = data.redirectTo;
+                    goToDir(data.redirectTo);
                 }
             },
             error: function (xhr) {
@@ -334,10 +338,17 @@ $(function () { //Note: Same as $(document).ready(function() {
         method: 'GET',
         success: function (data) {
             const flight = data.flight;
+            const seatCount = flight.seats;
             prevReservations = data.reservations;
+
+            if (data.redirectTo) {
+                alert(data.alertMsg || "Redirecting to another page...");
+                goToDir(data.redirectTo);
+            }
 
             console.log("Flight Data:", flight);
             console.log("Reservations Data:", prevReservations);
+
 
             updateSummary(); //Sets up on load   
             initializeSeats(flight);
