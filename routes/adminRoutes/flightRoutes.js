@@ -4,12 +4,10 @@ const router    = express.Router();
 //models
 const Flight            = require('../../models/Flight');
 const FlightInstance    = require('../../models/FlightInstance');
+const { isAuthenticated } = require('../../middlewares/authMiddleware');
 
-router.get('/', async (req, res) => {
+router.get('/',isAuthenticated('Admin'), async (req, res) => {
     try {
-        if (!req.session.user || req.session.user.role !== 'Admin') {
-            return res.redirect('/login');
-        }
         const flights = await Flight.find().lean();
         res.render('admin/flights/list', { title: 'Flight Templates', 
             flights,

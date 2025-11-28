@@ -15,12 +15,9 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
-                    <th>Passport No.</th>
-                    <th>Role</th>
-                    <th class="text-center">Actions</th>
+                    <th>Role</th> <th class="text-center">Actions</th>
                 </tr>
             </thead>
-
             <tbody>
                 {{#if users.length}}
                     {{#each users}}
@@ -28,9 +25,7 @@
                             <td>{{firstName}}</td>
                             <td>{{lastName}}</td>
                             <td>{{email}}</td>
-                            <td>{{passportNo}}</td>
-                            <td>{{role}}</td>
-                            <td class="text-center">
+                            <td>{{accessrole}}</td> <td class="text-center">
                                 <button class="btn btn-info btn-sm view-btn" data-id="{{_id}}">View</button>
                                 <button class="btn btn-warning btn-sm edit-btn" data-id="{{_id}}">Edit</button>
                                 <button class="btn btn-danger btn-sm delete-btn" data-id="{{_id}}">Delete</button>
@@ -39,11 +34,7 @@
                     {{/each}}
                 {{else}}
                     <tr>
-                        <td colspan="5">
-                            <div class="alert alert-danger text-center">
-                                No users found
-                            </div>
-                        </td>
+                        <td colspan="5" class="text-center text-danger">No users found</td>
                     </tr>
                 {{/if}}
             </tbody>
@@ -68,28 +59,51 @@
                             <label class="form-label">First Name</label>
                             <input type="text" class="form-control" id="firstName" required>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label">Last Name</label>
-                            <input type="text" name="" id="lastName" class="form-control" required>
+                            <input type="text" id="lastName" class="form-control" required>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" required>
                         </div>
-
-                        <div class="col-md-6 mt-2">
+                        <div class="col-md-6">
                             <label class="form-label">Passport No.</label>
                             <input type="text" class="form-control" id="passportNo" required>
                         </div>
-
-                        <div class="col-md-6 mt-2">
+                        
+                        <div class="col-md-6 mt-3">
                             <label class="form-label">Role</label>
-                            <select class="form-select" id="role">
+                            <select class="form-select" id="accessrole">
                                 <option value="User">User</option>
                                 <option value="Admin">Admin</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <label class="form-label fw-bold border-bottom w-100 pb-1">Permissions</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input perm-check" type="checkbox" value="edit-flight" id="permFlight">
+                                    <label class="form-check-label" for="permFlight">Edit Flights</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input perm-check" type="checkbox" value="delete-user" id="permDelete">
+                                    <label class="form-check-label" for="permDelete">Delete Users</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input perm-check" type="checkbox" value="edit-role" id="permRole">
+                                    <label class="form-check-label" for="permRole">Edit Roles</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input perm-check" type="checkbox" value="edit-permissions" id="permPerms">
+                                    <label class="form-check-label" for="permPerms">Edit Permissions</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -110,40 +124,29 @@
                 <h4 id="viewUserModalTitle" class="modal-title">User Details</h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-
             <div class="modal-body">
-
                 <h5>User Information</h5>
                 <div class="row">
-                    <div class="col-md-4"><b>First Name:</b> <span id="v_firstName"></span></div>
-                    <div class="col-md-4"><b>Last Name:</b> <span id="v_lastName"></span></div>
+                    <div class="col-md-4"><b>Name:</b> <span id="v_firstName"></span> <span id="v_lastName"></span></div>
                     <div class="col-md-4"><b>Email:</b> <span id="v_email"></span></div>
                     <div class="col-md-4"><b>Role:</b> <span id="v_role"></span></div>
                 </div>
-
                 <div class="row mt-2">
-                    <div class="col-md-4"><b>Passport No.:</b> <span id="v_passportNo"></span></div>
+                    <div class="col-md-12"><b>Permissions:</b> <span id="v_permissions" class="text-warning"></span></div>
                 </div>
-
                 <hr>
-
                 <h5>Reservations</h5>
-
                 <table class="table table-dark table-bordered" id="reservationsTable">
                     <thead>
                         <tr>
                             <th>Flight No.</th>
                             <th>Date</th>
                             <th>Seat</th>
-                            <th>Fare Class</th>
-                            <th>Total Price</th>
                             <th>Status</th>
                         </tr>
                     </thead>
-
                     <tbody></tbody>
                 </table>
-
             </div>
         </div>
     </div>

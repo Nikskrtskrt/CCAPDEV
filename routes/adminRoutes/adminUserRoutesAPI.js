@@ -1,24 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const User = require('../../models/User');
 const Reservation = require('../../models/Reservation');
 
-router.post('/', async (req, res) => {
+const { isAuthenticated, hasPermission } = require('../../middlewares/authMiddleware');
+
+router.post('/', isAuthenticated('Admin'), async (req, res) => {
     try {
-        if (!req.session.user || req.session.user.role !== 'Admin') {
-            return res.redirect('/login');
-        }
-
-        const plainPassword = req.body.password || 'Default123';
-        const hashedPassword = await bcrypt.hash(plainPassword, 10);
-
-        const userData = {
-            ...req.body,
-            password: hashedPassword 
-        };
-
-        const user = new User(userData);
+        const user = new User(req.body);
         await user.save();
 
         res.status(201).json({
@@ -31,12 +20,8 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', isAuthenticated('Admin'), async (req, res) => {
     try {
-        if (!req.session.user || req.session.user.role !== 'Admin') {
-            return res.redirect('/login');
-        }
-
         const user = await User.findById(req.params.id).lean();
         const reservations = await Reservation.find({ user: req.params.id })
             .populate('flight')
@@ -48,31 +33,48 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', isAuthenticated('Admin'), async (req, res) => {
     try {
-        if (!req.session.user || req.session.user.role !== 'Admin') {
-            return res.redirect('/login');
+        const updates = req.body;
+
+        if (updates.accessrole || updates.role) {
+            if (!req.session.user.permissions.includes('edit-role')) {
+                return res.status(403).json({ error: 'Missing permission: edit-role' });
+            }
         }
 
-        await User.findByIdAndUpdate(req.params.id, req.body);
+        if (updates.permissions) {
+            if (!req.session.user.permissions.includes('edit-permissions')) {
+                return res.status(403).json({ error: 'Missing permission: edit-permissions' });
+            }
+        }
+        
+        if (updates.password) {
+            const user = await User.findById(req.params.id);
+            Object.assign(user, updates);
+            await user.save(); 
+        } else {
+            await User.findByIdAndUpdate(req.params.id, updates);
+        }
+
         res.json({ success: true });
     } catch (err) {
         res.status(400).json({ success: false, error: 'Failed to update user' });
     }
 });
 
-router.delete('/:id', async (req, res) => {
-    try {
-        if (!req.session.user || req.session.user.role !== 'Admin') {
-            return res.redirect('/login');
-        }
-        await User.findByIdAndDelete(req.params.id);
-        await Reservation.deleteMany({ user: req.params.id });
+router.delete('/:id', 
+    isAuthenticated('Admin'), 
+    hasPermission('delete-user'), 
+    async (req, res) => {
+        try {
+            await User.findByIdAndDelete(req.params.id);
+            await Reservation.deleteMany({ user: req.params.id });
 
-        res.json({ success: true });
-    } catch (err) {
-        res.status(400).json({ success: false, error: 'Failed to delete user' });
-    }
+            res.json({ success: true });
+        } catch (err) {
+            res.status(400).json({ success: false, error: 'Failed to delete user' });
+        }
 });
 
 module.exports = router;

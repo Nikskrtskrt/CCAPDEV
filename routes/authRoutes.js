@@ -1,7 +1,7 @@
 const express   = require('express');
 const router    = express.Router();
 const User      = require('../models/User');
-const bcrypt    = require('bcrypt');
+const { isAuthenticated } = require('../middlewares/authMiddleware');
 
 router.get('/login', (req, res)=>{
     if(req.session.user){
@@ -29,12 +29,13 @@ router.post('/login', async(req, res) => {
     try{
         const{email, password} = req.body;
 
-        const user = await User.findOne({email}).lean();
+        const user = await User.findOne({email});
         if (!user){
             return res.status(401).json({success: false, error: 'Invalid credentials'});
         }
 
-        const match = await bcrypt.compare(password, user.password);
+        //const match = await bcrypt.compare(password, user.password);
+        const match = await user.comparePassword(password);
         if(!match){
             return res.status(401).json({success: false, error: 'Invalid email or password'});
         }
@@ -44,8 +45,9 @@ router.post('/login', async(req, res) => {
             firstName:  user.firstName,
             lastName:   user.lastName,
             email:      user.email,
-            role:       user.role
-        }
+            role:       user.role,
+            permissions:user.permissions
+        };
 
         const redirectUrl = user.role === 'Admin' ? '/adminDashboard' : '/userDashboard';
 
@@ -65,17 +67,18 @@ router.post('/register', async(req, res)=> {
             return res.status(400).json({success: false, error: 'Email already registered'});
         } 
 
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        // const saltRounds = 10;
+        // const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const newUser = new User({
             firstName,
             lastName,
             email,
             passportNo,
-            password: hashedPassword,
-            role: 'User'
-        })
+            password,
+            role: 'User',
+            permissions: []
+        });
 
         await newUser.save();
 
