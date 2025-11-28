@@ -57,55 +57,56 @@ router.get('/user/:userId', async (req, res) => {
 //Create new reservation
 router.post('/:flightNo/:date', async (req, res) => {
     console.log('Received reservation post request:', req.body);
-
-    //Verify if user exists
-    const userDataSent = req.body.user;
-    const user = await User.findOne({
-        firstName: userDataSent.firstName,
-        lastName: userDataSent.lastName,
-        email: userDataSent.email,
-        passportNo: userDataSent.passportNo,
-    }).lean();
-    if (!user) {
-        console.log('User not found with details:', userDataSent);
-        res.status(400).json({ success: false, message: 'User not found' });
-        return
-    }
-
-    //Verify if flight instance exists
-    const date = new Date(req.params.date);
-    const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo, date: date }).lean();
-    if (!flightInstance) {
-        console.log('Flight instance not found with flightNo:', req.params.flightNo);
-        res.status(400).json({ success: false, message: 'Flight instance not found' });
-        return
-    }
-
-    //Verify if user has not already booked the flight
-    const existingReservation = await Reservation.findOne({
-        user: user._id,
-        flight: flightInstance._id,
-    }).lean();
-    if (existingReservation) {
-        console.log('User has already booked this flight:', user._id, flightInstance._id);
-        res.status(400).json({ success: false, message: 'User has already booked this flight' });
-        return
-    }
-
-    //Verify if seat is available
-    const reservationDataSent = req.body.reservation;
-    const seatToBeTaken = await Reservation.findOne({
-        flight: flightInstance._id,
-        seatNo: reservationDataSent.seatNo,
-        status: 'Confirmed',
-    }).lean();
-    if (seatToBeTaken) {
-        console.log('Seat already taken:', seatToBeTaken._id);
-        res.status(400).json({ success: false, message: 'Seat already taken' });
-        return
-    }
-
+    
     try {
+        //Verify if user exists
+        const userDataSent = req.body.user;
+        const user = await User.findOne({
+            firstName: userDataSent.firstName,
+            lastName: userDataSent.lastName,
+            email: userDataSent.email,
+            passportNo: userDataSent.passportNo,
+        }).lean();
+        if (!user) {
+            console.log('User not found with details:', userDataSent);
+            res.status(400).json({ success: false, message: 'User not found' });
+            return
+        }
+
+        //Verify if flight instance exists
+        const date = new Date(req.params.date);
+        const flightInstance = await FlightInstance.findOne({ flightNo: req.params.flightNo, date: date }).lean();
+        if (!flightInstance) {
+            console.log('Flight instance not found with flightNo: %s and date: %s', req.params.flightNo, req.params.date);
+            res.status(400).json({ success: false, message: 'Flight instance not found' });
+            return
+        }
+
+        //Verify if user has not already booked the flight
+        const existingReservation = await Reservation.findOne({
+            user: user._id,
+            flight: flightInstance._id,
+        }).lean();
+        if (existingReservation) {
+            console.log('User has already booked this flight:', user._id, flightInstance._id);
+            res.status(400).json({ success: false, message: 'User has already booked this flight' });
+            return
+        }
+
+        //Verify if seat is available
+        const reservationDataSent = req.body.reservation;
+        const seatToBeTaken = await Reservation.findOne({
+            flight: flightInstance._id,
+            seatNo: reservationDataSent.seatNo,
+            status: 'Confirmed',
+        }).lean();
+        if (seatToBeTaken) {
+            console.log('Seat already taken:', seatToBeTaken._id);
+            res.status(400).json({ success: false, message: 'Seat already taken' });
+            return
+        }
+
+
         const mealOption = reservationDataSent.mealOption;
         const seatNo = reservationDataSent.seatNo;
         const extraBaggageWeight = parseInt(reservationDataSent.extraBaggageWeight) || 0;
@@ -130,7 +131,7 @@ router.post('/:flightNo/:date', async (req, res) => {
         await newReservation.save();
         console.log('Reservation created successfully for user:', user._id);
         res.status(201).json({ success: true, message: 'Reservation created!' });
-    } catch {
+    } catch (err) {
         console.error('Reservation creation failed:', err.message);
         res.status(400).json({ success: false, error: err.message });
     }
@@ -162,7 +163,7 @@ router.patch('/:reservationId', async (req, res) => {
     const flightDate = flightInstance.date;
     const flightTime = flightInstance.departureTime;
     console.log(typeof flightTime);
-    
+
     //const timeParts = flightTime.split(':');
     const hours = flightTime.getHours();
     const mins = flightTime.getMinutes();
