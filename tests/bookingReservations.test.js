@@ -21,6 +21,10 @@ const UPDATED_USER_INFO = AccountConstants.UPDATED_USER_INFO;
 beforeAll(async () => {
     //await clean();
     userAgent = await request.agent(app);
+
+    await userAgent
+        .post("/register")
+        .send(BASE_USER_INFO)
 });
 
 describe("Testing reservationRoutes.js and its API", () => {
