@@ -8,7 +8,7 @@ const Flight = require('../models/Flight');
 const FlightInstance = require('../models/FlightInstance');
 const Reservation = require('../models/Reservation');
 
-const BASE_USER_INFO = AccountConstants.BASE_USER_INFO;
+const BASE_USER_INFO = AccountConstants.BASE_USER_INFO_4;
 
 const now = new Date(Date.now());
 now.setUTCHours(0, 0, 0, 0);

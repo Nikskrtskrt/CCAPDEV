@@ -8,7 +8,7 @@ const Flight = require('../models/Flight');
 const FlightInstance = require('../models/FlightInstance');
 const Reservation = require('../models/Reservation');
 
-const BASE_USER_INFO = AccountConstants.BASE_USER_INFO;
+const BASE_USER_INFO = AccountConstants.BASE_USER_INFO_3;
 const BASE_USER_INFO_2 = AccountConstants.BASE_USER_INFO_2;
 const BASE_ADMIN_INFO = AccountConstants.BASE_ADMIN_INFO;
 const UPDATED_USER_INFO = AccountConstants.UPDATED_USER_INFO;

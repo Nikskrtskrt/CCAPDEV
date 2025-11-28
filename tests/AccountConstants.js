@@ -16,6 +16,22 @@ dict.BASE_USER_INFO_2 = {
     passportNo: "ID0123456789LMNO",
 }
 
+dict.BASE_USER_INFO_3 = {
+    firstName: "Fiehre",
+    lastName: "Roh",
+    email: "rocher@jest.com",
+    password: "moreSupertest",
+    passportNo: "ID0123456789PQRS",
+}
+
+dict.BASE_USER_INFO_4 = {
+    firstName: "Meiji",
+    lastName: "Mii",
+    email: "meiji_buu@dbz.com",
+    password: "huuhaa",
+    passportNo: "CNDY_1234",
+}
+
 dict.BASE_ADMIN_INFO = {
     firstName: "Emmy",
     lastName: "Nem",
