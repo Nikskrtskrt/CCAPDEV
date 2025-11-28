@@ -120,7 +120,7 @@ router.post('/:flightNo/:date', isAuthenticated("User"), async (req, res) => {
         flightDate.setHours(hours, mins, 0, 0);
         if (flightDate.getTime() < now) {
             console.log("User can not book a past flight");
-            res.status(400).json({ success: false, message: 'User can not cancel a past flight' });
+            res.status(400).json({ success: false, message: 'User can not book a past flight' });
             return
         }
 
