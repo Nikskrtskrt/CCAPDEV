@@ -10,8 +10,7 @@ router.get('/', async (req, res) => {
             return res.redirect('/login');
         }
 
-
-        const reservations = await Reservation.find({ user: req.params._id })
+        const reservations = await Reservation.find({ user: req.session.user._id })
             .populate({
                 path: 'flight', 
                 populate: {
