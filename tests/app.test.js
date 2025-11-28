@@ -579,3 +579,126 @@ describe("Testing reservationRoutes.js and its API", () => {
         
     });
 });
+
+// *added* Manage Reservations Test Cases
+describe("Testing manageReservationRoutesAPI.js Routes", () => {
+    let testReservation;
+    let testFlightInstance;
+    let testFlightTemplate;
+    let userId;
+
+    beforeAll(async () => {
+        try {
+            let user = await User.findOne({ email: BASE_USER_INFO.email });
+            if (!user) {
+                 await userAgent.post("/register").send(BASE_USER_INFO);
+                 user = await User.findOne({ email: BASE_USER_INFO.email });
+            }
+            userId = user._id;
+
+            await userAgent.post("/login").send(BASE_USER_INFO);
+
+            testFlightTemplate = await Flight.create({
+                flightNo: "TEST-FLIGHT-API", 
+                origin: "Manila",
+                destination: "Ceby",
+                departure: "08:00",    
+                arrival: "10:00",      
+                aircraft: "AIR 123",
+                capacity: 150,
+                daysOfWeek: ["Mon", "Wed", "Fri"],
+                seasonStart: new Date("2020-01-01"),
+                seasonEnd: new Date("2030-12-31"),
+                active: true
+            });
+    
+            testFlightInstance = await FlightInstance.create({
+                template: testFlightTemplate._id, 
+                flightNo: "TEST-FLIGHT-API",
+                date: new Date(),
+                departureTime: new Date(),
+                arrivalTime: new Date(new Date().getTime() + 4 * 60 * 60 * 1000),
+                status: 'Scheduled',
+                seats: 150
+            });
+
+            testReservation = await Reservation.create({
+                user: userId,
+                flight: testFlightInstance._id, 
+                seatNo: 1,
+                mealType: 'Standard',
+                baggage: 1,
+                fareClass: 'Economy',
+                totalPrice: 5000,
+                status: 'Confirmed'
+            });
+
+        } catch (error) {
+            console.error("Setup failed in manageReservationRoutesAPI:", error);
+            throw error;
+        }
+    });
+
+    afterAll(async () => {
+        if (testReservation) await Reservation.findByIdAndDelete(testReservation._id);
+        if (testFlightInstance) await FlightInstance.findByIdAndDelete(testFlightInstance._id);
+        if (testFlightTemplate) await Flight.findByIdAndDelete(testFlightTemplate._id);
+        
+        await userAgent.get("/logout").send();
+    });
+
+    test("Retrieve user reservations", async () => {
+        const result = await userAgent.get("/api/reservations/user"); 
+
+        if (result.statusCode !== 200) {
+            console.log("Status:", result.statusCode);
+            console.log("Body:", result.body);
+        }
+
+        expect(result.statusCode).toBe(200);
+        expect(result.body.reservations).toBeDefined();
+        expect(Array.isArray(result.body.reservations)).toBe(true);
+        expect(result.body.reservations.length).toBeGreaterThan(0);
+        
+        const ids = result.body.reservations.map(r => r._id.toString());
+        expect(ids).toContain(testReservation._id.toString());
+    });
+
+    test("Update reservation details", async () => {
+        const updateData = {
+            mealType: "Vegetarian",
+            seatNo: 2,
+            baggage: 2
+        };
+
+        const result = await userAgent
+            .put(`/api/reservations/${testReservation._id}`)
+            .send(updateData);
+
+        expect(result.statusCode).toBe(200);
+        expect(result.body.mealType).toBe("Vegetarian");
+        
+        const updatedRes = await Reservation.findById(testReservation._id);
+        expect(updatedRes.mealType).toBe("Vegetarian");
+    });
+
+    test("Cancel a reservation", async () => {
+        const result = await userAgent
+            .put(`/api/reservations/${testReservation._id}/cancel`);
+
+        expect(result.statusCode).toBe(200);
+        
+        const cancelledRes = await Reservation.findById(testReservation._id);
+        expect(cancelledRes.status).toBe("Cancelled");
+    });
+
+    test("Delete a reservation", async () => {
+        const result = await userAgent
+            .delete(`/api/reservations/${testReservation._id}`);
+
+        expect(result.statusCode).toBe(200);
+
+        const deletedRes = await Reservation.findById(testReservation._id);
+        expect(deletedRes).toBeNull();
+    });
+});

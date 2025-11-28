@@ -9,23 +9,18 @@ router.get('/user', async (req, res) => {
             return res.redirect('/login');
         }
 
-
         const reservations = await Reservation.find({
-            user: req.session.user._id
+            user: req.session.user._id 
         }).lean();
 
-        const flighIds = reservations.map(reservation => reservation.flight);
+        const flightIds = reservations.map(reservation => reservation.flight);
         const flights = await FlightInstance.find({
-            _id: { "$in": flighIds }
+            _id: { "$in": flightIds }
         }).lean();
 
-        /*
-        if (!reservation) {
-            return res.status(404).json({ error: 'Reservation not found' });
-        }
-        */
-        res.json( {reservations: reservations, flights: flights} );
+        res.json({ reservations: reservations, flights: flights });
     } catch (err) {
+        console.error("Error in GET /user:", err);
         res.status(500).json({ error: 'Server error' });
     }
 });
@@ -39,12 +34,15 @@ router.put('/:id', async (req, res) => {
         const { mealType, seatNo, baggage } = req.body;
 
         const updatedReservation = await Reservation.findOneAndUpdate(
-            { _id: req.params.id, user: req.user._id }, 
+            { 
+                _id: req.params.id, 
+                user: req.session.user._id 
+            }, 
             {
                 $set: {
                     mealType,
-                    seatNo: Number(seatNo) || 0,
-                    baggage: Number(baggage) || 0
+                    seatNo,
+                    baggage
                 }
             },
             { new: true } 
@@ -53,23 +51,25 @@ router.put('/:id', async (req, res) => {
         if (!updatedReservation) {
             return res.status(404).json({ error: 'Reservation not found or access denied' });
         }
-        res.json(updatedReservation);
 
+        res.json(updatedReservation); 
     } catch (err) {
+        console.error("Error in PUT /:id :", err);
         res.status(500).json({ error: 'Error updating reservation' });
     }
 });
 
 router.put('/:id/cancel', async (req, res) => {
     try {
-
         if (!req.session.user) {
             return res.redirect('/login');
         }
 
-
         const cancelledReservation = await Reservation.findOneAndUpdate(
-            { _id: req.params.id, user: req.user._id },
+            { 
+                _id: req.params.id, 
+                user: req.session.user._id 
+            },
             { $set: { status: 'Cancelled' } },
             { new: true }
         );
@@ -80,21 +80,20 @@ router.put('/:id/cancel', async (req, res) => {
         res.json({ message: 'Reservation successfully cancelled', reservation: cancelledReservation });
 
     } catch (err) {
+        console.error("Error in CANCEL:", err);
         res.status(500).json({ error: 'Error cancelling reservation' });
     }
 });
 
 router.delete('/:id', async (req, res) => {
     try {
-
         if (!req.session.user) {
             return res.redirect('/login');
         }   
 
-
         const deletedReservation = await Reservation.findOneAndDelete({
             _id: req.params.id,
-            user: req.user._id 
+            user: req.session.user._id 
         });
 
         if (!deletedReservation) {
@@ -102,10 +101,9 @@ router.delete('/:id', async (req, res) => {
         }
 
         res.status(200).json({ message: 'Reservation deleted successfully' });
-
     } catch (err) {
-        console.error('Error deleting reservation:', err);
-        res.status(500).json({ error: 'Server error' });
+        console.error("Error in DELETE:", err);
+        res.status(500).json({ error: 'Error deleting reservation' });
     }
 });
 
