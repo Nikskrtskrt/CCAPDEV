@@ -13,7 +13,22 @@ mongoose.connect('mongodb://127.0.0.1:27017/flightAdminDB')
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
 
-app.engine('handlebars', exphbs.engine());
+app.engine('handlebars', exphbs.engine({
+    helpers: {
+        formatDate: function (date) {
+            if (!date) return '';
+            return new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }, 
+
+        eq: function (a, b) {
+            return a === b;
+        }
+    }
+}));
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
