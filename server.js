@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const path = require('path');
+const fs = require('fs');
+
 
 const app = express();
 const PORT = 3000;
@@ -11,7 +13,22 @@ mongoose.connect('mongodb://127.0.0.1:27017/flightAdminDB')
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
 
-app.engine('handlebars', exphbs.engine());
+app.engine('handlebars', exphbs.engine({
+    helpers: {
+        formatDate: function (date) {
+            if (!date) return '';
+            return new Date(date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }, 
+
+        eq: function (a, b) {
+            return a === b;
+        }
+    }
+}));
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
@@ -29,6 +46,23 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 //24 hours
     } 
 }));
+
+const logStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
+
+app.use((req,res,next)=>{
+    const timestamp = new Date().toISOString();
+
+    let userInfo = 'Guest';
+    if(req.session && req.session.user){
+        userInfo = `${req.session.user.email}[${req.session.user.role}]`;
+    }
+
+    const logMessage = `[${timestamp}] ${req.method} ${req.url} | IP: ${req.ip} | User: ${userInfo}\n`
+    logStream.write(logMessage);
+    console.log(logMessage.trim());
+
+    next();
+});
 
 //routes
 const flightRoutes = require('./routes/adminRoutes/flightRoutes');

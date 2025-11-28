@@ -107,4 +107,27 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        const reservation = await Reservation.findOne({
+            _id: req.params.id,
+            user: req.session.user._id
+        }).lean();
+
+        if (!reservation) {
+            return res.status(404).json({ error: 'Reservation not found' });
+        }
+
+        res.json(reservation);
+
+    } catch (err) {
+        console.error("Error in GET /:id:", err);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
 module.exports = router;
