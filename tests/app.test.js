@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const request = require('supertest');
+const AccountConstants = require('AccountConstants');
+
 const app = require('../server');
 const User = require('../models/User');
 const Flight = require('../models/Flight');
@@ -11,36 +13,10 @@ const Reservation = require('../models/Reservation');
 let userAgent;
 let adminAgent;
 
-const BASE_USER_INFO = {
-    firstName: "Her",
-    lastName: "Shey",
-    email: "testing@jest.com",
-    password: "iLoveSupertest",
-    passportNo: "ID0123456789ABCD",
-}
-
-const BASE_USER_INFO_2 = {
-    firstName: "Cad",
-    lastName: "Mury",
-    email: "love@jest.com",
-    password: "anotherSupertest",
-    passportNo: "ID0123456789LMNO",
-}
-
-const BASE_ADMIN_INFO = {
-    firstName: "Emmy",
-    lastName: "Nem",
-    email: "slimjimmy@wrap.com",
-    password: "pleaseStandUp",
-    passportNo: "ADMIN_ABRACADABRA",
-}
-
-const UPDATED_USER_INFO = {
-    firstName: "Tobly",
-    lastName: "Ron",
-    email: "tobly_ron@snacks.com",
-    passportNo: "70b1"
-}
+const BASE_USER_INFO = AccountConstants.BASE_USER_INFO;
+const BASE_USER_INFO_2 = AccountConstants.BASE_USER_INFO_2;
+const BASE_ADMIN_INFO = AccountConstants.BASE_ADMIN_INFO;
+const UPDATED_USER_INFO = AccountConstants.UPDATED_USER_INFO;
 
 //*added* Variables for flight search tests
 let flightSearchAgent;
