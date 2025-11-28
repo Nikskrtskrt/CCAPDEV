@@ -19,6 +19,30 @@ const BASE_ADMIN_INFO = AccountConstants.BASE_ADMIN_INFO;
 const UPDATED_USER_INFO = AccountConstants.UPDATED_USER_INFO;
 const UPDATED_USER_INFO_NEEDS_PERMS = AccountConstants.UPDATED_USER_INFO_NEEDS_PERMS;
 
+const FLIGHT_INFO = {
+    flightNo: "ADMIN_TEST_100",
+    origin: "PlaceA",
+    destination: "PlaceB",
+
+    daysOfWeek: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    departure: "06:00",
+    arrival: "07:00",
+
+    seasonStart: new Date("2025-01-01"),
+    seasonEnd: new Date("2025-12-31"),
+
+    aircraft: "DummyAircraftAdmin",
+    capacity: 1,
+
+    active: true
+}
+
+const UPDATED_FLIGHT_INFO = {
+    flightNo: "ADMIN_TEST_200",
+    origin: "PlaceC",
+    destination: "PlaceD",
+}
+
 async function cleanTestUsers() {
     await User.findOneAndDelete({ email: BASE_USER_INFO.email });
     await User.findOneAndDelete({ email: UPDATED_USER_INFO.email });
@@ -283,6 +307,84 @@ describe("Testing adminUserRoutes.js and its API Routes", () => {
         const userExists = await User.findOne({ email: BASE_USER_INFO.email });
         expect(userExists).not.toBeNull();
         expect(userExists.role).toBe("Admin");
+    });
+});
+
+describe("Testing flightRoutesAPI.js Routes", () => {
+    let flightExists;
+    let findAdmin
+    
+    beforeAll(async () => {
+        findAdmin = await User.findOne({ email: BASE_ADMIN_INFO.email });
+        findAdmin.role = "Admin";
+        await findAdmin.save();
+
+        await adminAgent
+            .post("/login")
+            .send(BASE_ADMIN_INFO);
+    });
+
+    afterAll(async () => {
+        await Flight.deleteMany({ flightNo: FLIGHT_INFO.flightNo });
+        await FlightInstance.deleteMany({ flightNo: FLIGHT_INFO.flightNo });
+        await Flight.deleteMany({ flightNo: UPDATED_FLIGHT_INFO.flightNo });
+        await FlightInstance.deleteMany({ flightNo: UPDATED_FLIGHT_INFO.flightNo });
+    });
+
+    test("Creating a flight", async () => {
+        await findAdmin.permissions.push('edit-flight');
+        await findAdmin.save();
+
+        await adminAgent
+            .post("/logout")
+            .send();
+
+        await adminAgent
+            .post("/login")
+            .send(BASE_ADMIN_INFO);
+
+        const result = await adminAgent
+            .post(`/api/flights`)
+            .send(FLIGHT_INFO);
+
+        expect(result.statusCode).toBe(201);
+        flightExists = await Flight.findOne({ flightNo: FLIGHT_INFO.flightNo });
+        expect(flightExists).not.toBeNull();
+    });
+
+    test("Updating a flight", async () => {
+        await adminAgent
+            .put(`/api/flights/${flightExists._id}`)
+            .send(UPDATED_FLIGHT_INFO);
+
+        const updatedFlight = await Flight.findById(flightExists._id);
+        expect(updatedFlight.flightNo).toBe(UPDATED_FLIGHT_INFO.flightNo);
+        expect(updatedFlight.origin).toBe(UPDATED_FLIGHT_INFO.origin);
+        expect(updatedFlight.destination).toBe(UPDATED_FLIGHT_INFO.destination);
+    });
+
+    test("Deleting an instance of a flight", async () => {
+        const flightInstance = await FlightInstance.findOne({ template: flightExists._id });
+        expect(flightInstance).not.toBeNull();
+
+        const result = await adminAgent
+            .delete(`/api/flights/instance/${flightInstance._id}`)
+            .send();
+        expect(result.statusCode).toBe(200);
+
+        const instanceExists = await FlightInstance.findById(flightInstance._id);
+        expect(instanceExists).toBeNull();
+    });
+
+    test("Deleting a flight", async () => {
+        const result = await adminAgent
+            .delete(`/api/flights/${flightExists._id}`)
+            .send();
+
+        expect(result.statusCode).toBe(200);
+
+        const flightExistsAfter = await Flight.findById(flightExists._id);
+        expect(flightExistsAfter).toBeNull();
     });
 });
 
