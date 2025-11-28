@@ -82,6 +82,22 @@ router.post('/:flightNo/:date', async (req, res) => {
             return
         }
 
+        //Verify if the flight is not in the past
+        const now = Date.now();
+        const flightDate = flightInstance.date;
+        const departureTime = flightInstance.departureTime;
+
+        //const timeParts = flightTime.split(':');
+        const hours = departureTime.getHours();
+        const mins = departureTime.getMinutes();
+        flightDate.setHours(hours, mins, 0, 0);
+        if (flightDate.getTime() < now) {
+            console.log("User can not book a past flight");
+            res.status(400).json({ success: false, message: 'User can not cancel a past flight' });
+            return
+        }
+
+
         //Verify if user has not already booked the flight
         const existingReservation = await Reservation.findOne({
             user: user._id,
