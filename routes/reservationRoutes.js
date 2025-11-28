@@ -1,5 +1,6 @@
 const express   = require('express');
 const router    = express.Router();
+const {isAuthenticated, hasPermission} = require('../middlewares/authMiddleware');
 const User              = require('../models/User');
 const Reservation       = require('../models/Reservation');
 const FlightInstance    = require('../models/FlightInstance');
@@ -34,12 +35,14 @@ async function handleGetRequest(req, res, flightNo, date) {
     }
 }
 
+/*
 //For Debugging purposes
 router.get('/', async (req, res) => {
     handleGetRequest(req, res, "FL100", 2025-11-30);
 });
+*/
 
-router.get('/:flightNo/:date', async (req, res) => {
+router.get('/:flightNo/:date', isAuthenticated("User"), async (req, res) => {
     handleGetRequest(req, res, req.params.flightNo, req.params.date);
 });
 

@@ -55,7 +55,7 @@ router.get('/user/:userId', async (req, res) => {
 });
 
 //Create new reservation
-router.post('/:flightNo/:date', async (req, res) => {
+router.post('/:flightNo/:date', isAuthenticated("User"), async (req, res) => {
     console.log('Received reservation post request:', req.body);
 
     try {
@@ -161,7 +161,7 @@ router.post('/:flightNo/:date', async (req, res) => {
 
 
 //Updates reservation info
-router.patch('/:reservationId', async (req, res) => {
+router.patch('/:reservationId', isAuthenticated("User"), async (req, res) => {
     console.log("Reservation Cancel Attempt");
 
     //Verify if it is an existing flight
