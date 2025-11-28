@@ -57,7 +57,7 @@ router.get('/user/:userId', async (req, res) => {
 //Create new reservation
 router.post('/:flightNo/:date', async (req, res) => {
     console.log('Received reservation post request:', req.body);
-    
+
     try {
         //Verify if user exists
         const userDataSent = req.body.user;
@@ -130,7 +130,13 @@ router.post('/:flightNo/:date', async (req, res) => {
         });
         await newReservation.save();
         console.log('Reservation created successfully for user:', user._id);
-        res.status(201).json({ success: true, message: 'Reservation created!' });
+
+        res.status(201).json({
+            success: true,
+            message: 'Reservation created!',
+            redirectTo: '/userDashboard',
+        });
+
     } catch (err) {
         console.error('Reservation creation failed:', err.message);
         res.status(400).json({ success: false, error: err.message });

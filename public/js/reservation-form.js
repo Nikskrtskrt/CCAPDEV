@@ -316,6 +316,9 @@ $(function () { //Note: Same as $(document).ready(function() {
                 //reservationForm[0].reset();
                 unselectSelectedSeat();
                 updateSummary();
+                if (data.redirectTo) {
+                    window.location.href = data.redirectTo;
+                }
             },
             error: function (xhr) {
                 console.error('Error fetching flight data:', xhr.responseText);
