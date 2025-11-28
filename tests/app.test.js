@@ -17,10 +17,12 @@ const BASE_USER_INFO = AccountConstants.BASE_USER_INFO;
 const BASE_USER_INFO_2 = AccountConstants.BASE_USER_INFO_2;
 const BASE_ADMIN_INFO = AccountConstants.BASE_ADMIN_INFO;
 const UPDATED_USER_INFO = AccountConstants.UPDATED_USER_INFO;
+const UPDATED_USER_INFO_NEEDS_PERMS = AccountConstants.UPDATED_USER_INFO_NEEDS_PERMS;
 
 async function cleanTestUsers() {
     await User.findOneAndDelete({ email: BASE_USER_INFO.email });
     await User.findOneAndDelete({ email: UPDATED_USER_INFO.email });
+    await User.findOneAndDelete({ email: BASE_ADMIN_INFO.email });
 }
 
 
@@ -28,6 +30,9 @@ async function cleanTestUsers() {
 beforeAll(async () => {
     await cleanTestUsers();
     userAgent = await request.agent(app);
+    adminAgent = await request.agent(app);
+
+
 });
 
 afterAll(cleanTestUsers);
@@ -132,7 +137,154 @@ describe("Testing userProfile.js Routes", () => {
 
 });
 
+describe("Testing adminUserRoutes.js and its API Routes", () => {
+    let regularUser
+    let findAdmin
+    
+    beforeAll(async () => {
+        await userAgent
+            .post("/login")
+            .send(BASE_USER_INFO);
 
+        regularUser = await User.findOne({ email: UPDATED_USER_INFO.email });
+
+        await adminAgent
+            .post("/register")
+            .send(BASE_ADMIN_INFO);
+        
+        findAdmin = await User.findOne({ email: BASE_ADMIN_INFO.email });
+        findAdmin.role = "Admin";
+        await findAdmin.save();
+
+        await adminAgent
+            .post("/login")
+            .send(BASE_ADMIN_INFO);
+    });
+
+    afterAll(async () => {
+        await userAgent
+            .get("/logout")
+            .send();
+        await adminAgent
+            .get("/logout")
+            .send();
+    });
+
+    test("Getting user list - Admin", async () => {
+        const result = await adminAgent
+            .get("/users")
+            .send();
+
+        expect(result.statusCode).toBe(200);
+    });
+
+    test("Getting user list - Non valid role (User)", async () => {
+        const result = await userAgent
+            .get("/users")
+            .send();
+
+        expect(result.statusCode).toBe(302);
+    });
+
+    test("Getting user details - exists", async () => {
+        const result = await adminAgent
+            .get(`/api/users/${regularUser._id}`)
+            .send();
+        expect(result.statusCode).toBe(200);
+        expect(result.body.user.email).toBe(UPDATED_USER_INFO.email);
+    });
+
+    test("Deleting user - no perms", async () => {
+        const result = await adminAgent
+            .delete(`/api/users/${regularUser._id}`)
+            .send();
+
+        expect(result.statusCode).toBe(401);
+
+        const userExists = await User.findOne({ email: UPDATED_USER_INFO.email });
+        expect(userExists).not.toBeNull();
+    });
+
+    test("Deleting user - valid", async () => {
+        await findAdmin.permissions.push('delete-user');
+        await findAdmin.save();
+
+        await adminAgent
+            .post("/logout")
+            .send();
+
+        await adminAgent
+            .post("/login")
+            .send(BASE_ADMIN_INFO);
+        
+        const result = await adminAgent
+            .delete(`/api/users/${regularUser._id}`)
+            .send();
+
+        expect(findAdmin.permissions).toContain('delete-user');
+        expect(result.statusCode).toBe(200);
+
+        const userExists = await User.findOne({ email: UPDATED_USER_INFO.email });
+        expect(userExists).toBeNull();
+    });
+
+    test("Deleting user - invalid id", async () => {
+        const result = await adminAgent
+            .delete(`/api/users/abc`)
+            .send();
+
+        expect(result.statusCode).toBe(400);
+    });
+
+    test("Getting user details - does not exists", async () => {
+        const result = await adminAgent
+            .get(`/api/users/${regularUser._id}`)
+            .send();
+        expect(result.statusCode).toBe(200);
+    });
+
+    test("Creating user", async () => {
+        const result = await adminAgent
+            .post(`/api/users/`)
+            .send(BASE_USER_INFO);
+
+        expect(result.statusCode).toBe(201);
+        regularUser = await User.findOne({ email: BASE_USER_INFO.email });
+        expect(regularUser).not.toBeNull();
+    });
+
+    test("Editing user - without perms", async () => {
+        const result = await adminAgent
+            .put(`/api/users/${regularUser._id}`)
+            .send(UPDATED_USER_INFO_NEEDS_PERMS);
+
+        expect(result.statusCode).toBe(403);
+        const userExists = await User.findOne({ email: BASE_USER_INFO.email });
+        expect(userExists).not.toBeNull();
+    });
+
+    test("Editing user - with perms", async () => {
+        await findAdmin.permissions.push('edit-role', 'edit-permissions');
+        await findAdmin.save();
+
+        await adminAgent
+            .post("/logout")
+            .send();
+
+        await adminAgent
+            .post("/login")
+            .send(BASE_ADMIN_INFO);
+
+        const result = await adminAgent
+            .put(`/api/users/${regularUser._id}`)
+            .send(UPDATED_USER_INFO_NEEDS_PERMS);
+
+        expect(result.statusCode).toBe(200);
+        const userExists = await User.findOne({ email: BASE_USER_INFO.email });
+        expect(userExists).not.toBeNull();
+        expect(userExists.role).toBe("Admin");
+    });
+});
 
 // *added* Manage Reservations Test Cases
 describe("Testing manageReservationRoutesAPI.js Routes", () => {

@@ -47,4 +47,10 @@ dict.UPDATED_USER_INFO = {
     passportNo: "70b1"
 }
 
+dict.UPDATED_USER_INFO_NEEDS_PERMS = {
+    role: "Admin",
+    permissions: ["edit-role", "edit-permissions"],
+    
+}
+
 module.exports = dict;
