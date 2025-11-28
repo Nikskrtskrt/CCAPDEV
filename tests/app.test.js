@@ -97,7 +97,7 @@ describe("Testing authRoutes.js (User) Routes", () => {
     })
 
     //test("Editing Name")
-})
+});
 
 
 describe("Testing userProfile.js Routes", () => {
@@ -132,4 +132,55 @@ describe("Testing userProfile.js Routes", () => {
         const match = await bcrypt.compare(BASE_USER_INFO.password, userExists.password);
         expect(match).toBe(true);
     });
-})
+
+});
+
+describe("Testing reservationRoutes.js and its API", () => {
+    beforeAll(async () => {
+        await userAgent
+            .post("/login")
+            .send(BASE_USER_INFO);
+    });
+
+    afterAll(async () => {
+        await userAgent
+            .get("/logout")
+            .send();
+    });
+
+    test("Making a reservation - without a valid user", async () => {
+        
+    });
+
+    test("Making a reservation - without a valid flightNo", async () => {
+        
+    });
+
+    test("Making a reservation - valid booking", async () => {
+        
+    });
+
+    test("Making a reservation - same user booking again", async () => {
+        
+    });
+
+    test("Making a reservation - booking on an unavailable seat", async () => {
+        
+    });
+
+    test("Cancelling reservation - in the past", async () => {
+        
+    });
+
+    test("Cancelling reservation - valid", async () => {
+        
+    });
+
+    test("Cancelling reservation - already cancelled", async () => {
+        
+    });
+
+    test("Making a reservation - on Cancelled Seat", async () => {
+        
+    });
+});
